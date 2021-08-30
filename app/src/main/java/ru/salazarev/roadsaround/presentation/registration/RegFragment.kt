@@ -27,10 +27,10 @@ class RegFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.toolbar.apply {
+        binding.includeToolbar.includeToolbar.apply {
             inflateMenu(R.menu.toolbar_reg_menu)
             title = context.getString(R.string.registration)
-            navigationIcon = ContextCompat.getDrawable(context,R.drawable.outline_arrow_back_white_24)
+            navigationIcon = ContextCompat.getDrawable(context,R.drawable.outline_arrow_back_24)
             setNavigationOnClickListener { (activity as MainActivity).navController.navigate(R.id.action_regFragment_to_authFragment) }
             setOnMenuItemClickListener {
                 when (it.itemId) {

@@ -16,7 +16,8 @@
             app:launchSingleTop="false" />
         <action
             android:id="@+id/action_authFragment_to_mainFragment"
-            app:destination="@id/mainFragment" />
+            app:destination="@id/mainFragment"
+            app:popUpTo="@id/nav_graph" />
     </fragment>
     <fragment
         android:id="@+id/regFragment"
@@ -26,14 +27,21 @@
         <action
             android:id="@+id/action_regFragment_to_mainFragment"
             app:destination="@id/mainFragment"
+            app:popUpTo="@id/nav_graph"
             app:popUpToInclusive="true" />
         <action
             android:id="@+id/action_regFragment_to_authFragment"
-            app:destination="@id/authFragment" />
+            app:destination="@id/authFragment"
+            app:popUpTo="@id/nav_graph" />
     </fragment>
     <fragment
         android:id="@+id/mainFragment"
         android:name="ru.salazarev.roadsaround.presentation.main.MainFragment"
         android:label="fragment_main"
-        tools:layout="@layout/fragment_main" />
+        tools:layout="@layout/fragment_main" >
+        <action
+            android:id="@+id/action_mainFragment_to_authFragment"
+            app:destination="@id/authFragment"
+            app:popUpTo="@id/nav_graph" />
+    </fragment>
 </navigation>

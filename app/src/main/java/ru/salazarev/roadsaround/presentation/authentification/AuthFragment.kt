@@ -29,7 +29,7 @@ class AuthFragment : Fragment() {
         binding.tvRegistration.setOnClickListener { registration() }
         binding.tvRestorePassword.setOnClickListener { passwordReset() }
 
-        binding.toolbar.apply {
+        binding.includeToolbar.includeToolbar.apply {
             inflateMenu(R.menu.toolbar_auth_menu)
             title = context.getString(R.string.authentication)
             setOnMenuItemClickListener {
@@ -46,7 +46,7 @@ class AuthFragment : Fragment() {
 
     private fun passwordReset() {
         val email = binding.etEmail.text.toString()
-        if (email.isEmpty())context?.toast(getString(R.string.enter_email_to_restore_password))
+        if (email.isEmpty()) context?.toast(getString(R.string.enter_email_to_restore_password))
         else {
             (activity as MainActivity).fireBaseAuth.sendPasswordResetEmail(email)
                 .addOnCompleteListener { task ->
