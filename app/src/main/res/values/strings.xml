@@ -1,3 +1,23 @@
 <resources>
     <string name="app_name">RoadsAround</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="registration">Регистрация</string>
+    <string name="login">Вход</string>
+    <string name="email">Почта</string>
+    <string name="password">Пароль</string>
+    <string name="restore_password">Восстановить пароль</string>
+    <string name="enter_email_to_restore_password">Укажите почту для восстановления пароля</string>
+    <string name="mail_sent">Письмо восстановления пароля отправлено на указанный адрес</string>
+    <string name="auth_successful">Авторизация прошла успешно</string>
+    <string name="auth_fields_empty">Поля авторизации не заполнены</string>
+    <string name="auth_not_success">Авторизация не состоялась</string>
+    <string name="first_name">Имя</string>
+    <string name="last_name">Фамилия</string>
+    <string name="authentication">Авторизация</string>
+    <string name="Back">Назад</string>
+    <string name="register">Зарегистрироваться</string>
+    <string name="required_data_fields_empty">Необходимые поля данных не заполнены</string>
+    <string name="reg_successful">Регистрация прошла успешно</string>
+    <string name="reg_unsuccessful">Регистрация не состоялась</string>
 </resources>
