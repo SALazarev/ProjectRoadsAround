@@ -3,10 +3,13 @@ package ru.salazarev.roadsaround.presentation.main
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
+import androidx.navigation.ui.onNavDestinationSelected
+import androidx.navigation.ui.setupWithNavController
 import ru.salazarev.roadsaround.R
 import ru.salazarev.roadsaround.databinding.FragmentMainBinding
 import ru.salazarev.roadsaround.presentation.MainActivity
@@ -28,12 +31,19 @@ class MainFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding.bottomNav.setupWithNavController((activity as MainActivity).navController)
         binding.includeToolbar.includeToolbar.apply {
             inflateMenu(R.menu.toolbar_main_menu)
             title = context.getString(R.string.main)
-            navigationIcon = ContextCompat.getDrawable(context,R.drawable.outline_logout_24)
+            navigationIcon = ContextCompat.getDrawable(context, R.drawable.outline_logout_24)
             setNavigationOnClickListener { alertDialog.show() }
         }
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        val navController = (activity as MainActivity).navController
+        return item.onNavDestinationSelected(navController) || super.onOptionsItemSelected(item)
+
     }
 
     private fun createAlertDialog(): AlertDialog {

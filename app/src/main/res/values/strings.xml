@@ -25,4 +25,7 @@
     <string name="you_shure_log_out">Вы уверены, что хотите выйти из аккаунта?</string>
     <string name="yes">Да</string>
     <string name="no">Нет</string>
+    <string name="profile">Профиль</string>
+    <string name="search">Поиск</string>
+    <string name="routes">Маршруты</string>
 </resources>

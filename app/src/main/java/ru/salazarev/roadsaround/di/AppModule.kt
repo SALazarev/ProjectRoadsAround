@@ -16,7 +16,7 @@ interface AppModule {
 
         @Provides
         fun provideNavigationController(fm: FragmentManager, auth: FirebaseAuth): NavController {
-            val navHostFragment = fm.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+            val navHostFragment = fm.findFragmentById(R.id.fragment_container_host) as NavHostFragment
             val navController = navHostFragment.navController
             val graphInflater = navHostFragment.navController.navInflater
             val navGraph = graphInflater.inflate(R.navigation.nav_graph)
