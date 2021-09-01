@@ -3,15 +3,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context=".presentation.searchevent.SearchEventFragment">
+    tools:context=".presentation.routes.RoutesFragment"
+    android:orientation="vertical">
 
     <include
         android:id="@id/include_toolbar"
         layout="@layout/view_toolbar" />
 
-<!--    <androidx.constraintlayout.widget.ConstraintLayout-->
-<!--        android:id="@+id/cl_body"-->
+<!--    <androidx.recyclerview.widget.RecyclerView-->
 <!--        android:layout_width="match_parent"-->
 <!--        android:layout_height="0dp"-->
 <!--        android:layout_weight="1" />-->
@@ -20,6 +19,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:text="ФРАГМЕНТ ПОИСК"
+        android:text="ФРАГМЕНТ МАРШРУТЫ"
         android:textSize="48sp"/>
+
 </LinearLayout>

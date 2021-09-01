@@ -6,7 +6,7 @@
         android:icon="@drawable/outline_person_24"
         android:title="@string/profile" />
     <item
-        android:id="@+id/mainFragment"
+        android:id="@id/routesFragment"
         android:enabled="true"
         android:icon="@drawable/outline_route_24"
         android:title="@string/routes" />

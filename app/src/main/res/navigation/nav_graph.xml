@@ -43,21 +43,5 @@
             android:id="@+id/action_mainFragment_to_authFragment"
             app:destination="@id/authFragment"
             app:popUpTo="@id/nav_graph" />
-        <action
-            android:id="@+id/action_mainFragment_to_profileFragment"
-            app:destination="@id/profileFragment" />
-        <action
-            android:id="@+id/action_mainFragment_to_searchEventFragment"
-            app:destination="@id/searchEventFragment" />
     </fragment>
-    <fragment
-        android:id="@+id/profileFragment"
-        android:name="ru.salazarev.roadsaround.presentation.profile.ProfileFragment"
-        android:label="fragment_profile"
-        tools:layout="@layout/fragment_profile" />
-    <fragment
-        android:id="@+id/searchEventFragment"
-        android:name="ru.salazarev.roadsaround.presentation.searchevent.SearchEventFragment"
-        android:label="fragment_search_event"
-        tools:layout="@layout/fragment_search_event" />
 </navigation>

@@ -27,9 +27,6 @@ class ProfileFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.bottomNav.bottomNav.apply {
-            setupWithNavController((activity as MainActivity).navController)
-        }
     }
     override fun onDestroyView() {
         super.onDestroyView()

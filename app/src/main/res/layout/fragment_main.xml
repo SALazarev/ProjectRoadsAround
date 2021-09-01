@@ -3,20 +3,22 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     tools:context=".presentation.main.MainFragment">
 
-    <include
-        android:id="@id/include_toolbar"
-        layout="@layout/view_toolbar" />
-
-    <androidx.recyclerview.widget.RecyclerView
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/fragment_container_second"
+        android:name="androidx.navigation.fragment.NavHostFragment"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1" />
+        android:layout_weight="1"
+        app:navGraph="@navigation/second_nav_graph" />
+
 
     <include
         android:id="@id/bottom_nav"
         layout="@layout/view_bottom_nav" />
+
 
 </LinearLayout>

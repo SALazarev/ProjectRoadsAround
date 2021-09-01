@@ -7,6 +7,7 @@ import com.google.firebase.auth.FirebaseAuth
 import dagger.Module
 import dagger.Provides
 import ru.salazarev.roadsaround.R
+import javax.inject.Named
 
 @Module
 interface AppModule {
@@ -15,7 +16,8 @@ interface AppModule {
         fun provideFirebaseAuth(): FirebaseAuth = FirebaseAuth.getInstance()
 
         @Provides
-        fun provideNavigationController(fm: FragmentManager, auth: FirebaseAuth): NavController {
+        @Named("mainNavController")
+        fun provideMainNavigationController(fm: FragmentManager, auth: FirebaseAuth): NavController {
             val navHostFragment = fm.findFragmentById(R.id.fragment_container_host) as NavHostFragment
             val navController = navHostFragment.navController
             val graphInflater = navHostFragment.navController.navInflater
@@ -24,6 +26,13 @@ interface AppModule {
             navGraph.startDestination = destination
             navController.graph = navGraph
             return navController
+        }
+
+        @Provides
+        @Named("secondNavController")
+        fun provideSecondNavigationController(fm: FragmentManager): NavController {
+            val navHostFragment = fm.findFragmentById(R.id.fragment_container_second) as NavHostFragment
+            return navHostFragment.navController
         }
     }
 }
