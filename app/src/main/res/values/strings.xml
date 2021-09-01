@@ -21,4 +21,8 @@
     <string name="reg_successful">Регистрация прошла успешно</string>
     <string name="reg_unsuccessful">Регистрация не состоялась</string>
     <string name="main">Главная</string>
+    <string name="warning">Предупреждение</string>
+    <string name="you_shure_log_out">Вы уверены, что хотите выйти из аккаунта?</string>
+    <string name="yes">Да</string>
+    <string name="no">Нет</string>
 </resources>

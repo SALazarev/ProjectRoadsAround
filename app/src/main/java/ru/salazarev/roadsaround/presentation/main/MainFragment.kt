@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import ru.salazarev.roadsaround.R
 import ru.salazarev.roadsaround.databinding.FragmentMainBinding
@@ -14,6 +15,8 @@ class MainFragment : Fragment() {
 
     private var _binding: FragmentMainBinding? = null
     private val binding get() = _binding!!
+
+    private val alertDialog: AlertDialog by lazy { createAlertDialog() }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -29,8 +32,18 @@ class MainFragment : Fragment() {
             inflateMenu(R.menu.toolbar_main_menu)
             title = context.getString(R.string.main)
             navigationIcon = ContextCompat.getDrawable(context,R.drawable.outline_logout_24)
-            setNavigationOnClickListener { logout() }
+            setNavigationOnClickListener { alertDialog.show() }
         }
+    }
+
+    private fun createAlertDialog(): AlertDialog {
+        val builder = AlertDialog.Builder(requireContext())
+        builder.setTitle(getString(R.string.warning))
+            .setMessage(getString(R.string.you_shure_log_out))
+            .setCancelable(false)
+            .setPositiveButton(getString(R.string.yes)) { dialog, which -> logout() }
+            .setNegativeButton(getString(R.string.no)) { dialog, id -> dialog.cancel() }
+        return builder.create()
     }
 
     private fun logout() {
