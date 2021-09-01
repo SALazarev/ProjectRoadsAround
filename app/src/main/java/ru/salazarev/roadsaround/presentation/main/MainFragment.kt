@@ -31,19 +31,16 @@ class MainFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.bottomNav.setupWithNavController((activity as MainActivity).navController)
+        binding.bottomNav.bottomNav.apply {
+            setupWithNavController((activity as MainActivity).navController)
+
+        }
         binding.includeToolbar.includeToolbar.apply {
             inflateMenu(R.menu.toolbar_main_menu)
             title = context.getString(R.string.main)
             navigationIcon = ContextCompat.getDrawable(context, R.drawable.outline_logout_24)
             setNavigationOnClickListener { alertDialog.show() }
         }
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        val navController = (activity as MainActivity).navController
-        return item.onNavDestinationSelected(navController) || super.onOptionsItemSelected(item)
-
     }
 
     private fun createAlertDialog(): AlertDialog {

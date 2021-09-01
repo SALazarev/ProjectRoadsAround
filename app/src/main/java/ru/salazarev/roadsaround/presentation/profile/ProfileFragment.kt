@@ -5,9 +5,12 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
+import androidx.navigation.ui.setupWithNavController
 import ru.salazarev.roadsaround.R
 import ru.salazarev.roadsaround.databinding.FragmentMainBinding
 import ru.salazarev.roadsaround.databinding.FragmentProfileBinding
+import ru.salazarev.roadsaround.presentation.MainActivity
 
 class ProfileFragment : Fragment() {
 
@@ -17,9 +20,16 @@ class ProfileFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentProfileBinding.inflate(inflater, container, false)
         return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        binding.bottomNav.bottomNav.apply {
+            setupWithNavController((activity as MainActivity).navController)
+        }
     }
     override fun onDestroyView() {
         super.onDestroyView()

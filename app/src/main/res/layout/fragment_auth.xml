@@ -8,7 +8,7 @@
 
 <include
     android:id="@id/include_toolbar"
-    layout="@layout/view_toolbar"/>
+    layout="@layout/view_toolbar" />
 
     <EditText
         android:id="@+id/et_email"
