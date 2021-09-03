@@ -10,15 +10,25 @@
         android:id="@id/include_toolbar"
         layout="@layout/view_toolbar"/>
 
-    <EditText
-        android:id="@+id/et_email"
-        android:layout_width="250dp"
+    <ImageView
+        android:background="@drawable/outline_add_a_photo_24"
+        android:id="@+id/btn_user_photo"
         android:layout_marginTop="@dimen/margin_top_view"
-        android:layout_height="wrap_content"
-        android:hint="@string/email"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/include_toolbar" />
+        app:layout_constraintTop_toBottomOf="@id/include_toolbar"
+        android:layout_width="96dp"
+        android:layout_height="96dp" />
+
+    <EditText
+        android:id="@+id/et_email"
+        android:layout_marginTop="@dimen/margin_top_view"
+        app:layout_constraintEnd_toEndOf="@+id/btn_user_photo"
+        app:layout_constraintStart_toStartOf="@+id/btn_user_photo"
+        app:layout_constraintTop_toBottomOf="@+id/btn_user_photo"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:hint="@string/email" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -60,6 +70,16 @@
         app:layout_constraintStart_toStartOf="@+id/et_pass"
         app:layout_constraintTop_toBottomOf="@+id/et_pass" />
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="*"
+        android:textColor="@android:color/holo_red_dark"
+        android:textSize="36dp"
+        app:layout_constraintBottom_toBottomOf="@+id/et_first_name"
+        app:layout_constraintStart_toEndOf="@+id/et_first_name"
+        app:layout_constraintTop_toTopOf="@+id/et_first_name" />
+
     <EditText
         android:id="@+id/et_last_name"
         android:layout_width="250dp"
@@ -69,4 +89,7 @@
         app:layout_constraintEnd_toEndOf="@+id/et_first_name"
         app:layout_constraintStart_toStartOf="@+id/et_first_name"
         app:layout_constraintTop_toBottomOf="@+id/et_first_name" />
+
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>
