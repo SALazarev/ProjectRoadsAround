@@ -25,7 +25,6 @@ class AuthFragment : Fragment() {
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
         binding.tvRegistration.setOnClickListener { registration() }
         binding.tvRestorePassword.setOnClickListener { passwordReset() }
 
@@ -67,7 +66,8 @@ class AuthFragment : Fragment() {
                 .addOnCompleteListener(requireActivity()) { task ->
                     if (task.isSuccessful) {
                         context?.toast(getString(R.string.auth_successful))
-                        (activity as MainActivity).navController.navigate(R.id.action_authFragment_to_mainFragment)
+                        (activity as MainActivity).navController
+                            .navigate(R.id.action_authFragment_to_mainFragment)
                     } else {
                         context?.toast(getString(R.string.auth_not_success))
                     }

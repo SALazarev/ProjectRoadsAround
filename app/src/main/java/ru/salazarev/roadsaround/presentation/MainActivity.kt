@@ -3,8 +3,6 @@ package ru.salazarev.roadsaround.presentation
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.navigation.NavController
-import androidx.navigation.ui.setupWithNavController
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.FirebaseAuth
 import ru.salazarev.roadsaround.R
 import ru.salazarev.roadsaround.di.DaggerAppComponent
@@ -24,4 +22,5 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         DaggerAppComponent.builder().fragmentManager(supportFragmentManager).build().inject(this)
     }
+
 }

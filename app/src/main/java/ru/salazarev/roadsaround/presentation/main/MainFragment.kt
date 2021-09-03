@@ -10,7 +10,6 @@ import androidx.navigation.ui.setupWithNavController
 import ru.salazarev.roadsaround.R
 import ru.salazarev.roadsaround.databinding.FragmentMainBinding
 import ru.salazarev.roadsaround.di.DaggerAppComponent
-import ru.salazarev.roadsaround.presentation.MainActivity
 import javax.inject.Inject
 import javax.inject.Named
 

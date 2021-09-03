@@ -19,8 +19,6 @@ class RoutesFragment : Fragment() {
     private var _binding: FragmentRoutesBinding? = null
     private val binding get() = _binding!!
 
-    private val alertDialog: AlertDialog by lazy { createAlertDialog() }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -36,26 +34,9 @@ class RoutesFragment : Fragment() {
 
     private fun configureToolbar() {
         binding.includeToolbar.includeToolbar.apply {
-            inflateMenu(R.menu.toolbar_main_menu)
-            title = context.getString(R.string.main)
-            navigationIcon = ContextCompat.getDrawable(context, R.drawable.outline_logout_24)
-            setNavigationOnClickListener { alertDialog.show() }
+            inflateMenu(R.menu.toolbar_routes_menu)
+            title = context.getString(R.string.routes)
         }
-    }
-
-    private fun createAlertDialog(): AlertDialog {
-        val builder = AlertDialog.Builder(requireContext())
-        builder.setTitle(getString(R.string.warning))
-            .setMessage(getString(R.string.you_shure_log_out))
-            .setCancelable(false)
-            .setPositiveButton(getString(R.string.yes)) { dialog, which -> logout() }
-            .setNegativeButton(getString(R.string.no)) { dialog, id -> dialog.cancel() }
-        return builder.create()
-    }
-
-    private fun logout() {
-        (activity as MainActivity).fireBaseAuth.signOut()
-        (activity as MainActivity).navController.navigate(R.id.action_mainFragment_to_authFragment)
     }
     override fun onDestroyView() {
         super.onDestroyView()

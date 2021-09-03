@@ -17,8 +17,12 @@ interface AppModule {
 
         @Provides
         @Named("mainNavController")
-        fun provideMainNavigationController(fm: FragmentManager, auth: FirebaseAuth): NavController {
-            val navHostFragment = fm.findFragmentById(R.id.fragment_container_host) as NavHostFragment
+        fun provideMainNavigationController(
+            fm: FragmentManager,
+            auth: FirebaseAuth
+        ): NavController {
+            val navHostFragment =
+                fm.findFragmentById(R.id.fragment_container_host) as NavHostFragment
             val navController = navHostFragment.navController
             val graphInflater = navHostFragment.navController.navInflater
             val navGraph = graphInflater.inflate(R.navigation.nav_graph)
@@ -31,7 +35,8 @@ interface AppModule {
         @Provides
         @Named("secondNavController")
         fun provideSecondNavigationController(fm: FragmentManager): NavController {
-            val navHostFragment = fm.findFragmentById(R.id.fragment_container_second) as NavHostFragment
+            val navHostFragment =
+                fm.findFragmentById(R.id.fragment_container_second) as NavHostFragment
             return navHostFragment.navController
         }
     }

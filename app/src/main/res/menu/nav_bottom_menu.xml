@@ -4,15 +4,18 @@
         android:id="@id/profileFragment"
         android:enabled="true"
         android:icon="@drawable/outline_person_24"
-        android:title="@string/profile" />
+        android:title="@string/profile"
+        android:contentDescription="@string/profile"/>
     <item
         android:id="@id/routesFragment"
         android:enabled="true"
         android:icon="@drawable/outline_route_24"
-        android:title="@string/routes" />
+        android:title="@string/routes"
+        android:contentDescription="@string/routes"/>
     <item
         android:id="@id/searchEventFragment"
         android:enabled="true"
         android:icon="@drawable/outline_travel_explore_24"
-        android:title="@string/search" />
+        android:title="@string/search"
+        android:contentDescription="@string/search"/>
 </menu>

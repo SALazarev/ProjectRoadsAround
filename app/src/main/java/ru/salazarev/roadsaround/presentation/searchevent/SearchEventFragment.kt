@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.navigation.ui.setupWithNavController
 import ru.salazarev.roadsaround.R
 import ru.salazarev.roadsaround.databinding.FragmentProfileBinding
@@ -26,6 +27,14 @@ class SearchEventFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        configureToolbar()
+    }
+
+    private fun configureToolbar() {
+        binding.includeToolbar.includeToolbar.apply {
+            inflateMenu(R.menu.toolbar_search_menu)
+            title = context.getString(R.string.search)
+        }
     }
     override fun onDestroyView() {
         super.onDestroyView()
