@@ -31,13 +31,16 @@ class RoutesFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        configureToolbar()
+    }
 
-//        binding.includeToolbar.includeToolbar.apply {
-//            inflateMenu(R.menu.toolbar_main_menu)
-//            title = context.getString(R.string.main)
-//            navigationIcon = ContextCompat.getDrawable(context, R.drawable.outline_logout_24)
-//            setNavigationOnClickListener { alertDialog.show() }
-//        }
+    private fun configureToolbar() {
+        binding.includeToolbar.includeToolbar.apply {
+            inflateMenu(R.menu.toolbar_main_menu)
+            title = context.getString(R.string.main)
+            navigationIcon = ContextCompat.getDrawable(context, R.drawable.outline_logout_24)
+            setNavigationOnClickListener { alertDialog.show() }
+        }
     }
 
     private fun createAlertDialog(): AlertDialog {

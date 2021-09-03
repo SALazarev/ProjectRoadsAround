@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1045586414511",
+    "project_id": "roadsaround-970e9",
+    "storage_bucket": "roadsaround-970e9.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1045586414511:android:4c802bd9bc16226fef3d5a",
+        "android_client_info": {
+          "package_name": "ru.salazarev.roadsaround"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1045586414511-3j36i3ffc7bl5e3tbss8ro3erg5j1blr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDCcPi3BapAPHZSgS8rdX_PfLkNWcv0SBk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1045586414511-3j36i3ffc7bl5e3tbss8ro3erg5j1blr.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -3,13 +3,9 @@ package ru.salazarev.roadsaround.presentation.main
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
-import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.app.AlertDialog
-import androidx.core.content.ContextCompat
 import androidx.navigation.NavController
-import androidx.navigation.ui.onNavDestinationSelected
 import androidx.navigation.ui.setupWithNavController
 import ru.salazarev.roadsaround.R
 import ru.salazarev.roadsaround.databinding.FragmentMainBinding
@@ -38,9 +34,29 @@ class MainFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        configureNavigationBottom()
+    }
+
+    private fun configureNavigationBottom() {
         binding.bottomNav.bottomNav.setupWithNavController(navSecondController)
-       // binding.bottomNav.bottomNav.setOnNavigationItemSelectedListener { it.onNavDestinationSelected(navSecondController) || super.onOptionsItemSelected(it) }
-        binding.bottomNav.bottomNav.setOnNavigationItemReselectedListener {  }
+        binding.bottomNav.bottomNav.setOnItemSelectedListener {
+            when (it.itemId) {
+                R.id.profileFragment -> {
+                    navSecondController.navigate(R.id.action_global_profileFragment)
+                    true
+                }
+                R.id.routesFragment -> {
+                    navSecondController.navigate(R.id.action_global_routesFragment)
+                    true
+                }
+                R.id.searchEventFragment -> {
+                    navSecondController.navigate(R.id.action_global_searchEventFragment)
+                    true
+                }
+                else -> false
+            }
+        }
+        binding.bottomNav.bottomNav.setOnItemReselectedListener { }
     }
 
     override fun onDestroyView() {

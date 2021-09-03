@@ -20,4 +20,13 @@
         android:name="ru.salazarev.roadsaround.presentation.searchevent.SearchEventFragment"
         android:label="fragment_search_event"
         tools:layout="@layout/fragment_search_event" />
+    <action
+        android:id="@+id/action_global_routesFragment"
+        app:destination="@id/routesFragment" />
+    <action
+        android:id="@+id/action_global_profileFragment"
+        app:destination="@id/profileFragment" />
+    <action
+        android:id="@+id/action_global_searchEventFragment"
+        app:destination="@id/searchEventFragment" />
 </navigation>
