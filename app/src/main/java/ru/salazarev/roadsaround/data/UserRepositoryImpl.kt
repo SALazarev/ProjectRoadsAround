@@ -34,7 +34,7 @@ class UserRepositoryImpl @Inject constructor(
 
             val buffer: Long = 250 * 250
             islandRef.getBytes(buffer).addOnSuccessListener { image ->
-                val user = User(userData.first_name, userData.last_name, image)
+                val user = User(userData.firstName, userData.lastName, image)
                 userLiveData.value = user
             }.addOnFailureListener {
                 val i = 0
@@ -67,8 +67,8 @@ class UserRepositoryImpl @Inject constructor(
     private fun saveData(userData: UserData) {
         val user = hashMapOf(
             DataCollections.Users.Columns.id to userData.id,
-            DataCollections.Users.Columns.firstName to userData.first_name,
-            DataCollections.Users.Columns.lastName to userData.last_name,
+            DataCollections.Users.Columns.firstName to userData.firstName,
+            DataCollections.Users.Columns.lastName to userData.lastName,
             DataCollections.Users.Columns.image to userData.image
         )
         database.collection(DataCollections.Users.collectionName)
