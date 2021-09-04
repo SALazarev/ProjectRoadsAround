@@ -81,11 +81,6 @@ class RegFragment : Fragment() {
             val imageBitmap = data?.extras?.get("data") as Bitmap
             binding.btnUserPhoto.background = BitmapDrawable(resources, imageBitmap)
             model.image = imageBitmap
-//
-//            val decodedString: ByteArray = Base64.decode(person_object.getPhoto(), Base64.NO_WRAP)
-//            val inputStream: InputStream = ByteArrayInputStream(decodedString)
-//            val bitmap = BitmapFactory.decodeStream(inputStream)
-//            user_image.setImageBitmap(bitmap)
         }
     }
 
@@ -103,7 +98,6 @@ class RegFragment : Fragment() {
                         context?.toast(getString(R.string.reg_successful))
 
                         model.saveData(
-                            binding.etEmail.text.toString(),
                             binding.etFirstName.text.toString(),
                             binding.etLastName.text.toString()
                         )

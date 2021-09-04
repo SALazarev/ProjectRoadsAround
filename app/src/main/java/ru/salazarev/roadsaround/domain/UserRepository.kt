@@ -1,6 +1,6 @@
 package ru.salazarev.roadsaround.domain
 
-import ru.salazarev.roadsaround.models.User
+import ru.salazarev.roadsaround.models.presentation.User
 
 interface UserRepository {
     fun getUserData(): User

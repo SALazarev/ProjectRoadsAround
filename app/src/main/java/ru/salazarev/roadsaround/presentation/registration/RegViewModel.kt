@@ -10,11 +10,11 @@ class RegViewModel @Inject constructor(private val interactor: UserInteractor): 
 
     lateinit var image: Bitmap
 
-fun saveData(email: String, firstName: String, lastName: String){
+fun saveData(firstName: String, lastName: String){
     val stream = ByteArrayOutputStream()
     image.compress(Bitmap.CompressFormat.PNG, 100, stream)
     val byteArray: ByteArray = stream.toByteArray()
     image.recycle()
-    interactor.setUser(email, firstName, lastName,byteArray)
+    interactor.setUser(firstName, lastName, byteArray)
 }
 }
