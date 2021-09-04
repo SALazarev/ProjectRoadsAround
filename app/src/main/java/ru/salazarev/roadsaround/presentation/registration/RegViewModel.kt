@@ -15,6 +15,6 @@ fun saveData(firstName: String, lastName: String){
     image.compress(Bitmap.CompressFormat.PNG, 100, stream)
     val byteArray: ByteArray = stream.toByteArray()
     image.recycle()
-    interactor.setUser(firstName, lastName, byteArray)
+    interactor.setUserData(firstName, lastName, byteArray)
 }
 }

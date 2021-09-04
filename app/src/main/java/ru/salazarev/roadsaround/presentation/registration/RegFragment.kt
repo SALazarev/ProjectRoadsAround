@@ -4,7 +4,6 @@ import android.app.Activity.RESULT_OK
 import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
 import android.provider.MediaStore
@@ -13,8 +12,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import ru.salazarev.roadsaround.R
 import ru.salazarev.roadsaround.databinding.FragmentRegBinding
@@ -29,7 +26,7 @@ class RegFragment : Fragment() {
     private var _binding: FragmentRegBinding? = null
     private val binding get() = _binding!!
 
-    private lateinit var model: RegViewModel
+    private lateinit var viewModel: RegViewModel
 
     @Inject
     lateinit var regViewModelFactory: RegViewModelFactory
@@ -39,7 +36,7 @@ class RegFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         DaggerAppComponent.builder().fragmentManager(childFragmentManager).build().inject(this)
-        model = ViewModelProvider(this, regViewModelFactory).get(RegViewModel::class.java)
+        viewModel = ViewModelProvider(this, regViewModelFactory).get(RegViewModel::class.java)
         _binding = FragmentRegBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -80,7 +77,7 @@ class RegFragment : Fragment() {
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
             val imageBitmap = data?.extras?.get("data") as Bitmap
             binding.btnUserPhoto.background = BitmapDrawable(resources, imageBitmap)
-            model.image = imageBitmap
+            viewModel.image = imageBitmap
         }
     }
 
@@ -97,7 +94,7 @@ class RegFragment : Fragment() {
                     if (task.isSuccessful) {
                         context?.toast(getString(R.string.reg_successful))
 
-                        model.saveData(
+                        viewModel.saveData(
                             binding.etFirstName.text.toString(),
                             binding.etLastName.text.toString()
                         )
