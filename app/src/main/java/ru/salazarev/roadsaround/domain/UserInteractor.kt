@@ -7,7 +7,7 @@ import javax.inject.Inject
 
 class UserInteractor @Inject constructor (private val repository: UserRepository, private val firebaseAuth: FirebaseAuth) {
 
-    fun setUser(email: String, firstName: String, lastName: String, image: String){
+    fun setUser(email: String, firstName: String, lastName: String, image: ByteArray){
         val user = User("1",email, firstName, lastName, image)
         repository.setUserData(user)
     }

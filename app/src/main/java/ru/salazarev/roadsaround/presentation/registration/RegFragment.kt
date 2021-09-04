@@ -74,10 +74,13 @@ class RegFragment : Fragment() {
         }
     }
 
+
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
             val imageBitmap = data?.extras?.get("data") as Bitmap
-            binding.btnUserPhoto.background =  BitmapDrawable(resources,imageBitmap)
+            binding.btnUserPhoto.background = BitmapDrawable(resources, imageBitmap)
+            model.image = imageBitmap
 //
 //            val decodedString: ByteArray = Base64.decode(person_object.getPhoto(), Base64.NO_WRAP)
 //            val inputStream: InputStream = ByteArrayInputStream(decodedString)
@@ -98,15 +101,19 @@ class RegFragment : Fragment() {
                 .addOnCompleteListener(requireActivity()) { task ->
                     if (task.isSuccessful) {
                         context?.toast(getString(R.string.reg_successful))
+
+                        model.saveData(
+                            binding.etEmail.text.toString(),
+                            binding.etFirstName.text.toString(),
+                            binding.etLastName.text.toString()
+                        )
+
                         (activity as MainActivity).navController.navigate(R.id.action_regFragment_to_mainFragment)
                     } else {
                         context?.toast(getString(R.string.reg_unsuccessful))
                     }
                 }
-            model.saveData(binding.etEmail.text.toString(),
-                binding.etFirstName.text.toString(),
-            binding.etLastName.text.toString(),
-            binding.btnUserPhoto.background)
+
         }
     }
 
