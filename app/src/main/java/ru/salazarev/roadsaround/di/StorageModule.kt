@@ -39,7 +39,8 @@ interface StorageModule {
         fun provideUserLiveData(): MutableLiveData<User> = MutableLiveData<User>()
 
         @Provides
-        fun provideErrorLiveData(): MutableLiveData<Boolean> = MutableLiveData<Boolean>()
+        fun provideWorkStatusLiveData(): MutableLiveData<UserRepositoryImpl.WorkStatus> =
+            MutableLiveData<UserRepositoryImpl.WorkStatus>()
     }
 
     @Binds

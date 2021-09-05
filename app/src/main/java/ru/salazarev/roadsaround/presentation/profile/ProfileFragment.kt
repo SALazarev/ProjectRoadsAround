@@ -11,6 +11,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import ru.salazarev.roadsaround.R
+import ru.salazarev.roadsaround.data.UserRepositoryImpl
 import ru.salazarev.roadsaround.databinding.FragmentProfileBinding
 import ru.salazarev.roadsaround.di.DaggerAppComponent
 import ru.salazarev.roadsaround.models.presentation.User
@@ -36,16 +37,44 @@ class ProfileFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentProfileBinding.inflate(inflater, container, false)
+
         DaggerAppComponent.builder().fragmentManager(childFragmentManager).build().inject(this)
+
         viewModel =
             ViewModelProvider(this, profileViewModelFactory).get(ProfileViewModel::class.java)
+
         viewModel.userLiveData.observe((activity as MainActivity), { user ->
             setViewData(user)
         })
-        viewModel.failStatus.observe(requireActivity(), { failStatus ->
-            if (failStatus) requireActivity().toast(getString(R.string.could_not_load_data_from_networks))
+
+        viewModel.failStatus.observe(requireActivity(), { workStatus ->
+            when (workStatus) {
+                UserRepositoryImpl.WorkStatus.LOADED -> {
+                    loaded()
+                }
+                UserRepositoryImpl.WorkStatus.LOADING -> {
+                    loading()
+                }
+                UserRepositoryImpl.WorkStatus.FAIL -> {
+                    loadFail()
+                }
+                else -> {
+                }
+            }
         })
         return binding.root
+    }
+
+    private fun loaded() {
+        binding.progressBar.visibility = View.INVISIBLE
+    }
+
+    private fun loading() {
+        binding.progressBar.visibility = View.VISIBLE
+    }
+
+    private fun loadFail() {
+        requireActivity().toast(getString(R.string.could_not_load_data_from_networks))
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -78,8 +107,8 @@ class ProfileFragment : Fragment() {
         builder.setTitle(getString(R.string.warning))
             .setMessage(getString(R.string.you_shure_log_out))
             .setCancelable(false)
-            .setPositiveButton(getString(R.string.yes)) { dialog, which -> logout() }
-            .setNegativeButton(getString(R.string.no)) { dialog, id -> dialog.cancel() }
+            .setPositiveButton(getString(R.string.yes)) { _, _ -> logout() }
+            .setNegativeButton(getString(R.string.no)) { dialog, _ -> dialog.cancel() }
         return builder.create()
     }
 

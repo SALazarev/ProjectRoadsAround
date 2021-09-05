@@ -17,17 +17,30 @@ class UserRepositoryImpl @Inject constructor(
     private val storage: StorageReference,
     private val firebaseAuth: FirebaseAuth,
     private val userLiveData: MutableLiveData<User>,
-    private val messageWorkStatus: MutableLiveData<Boolean>,
-    private val loadStatus: MutableLiveData<Boolean>,
+    private val workStatus: MutableLiveData<WorkStatus>,
     private val imageHelper: ImageStorageHelper,
     private val databaseModel: DataCollectionsModel
 ) : UserRepository {
 
-    override fun getMessageWorkStatus(): LiveData<Boolean> = messageWorkStatus
+    override fun getWorkStatus(): LiveData<WorkStatus> = workStatus
 
-    override fun getLoadStatus(): LiveData<Boolean> = loadStatus
+    override fun setUserData(user: User) {
+        try {
+            saveImage(user.image).addOnSuccessListener {
+                it.metadata?.reference?.downloadUrl?.addOnSuccessListener { uri ->
+                    val id = firebaseAuth.uid!!
+                    val path = uri.toString()
+                    saveData(UserData(id, user.firstName, user.lastName, path))
+                    workStatus.value = WorkStatus.LOADING
+                }
+            }.addOnFailureListener { workStatus.value = WorkStatus.FAIL }
+        } catch (e: java.lang.Exception) {
+            workStatus.value = WorkStatus.FAIL
+        }
+    }
 
     override fun getUserLiveData(): LiveData<User> {
+        workStatus.value = WorkStatus.LOADING
         getUserData()
         return userLiveData
     }
@@ -37,36 +50,23 @@ class UserRepositoryImpl @Inject constructor(
             val docRef =
                 database.collection(databaseModel.getUsers().collectionName)
                     .document(firebaseAuth.uid!!)
-            docRef.get().addOnSuccessListener { snapshot ->
-                val userData: UserData = snapshot.toObject<UserData>()!!
-                val path: String =
-                    imageHelper.let { "${it.folder}/${it.getFileName(firebaseAuth.uid!!)}.${it.jpegFileFormat}" }
-                val islandRef = storage.child(path)
-                islandRef.getBytes(imageHelper.imageBuffer).addOnSuccessListener { image ->
-                    val user = User(userData.firstName, userData.lastName, image)
-                    userLiveData.value = user
-                }.addOnFailureListener { getFail() }
-            }.addOnFailureListener { getFail() }
-        } catch (e: Exception) {
-            getFail()
-        }
-    }
-
-    private fun getFail() {
-        messageWorkStatus.value = true
-    }
-
-    override fun setUserData(user: User) {
-        try {
-            saveImage(user.image).addOnSuccessListener {
-                it.metadata?.reference?.downloadUrl?.addOnSuccessListener { uri ->
-                    val id = firebaseAuth.uid!!
-                    val path = uri.toString()
-                    saveData(UserData(id, user.firstName, user.lastName, path))
+            docRef.get()
+                .addOnSuccessListener { snapshot ->
+                    val userData: UserData = snapshot.toObject<UserData>()!!
+                    val path: String =
+                        imageHelper.let { "${it.folder}/${it.getFileName(firebaseAuth.uid!!)}.${it.jpegFileFormat}" }
+                    val islandRef = storage.child(path)
+                    islandRef.getBytes(imageHelper.imageBuffer)
+                        .addOnSuccessListener { image ->
+                            val user = User(userData.firstName, userData.lastName, image)
+                            userLiveData.value = user
+                            workStatus.value = WorkStatus.LOADED
+                        }
+                        .addOnFailureListener { workStatus.value = WorkStatus.FAIL }
                 }
-            }.addOnFailureListener { getFail() }
-        } catch (e: java.lang.Exception) {
-            getFail()
+                .addOnFailureListener { workStatus.value = WorkStatus.FAIL }
+        } catch (e: Exception) {
+            workStatus.value = WorkStatus.FAIL
         }
     }
 
@@ -86,7 +86,14 @@ class UserRepositoryImpl @Inject constructor(
         database.collection(databaseModel.getUsers().collectionName)
             .document(firebaseAuth.uid!!)
             .set(user)
-            .addOnFailureListener { getFail() }
+            .addOnFailureListener { workStatus.value = WorkStatus.FAIL }
+    }
+
+    enum class WorkStatus {
+        LOADING,
+        LOADED,
+        FAIL,
+        NONE
     }
 
 }

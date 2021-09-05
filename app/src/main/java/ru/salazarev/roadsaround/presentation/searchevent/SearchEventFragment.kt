@@ -36,6 +36,7 @@ class SearchEventFragment : Fragment() {
             title = context.getString(R.string.search)
         }
     }
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null

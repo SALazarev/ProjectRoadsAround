@@ -6,7 +6,7 @@ import ru.salazarev.roadsaround.domain.UserInteractor
 import javax.inject.Inject
 
 class ProfileViewModelFactory @Inject constructor(
-private val interactor: UserInteractor
+    private val interactor: UserInteractor
 ) : ViewModelProvider.Factory {
 
     @Suppress("UNCHECKED_CAST")

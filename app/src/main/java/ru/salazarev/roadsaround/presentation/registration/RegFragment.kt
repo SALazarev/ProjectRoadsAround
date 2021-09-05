@@ -23,6 +23,11 @@ import javax.inject.Inject
 
 class RegFragment : Fragment() {
 
+    companion object {
+        const val REQUEST_IMAGE_CAPTURE = 1
+        const val IMAGE_KEY = "data"
+    }
+
     private var _binding: FragmentRegBinding? = null
     private val binding get() = _binding!!
 
@@ -47,7 +52,11 @@ class RegFragment : Fragment() {
             inflateMenu(R.menu.toolbar_reg_menu)
             title = context.getString(R.string.registration)
             navigationIcon = ContextCompat.getDrawable(context, R.drawable.outline_arrow_back_24)
-            setNavigationOnClickListener { (activity as MainActivity).navController.navigate(R.id.action_regFragment_to_authFragment) }
+            setNavigationOnClickListener {
+                (activity as MainActivity)
+                    .navController
+                    .navigate(R.id.action_regFragment_to_authFragment)
+            }
             setOnMenuItemClickListener {
                 when (it.itemId) {
                     R.id.btn_login -> {
@@ -61,21 +70,19 @@ class RegFragment : Fragment() {
         }
     }
 
-    val REQUEST_IMAGE_CAPTURE = 1
     private fun createPhoto() {
         val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
         try {
             startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE)
         } catch (e: ActivityNotFoundException) {
-            // display error state to the user
+            requireActivity().toast(getString(R.string.failed_launch_camera_app))
         }
     }
 
 
-
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
-            val imageBitmap = data?.extras?.get("data") as Bitmap
+            val imageBitmap = data?.extras?.get(IMAGE_KEY) as Bitmap
             binding.btnUserPhoto.background = BitmapDrawable(resources, imageBitmap)
             viewModel.image = imageBitmap
         }
@@ -84,8 +91,9 @@ class RegFragment : Fragment() {
     private fun registration() {
         val email = binding.etEmail.text.toString()
         val password = binding.etPass.text.toString()
+        val firstName = binding.etFirstName.text.toString()
 
-        if (email.isEmpty() || password.isEmpty()) {
+        if (email.isEmpty() || password.isEmpty() || firstName.isEmpty()) {
             context?.toast(getString(R.string.required_data_fields_empty))
             return
         } else {
@@ -99,12 +107,13 @@ class RegFragment : Fragment() {
                             binding.etLastName.text.toString()
                         )
 
-                        (activity as MainActivity).navController.navigate(R.id.action_regFragment_to_mainFragment)
+                        (activity as MainActivity)
+                            .navController
+                            .navigate(R.id.action_regFragment_to_mainFragment)
                     } else {
                         context?.toast(getString(R.string.reg_unsuccessful))
                     }
                 }
-
         }
     }
 

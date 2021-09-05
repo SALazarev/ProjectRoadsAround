@@ -12,7 +12,7 @@ import javax.inject.Named
 import javax.inject.Singleton
 
 @Singleton
-@Component(modules = [AppModule::class,StorageModule::class])
+@Component(modules = [AppModule::class, StorageModule::class])
 interface AppComponent {
     fun inject(mainActivity: MainActivity)
     fun inject(mainFragment: MainFragment)

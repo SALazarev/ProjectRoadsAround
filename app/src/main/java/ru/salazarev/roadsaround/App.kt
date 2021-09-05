@@ -7,7 +7,6 @@ import ru.salazarev.roadsaround.di.AppComponent
 
 class App : Application() {
 
-
     override fun onCreate() {
         super.onCreate()
     }

@@ -16,8 +16,18 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1">
+
+        <ProgressBar
+            android:id="@+id/progress_bar"
+            android:visibility="invisible"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+
         <ImageView
-            android:background="@drawable/outline_add_a_photo_24"
             android:id="@+id/btn_user_photo"
             android:layout_marginTop="@dimen/margin_top_view"
             app:layout_constraintEnd_toEndOf="parent"
@@ -31,6 +41,8 @@
             android:layout_width="250dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_top_view"
+            android:textSize="64sp"
+            android:gravity="center"
             app:layout_constraintEnd_toEndOf="@+id/btn_user_photo"
             app:layout_constraintStart_toStartOf="@+id/btn_user_photo"
             app:layout_constraintTop_toBottomOf="@+id/btn_user_photo" />
@@ -40,6 +52,8 @@
             android:layout_width="250dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_top_view"
+            android:textSize="64sp"
+            android:gravity="center"
             app:layout_constraintEnd_toEndOf="@+id/et_first_name"
             app:layout_constraintStart_toStartOf="@+id/et_first_name"
             app:layout_constraintTop_toBottomOf="@+id/et_first_name" />
