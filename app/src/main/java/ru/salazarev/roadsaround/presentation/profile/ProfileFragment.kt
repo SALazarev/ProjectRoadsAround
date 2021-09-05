@@ -17,6 +17,7 @@ import ru.salazarev.roadsaround.models.presentation.User
 import ru.salazarev.roadsaround.presentation.MainActivity
 import ru.salazarev.roadsaround.presentation.registration.RegViewModel
 import ru.salazarev.roadsaround.presentation.registration.RegViewModelFactory
+import ru.salazarev.roadsaround.toast
 import javax.inject.Inject
 
 class ProfileFragment : Fragment() {
@@ -42,13 +43,13 @@ class ProfileFragment : Fragment() {
         viewModel.userLiveData.observe((activity as MainActivity), { user ->
             setViewData(user)
         })
+        viewModel.message.observe(requireActivity(), {message -> requireActivity().toast(message)})
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         configureToolbar()
-
     }
 
 

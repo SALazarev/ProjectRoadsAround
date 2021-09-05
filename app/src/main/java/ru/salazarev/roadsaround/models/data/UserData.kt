@@ -1,20 +1,19 @@
 package ru.salazarev.roadsaround.models.data
 
 import com.google.firebase.firestore.PropertyName
-import ru.salazarev.roadsaround.data.DataCollections
-import javax.inject.Named
+import ru.salazarev.roadsaround.data.DataCollectionsModel
 
 class UserData(
-    @get:PropertyName(DataCollections.Users.Columns.id)
-    @set:PropertyName(DataCollections.Users.Columns.id)
+    @get:PropertyName(DataCollectionsModel.getUsers().getColumns().id)
+    @set:PropertyName(DataCollectionsModel.getUsers().getColumns().id)
     var id: String = "",
-    @get:PropertyName(DataCollections.Users.Columns.firstName)
-    @set:PropertyName(DataCollections.Users.Columns.firstName)
+    @get:PropertyName(DataCollectionsModel.getUsers().getColumns().firstName)
+    @set:PropertyName(DataCollectionsModel.getUsers().getColumns().firstName)
     var firstName: String = "",
-    @get:PropertyName(DataCollections.Users.Columns.lastName)
-    @set:PropertyName(DataCollections.Users.Columns.lastName)
+    @get:PropertyName(DataCollectionsModel.getUsers().getColumns().lastName)
+    @set:PropertyName(DataCollectionsModel.getUsers().getColumns().lastName)
     var lastName: String = "",
-    @get:PropertyName(DataCollections.Users.Columns.image)
-    @set:PropertyName(DataCollections.Users.Columns.image)
+    @get:PropertyName(DataCollectionsModel.getUsers().getColumns().image)
+    @set:PropertyName(DataCollectionsModel.getUsers().getColumns().image)
     var image: String = ""
 )

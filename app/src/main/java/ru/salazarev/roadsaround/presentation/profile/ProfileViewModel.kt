@@ -8,7 +8,8 @@ import ru.salazarev.roadsaround.models.presentation.User
 import java.io.ByteArrayOutputStream
 import javax.inject.Inject
 
-class ProfileViewModel @Inject constructor(private val interactor: UserInteractor) : ViewModel() {
+class ProfileViewModel @Inject constructor(interactor: UserInteractor) : ViewModel() {
 
     val userLiveData: LiveData<User> = interactor.getUserData()
+    val message: LiveData<String> = interactor.getMessageWorkStatus()
 }

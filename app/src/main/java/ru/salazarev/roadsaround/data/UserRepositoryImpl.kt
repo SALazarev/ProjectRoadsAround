@@ -17,30 +17,29 @@ class UserRepositoryImpl @Inject constructor(
     private val database: FirebaseFirestore,
     private val storage: StorageReference,
     private val firebaseAuth: FirebaseAuth,
-    private val userLiveData: MutableLiveData<User>
+    private val userLiveData: MutableLiveData<User>,
+    private val messageWorkStatus: MutableLiveData<String>,
+    private val imageHelper: ImageStorageHelper,
+    private val databaseModel: DataCollectionsModel
 ) : UserRepository {
 
 
+    private fun getUserId(): String = firebaseAuth.uid ?: throw Exception()
+
     override fun getUserData(): LiveData<User> {
         val docRef =
-            database.collection(DataCollections.Users.collectionName).document(firebaseAuth.uid!!)
-        docRef.get().addOnSuccessListener {
-            val userData: UserData = it.toObject<UserData>()!!
-
-            val folder = "UsersAvatar"
-            val fileName = "avatar_${firebaseAuth.uid!!}"
-            val fileFormat = "jpg"
-            var islandRef = storage.child("${folder}/${fileName}.${fileFormat}")
-
-            val buffer: Long = 250 * 250
-            islandRef.getBytes(buffer).addOnSuccessListener { image ->
+            database.collection(databaseModel.getUsers().collectionName)
+                .document(getUserId())
+        docRef.get().addOnSuccessListener { snapshot ->
+            val userData: UserData = snapshot.toObject<UserData>()!!
+            val path: String =
+                imageHelper.let { "${it.folder}/${it.getFileName(firebaseAuth.uid!!)}.${it.jpegFileFormat}" }
+            val islandRef = storage.child(path)
+            islandRef.getBytes(imageHelper.imageBuffer).addOnSuccessListener { image ->
                 val user = User(userData.firstName, userData.lastName, image)
                 userLiveData.value = user
             }.addOnFailureListener {
-                val i = 0
             }
-
-
         }
         return userLiveData
     }
@@ -57,21 +56,22 @@ class UserRepositoryImpl @Inject constructor(
 
     }
 
+    override fun getMessageWorkStatus(): LiveData<String> = messageWorkStatus
+
     private fun saveImage(image: ByteArray): UploadTask {
-        val folder = "UsersAvatar"
-        val fileName = "avatar_${firebaseAuth.uid!!}"
-        val fileFormat = "jpg"
-        return storage.child("${folder}/${fileName}.${fileFormat}").putBytes(image)
+        val path: String = imageHelper
+            .let { "${it.folder}/${it.getFileName(firebaseAuth.uid!!)}.${it.jpegFileFormat}" }
+        return storage.child(path).putBytes(image)
     }
 
     private fun saveData(userData: UserData) {
         val user = hashMapOf(
-            DataCollections.Users.Columns.id to userData.id,
-            DataCollections.Users.Columns.firstName to userData.firstName,
-            DataCollections.Users.Columns.lastName to userData.lastName,
-            DataCollections.Users.Columns.image to userData.image
+            databaseModel.getUsers().getColumns().id to userData.id,
+            databaseModel.getUsers().getColumns().firstName to userData.firstName,
+            databaseModel.getUsers().getColumns().lastName to userData.lastName,
+            databaseModel.getUsers().getColumns().image to userData.image
         )
-        database.collection(DataCollections.Users.collectionName)
+        database.collection(databaseModel.getUsers().collectionName)
             .document(firebaseAuth.uid!!)
             .set(user)
             .addOnSuccessListener { documentReference ->

@@ -8,14 +8,17 @@ import dagger.Module
 import dagger.Provides
 import ru.salazarev.roadsaround.R
 import javax.inject.Named
+import javax.inject.Singleton
 
 @Module
 interface AppModule {
     companion object {
         @Provides
+        @Singleton
         fun provideFirebaseAuth(): FirebaseAuth = FirebaseAuth.getInstance()
 
         @Provides
+        @Singleton
         @Named("mainNavController")
         fun provideMainNavigationController(
             fm: FragmentManager,
@@ -33,6 +36,7 @@ interface AppModule {
         }
 
         @Provides
+        @Singleton
         @Named("secondNavController")
         fun provideSecondNavigationController(fm: FragmentManager): NavController {
             val navHostFragment =
