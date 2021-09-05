@@ -10,7 +10,7 @@ class UserInteractor @Inject constructor(private val repository: UserRepository)
         repository.setUserData(user)
     }
 
-    fun getUserData() = repository.getUserData()
+    fun getUserData() = repository.getUserLiveData()
 
     fun getMessageWorkStatus() = repository.getMessageWorkStatus()
 }

@@ -1,6 +1,5 @@
 package ru.salazarev.roadsaround.data
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.google.firebase.auth.FirebaseAuth
@@ -18,45 +17,58 @@ class UserRepositoryImpl @Inject constructor(
     private val storage: StorageReference,
     private val firebaseAuth: FirebaseAuth,
     private val userLiveData: MutableLiveData<User>,
-    private val messageWorkStatus: MutableLiveData<String>,
+    private val messageWorkStatus: MutableLiveData<Boolean>,
+    private val loadStatus: MutableLiveData<Boolean>,
     private val imageHelper: ImageStorageHelper,
     private val databaseModel: DataCollectionsModel
 ) : UserRepository {
 
+    override fun getMessageWorkStatus(): LiveData<Boolean> = messageWorkStatus
 
-    private fun getUserId(): String = firebaseAuth.uid ?: throw Exception()
+    override fun getLoadStatus(): LiveData<Boolean> = loadStatus
 
-    override fun getUserData(): LiveData<User> {
-        val docRef =
-            database.collection(databaseModel.getUsers().collectionName)
-                .document(getUserId())
-        docRef.get().addOnSuccessListener { snapshot ->
-            val userData: UserData = snapshot.toObject<UserData>()!!
-            val path: String =
-                imageHelper.let { "${it.folder}/${it.getFileName(firebaseAuth.uid!!)}.${it.jpegFileFormat}" }
-            val islandRef = storage.child(path)
-            islandRef.getBytes(imageHelper.imageBuffer).addOnSuccessListener { image ->
-                val user = User(userData.firstName, userData.lastName, image)
-                userLiveData.value = user
-            }.addOnFailureListener {
-            }
-        }
+    override fun getUserLiveData(): LiveData<User> {
+        getUserData()
         return userLiveData
     }
 
-
-    override fun setUserData(user: User) {
-        saveImage(user.image).addOnSuccessListener {
-            it.metadata?.reference?.downloadUrl?.addOnSuccessListener { uri ->
-                val id = firebaseAuth.uid!!
-                val path = uri.toString()
-                saveData(UserData(id, user.firstName, user.lastName, path))
-            }
+    private fun getUserData() {
+        try {
+            val docRef =
+                database.collection(databaseModel.getUsers().collectionName)
+                    .document(firebaseAuth.uid!!)
+            docRef.get().addOnSuccessListener { snapshot ->
+                val userData: UserData = snapshot.toObject<UserData>()!!
+                val path: String =
+                    imageHelper.let { "${it.folder}/${it.getFileName(firebaseAuth.uid!!)}.${it.jpegFileFormat}" }
+                val islandRef = storage.child(path)
+                islandRef.getBytes(imageHelper.imageBuffer).addOnSuccessListener { image ->
+                    val user = User(userData.firstName, userData.lastName, image)
+                    userLiveData.value = user
+                }.addOnFailureListener { getFail() }
+            }.addOnFailureListener { getFail() }
+        } catch (e: Exception) {
+            getFail()
         }
-
     }
 
-    override fun getMessageWorkStatus(): LiveData<String> = messageWorkStatus
+    private fun getFail() {
+        messageWorkStatus.value = true
+    }
+
+    override fun setUserData(user: User) {
+        try {
+            saveImage(user.image).addOnSuccessListener {
+                it.metadata?.reference?.downloadUrl?.addOnSuccessListener { uri ->
+                    val id = firebaseAuth.uid!!
+                    val path = uri.toString()
+                    saveData(UserData(id, user.firstName, user.lastName, path))
+                }
+            }.addOnFailureListener { getFail() }
+        } catch (e: java.lang.Exception) {
+            getFail()
+        }
+    }
 
     private fun saveImage(image: ByteArray): UploadTask {
         val path: String = imageHelper
@@ -74,12 +86,7 @@ class UserRepositoryImpl @Inject constructor(
         database.collection(databaseModel.getUsers().collectionName)
             .document(firebaseAuth.uid!!)
             .set(user)
-            .addOnSuccessListener { documentReference ->
-                Log.d("TAG", "DocumentSnapshot added")
-            }
-            .addOnFailureListener { e ->
-                Log.w("TAG", "Error adding document", e)
-            }
+            .addOnFailureListener { getFail() }
     }
 
 }

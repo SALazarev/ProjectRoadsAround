@@ -28,4 +28,5 @@
     <string name="profile">Профиль</string>
     <string name="search">Поиск</string>
     <string name="routes">Маршруты</string>
+    <string name="could_not_load_data_from_networks">Не удалось загрузить данные из сети</string>
 </resources>

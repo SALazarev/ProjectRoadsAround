@@ -15,8 +15,6 @@ import ru.salazarev.roadsaround.databinding.FragmentProfileBinding
 import ru.salazarev.roadsaround.di.DaggerAppComponent
 import ru.salazarev.roadsaround.models.presentation.User
 import ru.salazarev.roadsaround.presentation.MainActivity
-import ru.salazarev.roadsaround.presentation.registration.RegViewModel
-import ru.salazarev.roadsaround.presentation.registration.RegViewModelFactory
 import ru.salazarev.roadsaround.toast
 import javax.inject.Inject
 
@@ -39,11 +37,14 @@ class ProfileFragment : Fragment() {
     ): View {
         _binding = FragmentProfileBinding.inflate(inflater, container, false)
         DaggerAppComponent.builder().fragmentManager(childFragmentManager).build().inject(this)
-        viewModel = ViewModelProvider(this, profileViewModelFactory).get(ProfileViewModel::class.java)
+        viewModel =
+            ViewModelProvider(this, profileViewModelFactory).get(ProfileViewModel::class.java)
         viewModel.userLiveData.observe((activity as MainActivity), { user ->
             setViewData(user)
         })
-        viewModel.message.observe(requireActivity(), {message -> requireActivity().toast(message)})
+        viewModel.failStatus.observe(requireActivity(), { failStatus ->
+            if (failStatus) requireActivity().toast(getString(R.string.could_not_load_data_from_networks))
+        })
         return binding.root
     }
 

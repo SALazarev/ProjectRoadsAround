@@ -1,12 +1,9 @@
 package ru.salazarev.roadsaround.di
 
-import android.media.Image
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.ktx.storage
 import dagger.Binds
@@ -42,9 +39,8 @@ interface StorageModule {
         fun provideUserLiveData(): MutableLiveData<User> = MutableLiveData<User>()
 
         @Provides
-        fun provideErrorLiveData(): MutableLiveData<String> = MutableLiveData<String>()
+        fun provideErrorLiveData(): MutableLiveData<Boolean> = MutableLiveData<Boolean>()
     }
-
 
     @Binds
     fun bindJsonWorker(repo: UserRepositoryImpl): UserRepository
