@@ -5,7 +5,8 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    tools:context=".presentation.main.MainFragment">
+    tools:context=".presentation.main.MainFragment"
+    android:background="@color/design_default_color_background">
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/fragment_container_second"

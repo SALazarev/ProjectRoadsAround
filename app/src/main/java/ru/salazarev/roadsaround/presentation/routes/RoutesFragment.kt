@@ -42,7 +42,7 @@ class RoutesFragment : Fragment() {
             setOnMenuItemClickListener {
                 when (it.itemId) {
                     R.id.btn_messages -> {
-                        (parentFragment as NavHostFragment).navController.navigate(R.id.action_routesFragment_to_chatFragment)
+                        (activity as MainActivity).navController.navigate(R.id.action_mainFragment_to_chatFragment)
                         true
                     }
                     else -> super.onOptionsItemSelected(it)

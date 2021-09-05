@@ -9,11 +9,7 @@
         android:id="@+id/routesFragment"
         android:name="ru.salazarev.roadsaround.presentation.routes.RoutesFragment"
         android:label="fragment_routes"
-        tools:layout="@layout/fragment_routes" >
-        <action
-            android:id="@+id/action_routesFragment_to_chatFragment"
-            app:destination="@id/chatFragment" />
-    </fragment>
+        tools:layout="@layout/fragment_routes" />
     <fragment
         android:id="@+id/profileFragment"
         android:name="ru.salazarev.roadsaround.presentation.profile.ProfileFragment"
@@ -33,9 +29,4 @@
     <action
         android:id="@+id/action_global_searchEventFragment"
         app:destination="@id/searchEventFragment" />
-    <fragment
-        android:id="@+id/chatFragment"
-        android:name="ru.salazarev.roadsaround.presentation.chat.ChatFragment"
-        android:label="fragment_chat"
-        tools:layout="@layout/fragment_chat" />
 </navigation>

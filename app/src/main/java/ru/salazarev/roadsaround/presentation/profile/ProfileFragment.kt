@@ -75,6 +75,7 @@ class ProfileFragment : Fragment() {
 
     private fun loadFail() {
         requireActivity().toast(getString(R.string.could_not_load_data_from_networks))
+        binding.progressBar.visibility = View.INVISIBLE
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

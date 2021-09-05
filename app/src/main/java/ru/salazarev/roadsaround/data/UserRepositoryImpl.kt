@@ -25,18 +25,24 @@ class UserRepositoryImpl @Inject constructor(
     override fun getWorkStatus(): LiveData<WorkStatus> = workStatus
 
     override fun setUserData(user: User) {
-        try {
-            saveImage(user.image).addOnSuccessListener {
-                it.metadata?.reference?.downloadUrl?.addOnSuccessListener { uri ->
-                    val id = firebaseAuth.uid!!
-                    val path = uri.toString()
-                    saveData(UserData(id, user.firstName, user.lastName, path))
-                    workStatus.value = WorkStatus.LOADING
+
+        saveImage(user.image).addOnSuccessListener {
+            try {
+                it.metadata!!.reference!!.downloadUrl.addOnSuccessListener { uri ->
+                    try {
+                        val id = firebaseAuth.uid!!
+                        val path = uri.toString()
+                        saveData(UserData(id, user.firstName, user.lastName, path))
+                        workStatus.value = WorkStatus.LOADING
+                    } catch (e: java.lang.Exception) {
+                        workStatus.value = WorkStatus.FAIL
+                    }
                 }
-            }.addOnFailureListener { workStatus.value = WorkStatus.FAIL }
-        } catch (e: java.lang.Exception) {
-            workStatus.value = WorkStatus.FAIL
-        }
+            } catch (e: java.lang.Exception) {
+                workStatus.value = WorkStatus.FAIL
+            }
+        }.addOnFailureListener { workStatus.value = WorkStatus.FAIL }
+
     }
 
     override fun getUserLiveData(): LiveData<User> {
@@ -52,17 +58,21 @@ class UserRepositoryImpl @Inject constructor(
                     .document(firebaseAuth.uid!!)
             docRef.get()
                 .addOnSuccessListener { snapshot ->
-                    val userData: UserData = snapshot.toObject<UserData>()!!
-                    val path: String =
-                        imageHelper.let { "${it.folder}/${it.getFileName(firebaseAuth.uid!!)}.${it.jpegFileFormat}" }
-                    val islandRef = storage.child(path)
-                    islandRef.getBytes(imageHelper.imageBuffer)
-                        .addOnSuccessListener { image ->
-                            val user = User(userData.firstName, userData.lastName, image)
-                            userLiveData.value = user
-                            workStatus.value = WorkStatus.LOADED
-                        }
-                        .addOnFailureListener { workStatus.value = WorkStatus.FAIL }
+                    try {
+                        val userData: UserData = snapshot.toObject<UserData>()!!
+                        val path: String =
+                            imageHelper.let { "${it.folder}/${it.getFileName(firebaseAuth.uid!!)}.${it.jpegFileFormat}" }
+                        val islandRef = storage.child(path)
+                        islandRef.getBytes(imageHelper.imageBuffer)
+                            .addOnSuccessListener { image ->
+                                val user = User(userData.firstName, userData.lastName, image)
+                                userLiveData.value = user
+                                workStatus.value = WorkStatus.LOADED
+                            }
+                            .addOnFailureListener { workStatus.value = WorkStatus.FAIL }
+                    } catch (e: Exception) {
+                        workStatus.value = WorkStatus.FAIL
+                    }
                 }
                 .addOnFailureListener { workStatus.value = WorkStatus.FAIL }
         } catch (e: Exception) {
