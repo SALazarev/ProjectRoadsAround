@@ -8,6 +8,7 @@ import ru.salazarev.roadsaround.presentation.MainActivity
 import ru.salazarev.roadsaround.presentation.main.MainFragment
 import ru.salazarev.roadsaround.presentation.profile.ProfileFragment
 import ru.salazarev.roadsaround.presentation.registration.RegFragment
+import ru.salazarev.roadsaround.presentation.routes.RoutesFragment
 import javax.inject.Named
 import javax.inject.Singleton
 
@@ -18,6 +19,7 @@ interface AppComponent {
     fun inject(mainFragment: MainFragment)
     fun inject(regFragment: RegFragment)
     fun inject(profileFragment: ProfileFragment)
+    fun inject(routesFragment: RoutesFragment)
 
     @Component.Builder
     interface Builder {

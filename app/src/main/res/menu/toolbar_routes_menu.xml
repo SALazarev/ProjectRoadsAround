@@ -2,6 +2,12 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
+        android:id="@+id/btn_messages"
+        app:showAsAction="always"
+        android:icon="@drawable/outline_chat_24"
+        android:title="@string/par_chat"
+        android:contentDescription="@string/par_chat"/>
+    <item
         android:id="@+id/btn_login"
         app:showAsAction="always"
         android:icon="@drawable/outline_add_24"
