@@ -5,6 +5,7 @@ import dagger.BindsInstance
 import dagger.Component
 import dagger.Subcomponent
 import ru.salazarev.roadsaround.presentation.MainActivity
+import ru.salazarev.roadsaround.presentation.chat.ChatFragment
 import ru.salazarev.roadsaround.presentation.main.MainFragment
 import ru.salazarev.roadsaround.presentation.profile.ProfileFragment
 import ru.salazarev.roadsaround.presentation.registration.RegFragment
@@ -20,6 +21,7 @@ interface AppComponent {
     fun inject(regFragment: RegFragment)
     fun inject(profileFragment: ProfileFragment)
     fun inject(routesFragment: RoutesFragment)
+    fun inject(chatFragment: ChatFragment)
 
     @Component.Builder
     interface Builder {

@@ -9,10 +9,12 @@ import com.google.firebase.storage.ktx.storage
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
-import ru.salazarev.roadsaround.data.DataCollectionsModel
-import ru.salazarev.roadsaround.data.ImageStorageHelper
-import ru.salazarev.roadsaround.data.UserRepositoryImpl
-import ru.salazarev.roadsaround.domain.UserRepository
+import ru.salazarev.roadsaround.data.chat.ChatRepositoryImpl
+import ru.salazarev.roadsaround.data.user.UsersCollectionModel
+import ru.salazarev.roadsaround.data.user.ImageStorageHelper
+import ru.salazarev.roadsaround.data.user.UserRepositoryImpl
+import ru.salazarev.roadsaround.domain.chat.ChatRepository
+import ru.salazarev.roadsaround.domain.user.UserRepository
 import ru.salazarev.roadsaround.models.presentation.User
 import javax.inject.Singleton
 
@@ -33,7 +35,7 @@ interface StorageModule {
 
         @Singleton
         @Provides
-        fun provideDataCollectionsModel(): DataCollectionsModel = DataCollectionsModel
+        fun provideDataCollectionsModel(): UsersCollectionModel = UsersCollectionModel
 
         @Provides
         fun provideUserLiveData(): MutableLiveData<User> = MutableLiveData<User>()
@@ -44,5 +46,7 @@ interface StorageModule {
     }
 
     @Binds
-    fun bindJsonWorker(repo: UserRepositoryImpl): UserRepository
+    fun bindUserRepository(repo: UserRepositoryImpl): UserRepository
+    @Binds
+    fun bindChatRepository(repo: ChatRepositoryImpl): ChatRepository
 }

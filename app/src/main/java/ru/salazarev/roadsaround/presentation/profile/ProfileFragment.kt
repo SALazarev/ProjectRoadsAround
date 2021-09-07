@@ -8,13 +8,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import ru.salazarev.roadsaround.R
-import ru.salazarev.roadsaround.data.UserRepositoryImpl
+import ru.salazarev.roadsaround.data.user.UserRepositoryImpl
 import ru.salazarev.roadsaround.databinding.FragmentProfileBinding
 import ru.salazarev.roadsaround.di.DaggerAppComponent
 import ru.salazarev.roadsaround.models.presentation.User
+import ru.salazarev.roadsaround.observeOnce
 import ru.salazarev.roadsaround.presentation.MainActivity
 import ru.salazarev.roadsaround.toast
 import javax.inject.Inject
@@ -47,18 +49,20 @@ class ProfileFragment : Fragment() {
             setViewData(user)
         })
 
-        viewModel.failStatus.observe(requireActivity(), { workStatus ->
-            when (workStatus) {
-                UserRepositoryImpl.WorkStatus.LOADED -> {
-                    loaded()
-                }
-                UserRepositoryImpl.WorkStatus.LOADING -> {
-                    loading()
-                }
-                UserRepositoryImpl.WorkStatus.FAIL -> {
-                    loadFail()
-                }
-                else -> {
+        viewModel.workStatus.observe(requireActivity(), { workStatus ->
+            if (workStatus != null) {
+                when (workStatus) {
+                    UserRepositoryImpl.WorkStatus.LOADED -> {
+                        loaded()
+                    }
+                    UserRepositoryImpl.WorkStatus.LOADING -> {
+                        loading()
+                    }
+                    UserRepositoryImpl.WorkStatus.FAIL -> {
+                        loadFail()
+                    }
+                    else -> {
+                    }
                 }
             }
         })
@@ -82,7 +86,6 @@ class ProfileFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         configureToolbar()
     }
-
 
     private fun setViewData(user: User) {
         binding.etFirstName.text = user.firstName

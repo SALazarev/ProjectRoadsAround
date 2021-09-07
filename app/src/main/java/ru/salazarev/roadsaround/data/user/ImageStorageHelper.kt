@@ -1,4 +1,4 @@
-package ru.salazarev.roadsaround.data
+package ru.salazarev.roadsaround.data.user
 
 object ImageStorageHelper {
     const val folder = "UsersAvatar"

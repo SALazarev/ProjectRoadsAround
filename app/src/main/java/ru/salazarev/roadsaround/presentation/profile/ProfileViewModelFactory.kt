@@ -2,7 +2,7 @@ package ru.salazarev.roadsaround.presentation.profile
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import ru.salazarev.roadsaround.domain.UserInteractor
+import ru.salazarev.roadsaround.domain.user.UserInteractor
 import javax.inject.Inject
 
 class ProfileViewModelFactory @Inject constructor(

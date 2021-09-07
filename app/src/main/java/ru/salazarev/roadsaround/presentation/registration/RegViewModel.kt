@@ -2,7 +2,7 @@ package ru.salazarev.roadsaround.presentation.registration
 
 import android.graphics.Bitmap
 import androidx.lifecycle.ViewModel
-import ru.salazarev.roadsaround.domain.UserInteractor
+import ru.salazarev.roadsaround.domain.user.UserInteractor
 import java.io.ByteArrayOutputStream
 import javax.inject.Inject
 

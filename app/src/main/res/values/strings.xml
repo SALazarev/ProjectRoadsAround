@@ -31,4 +31,5 @@
     <string name="could_not_load_data_from_networks">Не удалось загрузить данные из сети</string>
     <string name="failed_launch_camera_app">Не удалось запустить приложение камеры</string>
     <string name="par_chat">Чат участников</string>
+    <string name="send">Отправить</string>
 </resources>

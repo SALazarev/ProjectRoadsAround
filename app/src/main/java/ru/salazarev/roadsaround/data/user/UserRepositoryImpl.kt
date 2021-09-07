@@ -1,4 +1,4 @@
-package ru.salazarev.roadsaround.data
+package ru.salazarev.roadsaround.data.user
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -7,7 +7,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.UploadTask
-import ru.salazarev.roadsaround.domain.UserRepository
+import ru.salazarev.roadsaround.domain.user.UserRepository
 import ru.salazarev.roadsaround.models.data.UserData
 import ru.salazarev.roadsaround.models.presentation.User
 import javax.inject.Inject
@@ -19,10 +19,16 @@ class UserRepositoryImpl @Inject constructor(
     private val userLiveData: MutableLiveData<User>,
     private val workStatus: MutableLiveData<WorkStatus>,
     private val imageHelper: ImageStorageHelper,
-    private val databaseModel: DataCollectionsModel
+    private val databaseModel: UsersCollectionModel
 ) : UserRepository {
 
-    override fun getWorkStatus(): LiveData<WorkStatus> = workStatus
+    override fun getWorkStatusData(): LiveData<WorkStatus> = workStatus
+
+    override fun getUserData(): LiveData<User> {
+        workStatus.value = WorkStatus.LOADING
+        getUserDataWork()
+        return userLiveData
+    }
 
     override fun setUserData(user: User) {
 
@@ -45,13 +51,7 @@ class UserRepositoryImpl @Inject constructor(
 
     }
 
-    override fun getUserLiveData(): LiveData<User> {
-        workStatus.value = WorkStatus.LOADING
-        getUserData()
-        return userLiveData
-    }
-
-    private fun getUserData() {
+    private fun getUserDataWork() {
         try {
             val docRef =
                 database.collection(databaseModel.getUsers().collectionName)

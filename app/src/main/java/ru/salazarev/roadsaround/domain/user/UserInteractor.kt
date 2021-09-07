@@ -1,4 +1,4 @@
-package ru.salazarev.roadsaround.domain
+package ru.salazarev.roadsaround.domain.user
 
 import ru.salazarev.roadsaround.models.presentation.User
 import javax.inject.Inject
@@ -10,7 +10,7 @@ class UserInteractor @Inject constructor(private val repository: UserRepository)
         repository.setUserData(user)
     }
 
-    fun getUserData() = repository.getUserLiveData()
+    fun getUserData() = repository.getUserData()
 
-    fun getMessageWorkStatus() = repository.getWorkStatus()
+    fun getMessageWorkStatus() = repository.getWorkStatusData()
 }

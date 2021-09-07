@@ -44,7 +44,7 @@ class AuthFragment : Fragment() {
     }
 
     private fun passwordReset() {
-        val email = binding.etEmail.text.toString()
+        val email = binding.etEmail.editText!!.text.toString()
         if (email.isEmpty()) context?.toast(getString(R.string.enter_email_to_restore_password))
         else {
             (activity as MainActivity).fireBaseAuth.sendPasswordResetEmail(email)
@@ -56,8 +56,8 @@ class AuthFragment : Fragment() {
 
 
     private fun authentication() {
-        val email = binding.etEmail.text.toString()
-        val password = binding.etPassword.text.toString()
+        val email = binding.textInputEmail.text.toString()
+        val password = binding.textInputPass.text.toString()
         if (email.isEmpty() || password.isEmpty()) {
             context?.toast(getString(R.string.auth_fields_empty))
             return

@@ -89,9 +89,9 @@ class RegFragment : Fragment() {
     }
 
     private fun registration() {
-        val email = binding.etEmail.text.toString()
-        val password = binding.etPass.text.toString()
-        val firstName = binding.etFirstName.text.toString()
+        val email = binding.textInputEmail.text.toString()
+        val password = binding.textInputPass.text.toString()
+        val firstName = binding.textInputFirstName.text.toString()
 
         if (email.isEmpty() || password.isEmpty() || firstName.isEmpty()) {
             context?.toast(getString(R.string.required_data_fields_empty))
@@ -103,8 +103,8 @@ class RegFragment : Fragment() {
                         context?.toast(getString(R.string.reg_successful))
 
                         viewModel.saveData(
-                            binding.etFirstName.text.toString(),
-                            binding.etLastName.text.toString()
+                            binding.etFirstName.editText!!.text.toString(),
+                            binding.etLastName.editText!!.text.toString()
                         )
 
                         (activity as MainActivity)

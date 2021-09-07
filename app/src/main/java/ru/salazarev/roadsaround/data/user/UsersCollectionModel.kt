@@ -1,6 +1,6 @@
-package ru.salazarev.roadsaround.data
+package ru.salazarev.roadsaround.data.user
 
-object DataCollectionsModel {
+object UsersCollectionModel {
     fun getUsers() = Users
 }
 
