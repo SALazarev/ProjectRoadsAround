@@ -8,15 +8,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
+import ru.salazarev.roadsaround.App
 import ru.salazarev.roadsaround.R
 import ru.salazarev.roadsaround.data.user.UserRepositoryImpl
 import ru.salazarev.roadsaround.databinding.FragmentProfileBinding
-import ru.salazarev.roadsaround.di.DaggerAppComponent
-import ru.salazarev.roadsaround.models.presentation.User
-import ru.salazarev.roadsaround.observeOnce
+import ru.salazarev.roadsaround.models.domain.User
 import ru.salazarev.roadsaround.presentation.MainActivity
 import ru.salazarev.roadsaround.toast
 import javax.inject.Inject
@@ -40,7 +38,7 @@ class ProfileFragment : Fragment() {
     ): View {
         _binding = FragmentProfileBinding.inflate(inflater, container, false)
 
-        DaggerAppComponent.builder().fragmentManager(childFragmentManager).build().inject(this)
+        App.appComponent.getMainComponentBuilder().fragmentManager(childFragmentManager).build().inject(this)
 
         viewModel =
             ViewModelProvider(this, profileViewModelFactory).get(ProfileViewModel::class.java)

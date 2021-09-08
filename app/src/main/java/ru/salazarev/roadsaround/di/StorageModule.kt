@@ -15,7 +15,7 @@ import ru.salazarev.roadsaround.data.user.ImageStorageHelper
 import ru.salazarev.roadsaround.data.user.UserRepositoryImpl
 import ru.salazarev.roadsaround.domain.chat.ChatRepository
 import ru.salazarev.roadsaround.domain.user.UserRepository
-import ru.salazarev.roadsaround.models.presentation.User
+import ru.salazarev.roadsaround.models.domain.User
 import javax.inject.Singleton
 
 @Module
@@ -47,6 +47,7 @@ interface StorageModule {
 
     @Binds
     fun bindUserRepository(repo: UserRepositoryImpl): UserRepository
+
     @Binds
     fun bindChatRepository(repo: ChatRepositoryImpl): ChatRepository
 }

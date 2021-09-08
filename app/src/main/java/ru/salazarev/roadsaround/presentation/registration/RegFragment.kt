@@ -13,9 +13,9 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import ru.salazarev.roadsaround.App
 import ru.salazarev.roadsaround.R
 import ru.salazarev.roadsaround.databinding.FragmentRegBinding
-import ru.salazarev.roadsaround.di.DaggerAppComponent
 import ru.salazarev.roadsaround.presentation.MainActivity
 import ru.salazarev.roadsaround.toast
 import javax.inject.Inject
@@ -40,7 +40,7 @@ class RegFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        DaggerAppComponent.builder().fragmentManager(childFragmentManager).build().inject(this)
+        App.appComponent.getMainComponentBuilder().fragmentManager(childFragmentManager).build().inject(this)
         viewModel = ViewModelProvider(this, regViewModelFactory).get(RegViewModel::class.java)
         _binding = FragmentRegBinding.inflate(inflater, container, false)
         return binding.root

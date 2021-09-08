@@ -2,7 +2,7 @@ package ru.salazarev.roadsaround.domain.user
 
 import androidx.lifecycle.LiveData
 import ru.salazarev.roadsaround.data.user.UserRepositoryImpl
-import ru.salazarev.roadsaround.models.presentation.User
+import ru.salazarev.roadsaround.models.domain.User
 
 interface UserRepository {
     fun getUserData(): LiveData<User>

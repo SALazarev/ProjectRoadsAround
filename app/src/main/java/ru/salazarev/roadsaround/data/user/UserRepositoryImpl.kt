@@ -9,7 +9,7 @@ import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.UploadTask
 import ru.salazarev.roadsaround.domain.user.UserRepository
 import ru.salazarev.roadsaround.models.data.UserData
-import ru.salazarev.roadsaround.models.presentation.User
+import ru.salazarev.roadsaround.models.domain.User
 import javax.inject.Inject
 
 class UserRepositoryImpl @Inject constructor(

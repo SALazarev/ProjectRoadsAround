@@ -4,8 +4,8 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.navigation.NavController
 import com.google.firebase.auth.FirebaseAuth
+import ru.salazarev.roadsaround.App
 import ru.salazarev.roadsaround.R
-import ru.salazarev.roadsaround.di.DaggerAppComponent
 import javax.inject.Inject
 import javax.inject.Named
 
@@ -21,10 +21,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        DaggerAppComponent
-            .builder()
-            .fragmentManager(supportFragmentManager)
-            .build()
+        App.appComponent.getMainComponentBuilder().fragmentManager(supportFragmentManager).build()
             .inject(this)
     }
 

@@ -5,15 +5,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.navigation.NavController
-import androidx.navigation.fragment.NavHostFragment
 import ru.salazarev.roadsaround.R
 import ru.salazarev.roadsaround.databinding.FragmentRoutesBinding
-import ru.salazarev.roadsaround.di.DaggerAppComponent
 import ru.salazarev.roadsaround.presentation.MainActivity
-import ru.salazarev.roadsaround.presentation.main.MainFragment
-import javax.inject.Inject
-import javax.inject.Named
 
 class RoutesFragment : Fragment() {
 

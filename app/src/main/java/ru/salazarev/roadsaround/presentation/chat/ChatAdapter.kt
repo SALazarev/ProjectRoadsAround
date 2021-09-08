@@ -1,12 +1,10 @@
 package ru.salazarev.roadsaround.presentation.chat
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import ru.salazarev.roadsaround.R
-import ru.salazarev.roadsaround.databinding.RvItemMessageBinding
-import ru.salazarev.roadsaround.models.presentation.Message
+import ru.salazarev.roadsaround.models.domain.Message
 
 class ChatAdapter(val data: List<Message>): RecyclerView.Adapter<MessageViewHolder>() {
 

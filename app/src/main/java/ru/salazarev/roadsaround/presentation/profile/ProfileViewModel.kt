@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import ru.salazarev.roadsaround.data.user.UserRepositoryImpl
 import ru.salazarev.roadsaround.domain.user.UserInteractor
-import ru.salazarev.roadsaround.models.presentation.User
+import ru.salazarev.roadsaround.models.domain.User
 import javax.inject.Inject
 
 class ProfileViewModel @Inject constructor(interactor: UserInteractor) : ViewModel() {

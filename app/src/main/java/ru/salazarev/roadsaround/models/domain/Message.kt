@@ -1,4 +1,4 @@
-package ru.salazarev.roadsaround.models.presentation
+package ru.salazarev.roadsaround.models.domain
 
 import android.graphics.drawable.Drawable
 

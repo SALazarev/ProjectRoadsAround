@@ -11,8 +11,9 @@ import ru.salazarev.roadsaround.data.user.UserRepositoryImpl
 import ru.salazarev.roadsaround.data.user.UsersCollectionModel
 import ru.salazarev.roadsaround.domain.chat.ChatRepository
 import ru.salazarev.roadsaround.models.data.UserData
-import ru.salazarev.roadsaround.models.presentation.Message
-import ru.salazarev.roadsaround.models.presentation.User
+import ru.salazarev.roadsaround.models.domain.Message
+import ru.salazarev.roadsaround.models.domain.User
+import ru.salazarev.roadsaround.util.ImageConverter
 import javax.inject.Inject
 
 class ChatRepositoryImpl @Inject constructor(

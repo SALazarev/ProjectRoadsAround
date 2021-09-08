@@ -11,7 +11,7 @@ import javax.inject.Named
 import javax.inject.Singleton
 
 @Module
-interface AppModule {
+interface MainModule {
     companion object {
         @Provides
         @Singleton

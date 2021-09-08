@@ -1,6 +1,6 @@
 package ru.salazarev.roadsaround.domain.user
 
-import ru.salazarev.roadsaround.models.presentation.User
+import ru.salazarev.roadsaround.models.domain.User
 import javax.inject.Inject
 
 class UserInteractor @Inject constructor(private val repository: UserRepository) {

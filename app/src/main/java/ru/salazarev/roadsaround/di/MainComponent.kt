@@ -10,12 +10,11 @@ import ru.salazarev.roadsaround.presentation.main.MainFragment
 import ru.salazarev.roadsaround.presentation.profile.ProfileFragment
 import ru.salazarev.roadsaround.presentation.registration.RegFragment
 import ru.salazarev.roadsaround.presentation.routes.RoutesFragment
-import javax.inject.Named
 import javax.inject.Singleton
 
 @Singleton
-@Component(modules = [AppModule::class, StorageModule::class])
-interface AppComponent {
+@Subcomponent(modules = [MainModule::class, StorageModule::class])
+interface MainComponent {
     fun inject(mainActivity: MainActivity)
     fun inject(mainFragment: MainFragment)
     fun inject(regFragment: RegFragment)
@@ -23,10 +22,10 @@ interface AppComponent {
     fun inject(routesFragment: RoutesFragment)
     fun inject(chatFragment: ChatFragment)
 
-    @Component.Builder
+    @Subcomponent.Builder
     interface Builder {
         @BindsInstance
         fun fragmentManager(fm: FragmentManager): Builder
-        fun build(): AppComponent
+        fun build(): MainComponent
     }
 }
