@@ -1,10 +1,9 @@
 package ru.salazarev.roadsaround.domain.user
 
-import androidx.lifecycle.LiveData
-import ru.salazarev.roadsaround.data.user.UserRepositoryImpl
 import ru.salazarev.roadsaround.models.domain.User
 
 interface UserRepository {
     fun getUserData(): User?
-    fun setUserData(user: User): Boolean
+    fun setUserData(user: User)
+    fun registration(email: String, password: String): String
 }

@@ -40,7 +40,8 @@ class RegFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        App.appComponent.getMainComponentBuilder().fragmentManager(childFragmentManager).build().inject(this)
+        App.appComponent.getMainComponentBuilder().fragmentManager(childFragmentManager).build()
+            .inject(this)
         viewModel = ViewModelProvider(this, regViewModelFactory).get(RegViewModel::class.java)
         _binding = FragmentRegBinding.inflate(inflater, container, false)
         return binding.root
@@ -48,6 +49,28 @@ class RegFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setToolbar()
+        binding.btnUserPhoto.setOnClickListener { createPhoto() }
+        setObservers()
+    }
+
+    private fun setObservers() {
+        viewModel.result.observe(requireActivity(), { resultStatus ->
+            if (resultStatus) {
+                (activity as MainActivity)
+                    .navController
+                    .navigate(R.id.action_regFragment_to_mainFragment)
+            } else {
+                requireActivity().toast(getString(R.string.reg_unsuccessful))
+            }
+        })
+        viewModel.progress.observe(requireActivity(), { loadStatus ->
+            if (loadStatus) binding.progressBar.visibility = View.VISIBLE
+            else binding.progressBar.visibility = View.INVISIBLE
+        })
+    }
+
+    private fun setToolbar() {
         binding.includeToolbar.includeToolbar.apply {
             inflateMenu(R.menu.toolbar_reg_menu)
             title = context.getString(R.string.registration)
@@ -66,7 +89,7 @@ class RegFragment : Fragment() {
                     else -> super.onOptionsItemSelected(it)
                 }
             }
-            binding.btnUserPhoto.setOnClickListener { createPhoto() }
+
         }
     }
 
@@ -84,7 +107,7 @@ class RegFragment : Fragment() {
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
             val imageBitmap = data?.extras?.get(IMAGE_KEY) as Bitmap
             binding.btnUserPhoto.background = BitmapDrawable(resources, imageBitmap)
-            viewModel.image = imageBitmap
+            viewModel.buffImage = imageBitmap
         }
     }
 
@@ -97,23 +120,13 @@ class RegFragment : Fragment() {
             context?.toast(getString(R.string.required_data_fields_empty))
             return
         } else {
-            (activity as MainActivity).fireBaseAuth.createUserWithEmailAndPassword(email, password)
-                .addOnCompleteListener(requireActivity()) { task ->
-                    if (task.isSuccessful) {
-                        context?.toast(getString(R.string.reg_successful))
-
-                        viewModel.saveData(
-                            binding.etFirstName.editText!!.text.toString(),
-                            binding.etLastName.editText!!.text.toString()
-                        )
-
-                        (activity as MainActivity)
-                            .navController
-                            .navigate(R.id.action_regFragment_to_mainFragment)
-                    } else {
-                        context?.toast(getString(R.string.reg_unsuccessful))
-                    }
-                }
+            viewModel.registrationUser(
+                email,
+                password,
+                firstName,
+                binding.etLastName.editText!!.text.toString(),
+                viewModel.buffImage
+            )
         }
     }
 

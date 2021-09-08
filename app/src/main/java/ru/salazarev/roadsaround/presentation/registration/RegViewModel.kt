@@ -1,20 +1,43 @@
 package ru.salazarev.roadsaround.presentation.registration
 
 import android.graphics.Bitmap
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.core.Completable
+import io.reactivex.rxjava3.schedulers.Schedulers
 import ru.salazarev.roadsaround.domain.user.UserInteractor
+import ru.salazarev.roadsaround.util.ImageConverter
 import java.io.ByteArrayOutputStream
 import javax.inject.Inject
 
-class RegViewModel @Inject constructor(private val interactor: UserInteractor): ViewModel() {
+class RegViewModel @Inject constructor(
+    private val interactor: UserInteractor,
+    private val imageConverter: ImageConverter
+) : ViewModel() {
 
-    lateinit var image: Bitmap
+    var buffImage: Bitmap? = null
 
-fun saveData(firstName: String, lastName: String){
-    val stream = ByteArrayOutputStream()
-    image.compress(Bitmap.CompressFormat.PNG, 100, stream)
-    val byteArray: ByteArray = stream.toByteArray()
-    image.recycle()
-    interactor.setUserData(firstName, lastName, byteArray)
-}
+    val progress = MutableLiveData<Boolean>()
+    val result = MutableLiveData<Boolean>()
+
+    fun registrationUser(
+        email: String, password: String, firstName: String, lastName: String, image: Bitmap?
+    ) {
+        val byteArray = if (image != null) imageConverter.convert(image) else null
+
+        val user = Completable.fromCallable {
+            return@fromCallable interactor.registrationUser(
+                email, password, firstName, lastName, byteArray
+            )
+        }
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .doFinally { progress.value = false }
+            .doOnSubscribe { progress.value = true }
+
+        user.subscribe(
+            { result.value = true })
+        { result.value = false }
+    }
 }

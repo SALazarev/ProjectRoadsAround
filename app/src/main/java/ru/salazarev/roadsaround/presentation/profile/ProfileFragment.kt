@@ -51,19 +51,22 @@ class ProfileFragment : Fragment() {
     }
 
     private fun setObserver() {
-        viewModel.errors.observe(requireActivity(), {
-            requireActivity().toast("Произошла ошибка")
-        })
 
         viewModel.userLiveData.observe(requireActivity(), { user ->
-            setViewData(user)
+            if (user == null) requireActivity().toast(getString(R.string.сould_not_load_data))
+            else setViewData(user)
+        })
+
+        viewModel.progress.observe(requireActivity(), { loadStatus ->
+            if (loadStatus) binding.progressBar.visibility = View.VISIBLE
+            else binding.progressBar.visibility = View.INVISIBLE
         })
     }
 
     private fun setViewData(user: UserChat) {
         binding.etFirstName.text = user.firstName
         binding.etLastName.text = user.lastName
-        binding.btnUserPhoto.background = user.image
+        if (user.image != null) binding.btnUserPhoto.background = user.image
     }
 
     private fun configureToolbar() {

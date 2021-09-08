@@ -21,7 +21,6 @@ class ChatRepositoryImpl @Inject constructor(
     private val storage: StorageReference,
     private val firebaseAuth: FirebaseAuth,
     private val userLiveData: MutableLiveData<User>,
-    private val workStatus: MutableLiveData<UserRepositoryImpl.WorkStatus>,
     private val imageHelper: ImageStorageHelper,
     private val databaseModel: UsersCollectionModel
 ) : ChatRepository {

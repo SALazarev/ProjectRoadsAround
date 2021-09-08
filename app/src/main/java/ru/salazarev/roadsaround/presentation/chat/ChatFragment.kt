@@ -62,20 +62,25 @@ class ChatFragment : Fragment() {
     }
 
     private fun setObserver() {
-        viewModel.errors.observe(requireActivity(), {
-            requireActivity().toast("Произошла ошибка")
-        })
 
-        viewModel.userLiveData.observe(requireActivity(), { user ->
-            val name = "${user.firstName} ${user.lastName}"
-            binding.rvMessages.adapter =
-                ChatAdapter(
-                    listOf(
-                        Message(
-                            "451", name, "Привет", "4:52", user.image
+        viewModel.user.observe(requireActivity(), { user ->
+            if (user == null) requireActivity().toast(getString(R.string.сould_not_load_data))
+            else {
+                val name = "${user.firstName} ${user.lastName}"
+                binding.rvMessages.adapter =
+                    ChatAdapter(
+                        listOf(
+                            Message(
+                                "451", name, "Привет", "4:52", user.image
+                            )
                         )
                     )
-                )
+            }
+
+        })
+        viewModel.progress.observe(requireActivity(), { loadStatus ->
+            if (loadStatus) binding.progressBar.visibility = View.VISIBLE
+            else binding.progressBar.visibility = View.INVISIBLE
         })
     }
 

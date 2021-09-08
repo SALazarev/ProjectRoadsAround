@@ -15,11 +15,9 @@ class ProfileViewModel @Inject constructor(
     private val imageConverter: ImageConverter
 ) : ViewModel() {
 
-    val userLiveData = MutableLiveData<UserChat>()
+    val userLiveData = MutableLiveData<UserChat?>()
 
     val progress = MutableLiveData<Boolean>()
-
-    var errors = MutableLiveData<Throwable>()
 
     init {
         loadQuotationList()
@@ -32,7 +30,7 @@ class ProfileViewModel @Inject constructor(
             UserChat(
                 user!!.firstName,
                 user.lastName,
-                imageConverter.convert(user.image)
+                if (user.image != null) imageConverter.convert(user.image) else null
             )
         }
             .subscribeOn(Schedulers.io())
@@ -40,6 +38,6 @@ class ProfileViewModel @Inject constructor(
             .doFinally { progress.value = false }
             .doOnSubscribe { progress.value = true }
 
-        user.subscribe(userLiveData::setValue, errors::setValue)
+        user.subscribe(userLiveData::setValue) { userLiveData.value = null }
     }
 }
