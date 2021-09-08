@@ -63,7 +63,7 @@ class ChatFragment : Fragment() {
 
     private fun setObserver() {
 
-        viewModel.user.observe(requireActivity(), { user ->
+        viewModel.user.observe(viewLifecycleOwner, { user ->
             if (user == null) requireActivity().toast(getString(R.string.сould_not_load_data))
             else {
                 val name = "${user.firstName} ${user.lastName}"
@@ -78,7 +78,7 @@ class ChatFragment : Fragment() {
             }
 
         })
-        viewModel.progress.observe(requireActivity(), { loadStatus ->
+        viewModel.progress.observe(viewLifecycleOwner, { loadStatus ->
             if (loadStatus) binding.progressBar.visibility = View.VISIBLE
             else binding.progressBar.visibility = View.INVISIBLE
         })

@@ -19,11 +19,6 @@ class UserRepositoryImpl @Inject constructor(
     private val databaseModel: UsersCollectionModel
 ) : UserRepository {
 
-    override fun registration(email: String, password: String): String {
-        val regResult = Tasks.await(firebaseAuth.createUserWithEmailAndPassword(email, password))
-        return regResult.user!!.uid
-    }
-
     override fun setUserData(user: User) {
         val path = if (user.image != null) {
             val snapshot = Tasks.await(saveImage(user.image))
@@ -44,7 +39,8 @@ class UserRepositoryImpl @Inject constructor(
             val path: String =
                 imageHelper.let { "${it.folder}/${it.getFileName(firebaseAuth.uid!!)}.${it.jpegFileFormat}" }
             val islandRef = storage.child(path)
-            Tasks.await(islandRef.getBytes(imageHelper.imageBuffer))
+            val arrayBytes = Tasks.await(islandRef.getBytes(imageHelper.imageBuffer))
+            arrayBytes
         } else null
 
         return User(firebaseAuth.uid!!, userData.firstName, userData.lastName, image)
@@ -63,9 +59,8 @@ class UserRepositoryImpl @Inject constructor(
             databaseModel.getUsers().getColumns().lastName to userData.lastName,
             databaseModel.getUsers().getColumns().image to userData.image
         )
-        val saveDataTask = database.collection(databaseModel.getUsers().collectionName)
+        database.collection(databaseModel.getUsers().collectionName)
             .document(firebaseAuth.uid!!)
             .set(user)
-        Tasks.await(saveDataTask)
     }
 }

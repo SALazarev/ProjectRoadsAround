@@ -11,7 +11,6 @@
     <string name="mail_sent">Письмо восстановления пароля отправлено на указанный адрес</string>
     <string name="auth_successful">Авторизация прошла успешно</string>
     <string name="auth_fields_empty">Поля авторизации не заполнены</string>
-    <string name="auth_not_success">Авторизация не состоялась</string>
     <string name="first_name">Имя</string>
     <string name="last_name">Фамилия</string>
     <string name="authentication">Авторизация</string>
@@ -33,4 +32,6 @@
     <string name="par_chat">Чат участников</string>
     <string name="send">Отправить</string>
     <string name="сould_not_load_data">Не удалось загрузить данные</string>
+    <string name="auth_unsuccessful">Авторизация не состоялась</string>
+    <string name="reset_pass_unsuccessfull">Не удалось сбросить пароль</string>
 </resources>

@@ -55,7 +55,7 @@ class RegFragment : Fragment() {
     }
 
     private fun setObservers() {
-        viewModel.result.observe(requireActivity(), { resultStatus ->
+        viewModel.result.observe(viewLifecycleOwner, { resultStatus ->
             if (resultStatus) {
                 (activity as MainActivity)
                     .navController
@@ -64,7 +64,7 @@ class RegFragment : Fragment() {
                 requireActivity().toast(getString(R.string.reg_unsuccessful))
             }
         })
-        viewModel.progress.observe(requireActivity(), { loadStatus ->
+        viewModel.progress.observe(viewLifecycleOwner, { loadStatus ->
             if (loadStatus) binding.progressBar.visibility = View.VISIBLE
             else binding.progressBar.visibility = View.INVISIBLE
         })

@@ -40,24 +40,23 @@ class ProfileFragment : Fragment() {
 
         viewModel =
             ViewModelProvider(this, profileViewModelFactory).get(ProfileViewModel::class.java)
-
-        setObserver()
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         configureToolbar()
+        setObserver()
     }
 
     private fun setObserver() {
 
-        viewModel.userLiveData.observe(requireActivity(), { user ->
+        viewModel.userLiveData.observe(viewLifecycleOwner, { user ->
             if (user == null) requireActivity().toast(getString(R.string.сould_not_load_data))
             else setViewData(user)
         })
 
-        viewModel.progress.observe(requireActivity(), { loadStatus ->
+        viewModel.progress.observe(viewLifecycleOwner, { loadStatus ->
             if (loadStatus) binding.progressBar.visibility = View.VISIBLE
             else binding.progressBar.visibility = View.INVISIBLE
         })
