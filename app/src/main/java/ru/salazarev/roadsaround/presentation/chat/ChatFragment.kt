@@ -11,7 +11,6 @@ import androidx.recyclerview.widget.RecyclerView
 import ru.salazarev.roadsaround.App
 import ru.salazarev.roadsaround.R
 import ru.salazarev.roadsaround.databinding.FragmentChatBinding
-import ru.salazarev.roadsaround.models.domain.Message
 import ru.salazarev.roadsaround.toast
 import javax.inject.Inject
 
@@ -63,19 +62,9 @@ class ChatFragment : Fragment() {
 
     private fun setObserver() {
 
-        viewModel.user.observe(viewLifecycleOwner, { user ->
-            if (user == null) requireActivity().toast(getString(R.string.сould_not_load_data))
-            else {
-                val name = "${user.firstName} ${user.lastName}"
-                binding.rvMessages.adapter =
-                    ChatAdapter(
-                        listOf(
-                            Message(
-                                "451", name, "Привет", "4:52", user.image
-                            )
-                        )
-                    )
-            }
+        viewModel.result.observe(viewLifecycleOwner, { loadStatus ->
+            if (loadStatus) requireActivity().toast("Ок")
+            else requireActivity().toast("Не загрузилось")
 
         })
         viewModel.progress.observe(viewLifecycleOwner, { loadStatus ->

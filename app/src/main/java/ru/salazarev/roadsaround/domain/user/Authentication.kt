@@ -6,4 +6,6 @@ interface Authentication {
     fun authentication(email: String, password: String): String
 
     fun resetPassword(email: String): Boolean
+
+    fun getUserId(): String
 }

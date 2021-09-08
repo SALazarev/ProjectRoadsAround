@@ -4,16 +4,16 @@ import com.google.firebase.firestore.PropertyName
 import ru.salazarev.roadsaround.data.user.UsersCollectionModel
 
 class UserData(
-    @get:PropertyName(UsersCollectionModel.getUsers().getColumns().id)
-    @set:PropertyName(UsersCollectionModel.getUsers().getColumns().id)
+    @get:PropertyName(UsersCollectionModel.getUser().getColumns().id)
+    @set:PropertyName(UsersCollectionModel.getUser().getColumns().id)
     var id: String = "",
-    @get:PropertyName(UsersCollectionModel.getUsers().getColumns().firstName)
-    @set:PropertyName(UsersCollectionModel.getUsers().getColumns().firstName)
+    @get:PropertyName(UsersCollectionModel.getUser().getColumns().firstName)
+    @set:PropertyName(UsersCollectionModel.getUser().getColumns().firstName)
     var firstName: String = "",
-    @get:PropertyName(UsersCollectionModel.getUsers().getColumns().lastName)
-    @set:PropertyName(UsersCollectionModel.getUsers().getColumns().lastName)
+    @get:PropertyName(UsersCollectionModel.getUser().getColumns().lastName)
+    @set:PropertyName(UsersCollectionModel.getUser().getColumns().lastName)
     var lastName: String = "",
-    @get:PropertyName(UsersCollectionModel.getUsers().getColumns().image)
-    @set:PropertyName(UsersCollectionModel.getUsers().getColumns().image)
+    @get:PropertyName(UsersCollectionModel.getUser().getColumns().image)
+    @set:PropertyName(UsersCollectionModel.getUser().getColumns().image)
     var image: String = ""
 )

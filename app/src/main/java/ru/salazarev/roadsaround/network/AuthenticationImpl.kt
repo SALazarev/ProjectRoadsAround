@@ -22,4 +22,6 @@ class AuthenticationImpl @Inject constructor(
         val result = fireBaseAuth.sendPasswordResetEmail(email)
         return result.isSuccessful
     }
+
+    override fun getUserId(): String = fireBaseAuth.uid!!
 }

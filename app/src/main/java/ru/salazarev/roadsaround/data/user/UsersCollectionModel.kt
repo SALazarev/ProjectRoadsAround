@@ -1,7 +1,7 @@
 package ru.salazarev.roadsaround.data.user
 
 object UsersCollectionModel {
-    fun getUsers() = Users
+    fun getUser() = Users
 }
 
 object Users {

@@ -9,6 +9,7 @@ import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import ru.salazarev.roadsaround.data.chat.ChatRepositoryImpl
+import ru.salazarev.roadsaround.data.chat.MessagesCollectionModel
 import ru.salazarev.roadsaround.data.user.UsersCollectionModel
 import ru.salazarev.roadsaround.data.user.ImageStorageHelper
 import ru.salazarev.roadsaround.data.user.UserRepositoryImpl
@@ -35,7 +36,11 @@ interface StorageModule {
 
         @Singleton
         @Provides
-        fun provideDataCollectionsModel(): UsersCollectionModel = UsersCollectionModel
+        fun provideUsersCollectionsModel(): UsersCollectionModel = UsersCollectionModel
+
+        @Singleton
+        @Provides
+        fun provideMessagesCollectionsModel(): MessagesCollectionModel = MessagesCollectionModel
     }
 
     @Binds
