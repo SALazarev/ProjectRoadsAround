@@ -1,6 +1,5 @@
 package ru.salazarev.roadsaround.di
 
-import androidx.lifecycle.MutableLiveData
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -15,7 +14,6 @@ import ru.salazarev.roadsaround.data.user.ImageStorageHelper
 import ru.salazarev.roadsaround.data.user.UserRepositoryImpl
 import ru.salazarev.roadsaround.domain.chat.ChatRepository
 import ru.salazarev.roadsaround.domain.user.UserRepository
-import ru.salazarev.roadsaround.models.domain.User
 import javax.inject.Singleton
 
 @Module
@@ -36,13 +34,6 @@ interface StorageModule {
         @Singleton
         @Provides
         fun provideDataCollectionsModel(): UsersCollectionModel = UsersCollectionModel
-
-        @Provides
-        fun provideUserLiveData(): MutableLiveData<User> = MutableLiveData<User>()
-
-        @Provides
-        fun provideWorkStatusLiveData(): MutableLiveData<UserRepositoryImpl.WorkStatus> =
-            MutableLiveData<UserRepositoryImpl.WorkStatus>()
     }
 
     @Binds

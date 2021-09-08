@@ -23,9 +23,6 @@ class ChatViewModel(
     }
 
     val userLiveData = MutableLiveData<UserChat>()
-    val workStatus: LiveData<UserRepositoryImpl.WorkStatus> = userInteractor.getMessageWorkStatus()
-//    val chatLiveData: LiveData<User> = interactor.getChatMessages()
-//    val workStatus: LiveData<UserRepositoryImpl.WorkStatus> = interactor.getMessageWorkStatus()
 
     /**
      * Наблюдаемое хранилище состояния загрузки данных.
@@ -43,7 +40,7 @@ class ChatViewModel(
 
     private fun loadQuotationList() {
         val user: Single<UserChat?> = Single.fromCallable {
-            return@fromCallable chatInteractor.getUserData()
+            return@fromCallable userInteractor.getUserData()
         }
             .map { user -> UserChat(user!!.firstName,user.lastName,imageConverter.convert(user.image)) }
             .subscribeOn(Schedulers.io())

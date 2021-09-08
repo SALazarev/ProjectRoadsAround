@@ -4,9 +4,7 @@ import dagger.BindsInstance
 import dagger.Component
 import ru.salazarev.roadsaround.App
 import ru.salazarev.roadsaround.di.MainComponent
-import ru.salazarev.roadsaround.presentation.chat.ChatFragment
 import ru.salazarev.roadsaround.util.ImageConverter
-import javax.inject.Singleton
 
 @AppScope
 @Component(modules = [AppModule::class])

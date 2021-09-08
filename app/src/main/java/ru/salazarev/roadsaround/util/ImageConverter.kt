@@ -7,13 +7,7 @@ import android.graphics.drawable.Drawable
 import ru.salazarev.roadsaround.App
 import javax.inject.Inject
 
-class ImageConverter @Inject constructor() {
-    @Inject
-    lateinit var resources: Resources
-
-    init {
-        App.appComponent.inject(this)
-    }
+class ImageConverter @Inject constructor(private val resources: Resources) {
 
     fun convert(byteArray: ByteArray): Drawable = BitmapDrawable(
         resources,

@@ -36,21 +36,4 @@ class ChatRepositoryImpl @Inject constructor(
     override fun getMessageWorkStatus() {
         TODO("Not yet implemented")
     }
-
-    override fun getUserData(): User? {
-        return try {
-            val docRef = database.collection(databaseModel.getUsers().collectionName)
-                .document(firebaseAuth.uid!!)
-            val snapshot = Tasks.await(docRef.get())
-            val userData: UserData = snapshot.toObject<UserData>()!!
-            val path: String =
-                imageHelper.let { "${it.folder}/${it.getFileName(firebaseAuth.uid!!)}.${it.jpegFileFormat}" }
-            val islandRef = storage.child(path)
-            val image = Tasks.await(islandRef.getBytes(imageHelper.imageBuffer))
-            val user = User(userData.firstName, userData.lastName, image)
-            user
-        } catch (e: Exception) {
-            null
-        }
-    }
 }

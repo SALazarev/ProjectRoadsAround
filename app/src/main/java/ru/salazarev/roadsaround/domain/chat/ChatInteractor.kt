@@ -1,9 +1,10 @@
 package ru.salazarev.roadsaround.domain.chat
 
+import ru.salazarev.roadsaround.domain.user.UserRepository
 import ru.salazarev.roadsaround.models.domain.User
 import javax.inject.Inject
 
-class ChatInteractor @Inject constructor(val chatRepository: ChatRepository) {
+class ChatInteractor @Inject constructor(val userRepository: UserRepository) {
 
 
     fun sendMessage(textMessage: String){
@@ -19,5 +20,5 @@ class ChatInteractor @Inject constructor(val chatRepository: ChatRepository) {
 
     }
 
-    fun getUserData(): User? = chatRepository.getUserData()
+    fun getUserData(): User? = userRepository.getUserData()
 }

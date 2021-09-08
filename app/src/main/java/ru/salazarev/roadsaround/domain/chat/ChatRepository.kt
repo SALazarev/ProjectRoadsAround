@@ -7,5 +7,4 @@ interface ChatRepository {
     fun sendMessage(message: Message)
     fun getChatMessages()
     fun getMessageWorkStatus()
-    fun getUserData(): User?
 }

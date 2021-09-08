@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.RecyclerView
 import ru.salazarev.roadsaround.R
 import ru.salazarev.roadsaround.models.domain.Message
 
-class ChatAdapter(val data: List<Message>): RecyclerView.Adapter<MessageViewHolder>() {
+class ChatAdapter(val data: List<Message>) : RecyclerView.Adapter<MessageViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MessageViewHolder {
         return MessageViewHolder(
@@ -18,7 +18,7 @@ class ChatAdapter(val data: List<Message>): RecyclerView.Adapter<MessageViewHold
     }
 
     override fun onBindViewHolder(holder: MessageViewHolder, position: Int) {
-       holder.set(data[position])
+        holder.set(data[position])
     }
 
     override fun getItemCount(): Int = data.size

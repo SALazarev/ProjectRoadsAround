@@ -1,7 +1,5 @@
 package ru.salazarev.roadsaround.presentation.profile
 
-import android.graphics.BitmapFactory
-import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -12,9 +10,8 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import ru.salazarev.roadsaround.App
 import ru.salazarev.roadsaround.R
-import ru.salazarev.roadsaround.data.user.UserRepositoryImpl
 import ru.salazarev.roadsaround.databinding.FragmentProfileBinding
-import ru.salazarev.roadsaround.models.domain.User
+import ru.salazarev.roadsaround.models.presentation.UserChat
 import ru.salazarev.roadsaround.presentation.MainActivity
 import ru.salazarev.roadsaround.toast
 import javax.inject.Inject
@@ -38,46 +35,14 @@ class ProfileFragment : Fragment() {
     ): View {
         _binding = FragmentProfileBinding.inflate(inflater, container, false)
 
-        App.appComponent.getMainComponentBuilder().fragmentManager(childFragmentManager).build().inject(this)
+        App.appComponent.getMainComponentBuilder().fragmentManager(childFragmentManager).build()
+            .inject(this)
 
         viewModel =
             ViewModelProvider(this, profileViewModelFactory).get(ProfileViewModel::class.java)
 
-        viewModel.userLiveData.observe((activity as MainActivity), { user ->
-            setViewData(user)
-        })
-
-        viewModel.workStatus.observe(requireActivity(), { workStatus ->
-            if (workStatus != null) {
-                when (workStatus) {
-                    UserRepositoryImpl.WorkStatus.LOADED -> {
-                        loaded()
-                    }
-                    UserRepositoryImpl.WorkStatus.LOADING -> {
-                        loading()
-                    }
-                    UserRepositoryImpl.WorkStatus.FAIL -> {
-                        loadFail()
-                    }
-                    else -> {
-                    }
-                }
-            }
-        })
+        setObserver()
         return binding.root
-    }
-
-    private fun loaded() {
-        binding.progressBar.visibility = View.INVISIBLE
-    }
-
-    private fun loading() {
-        binding.progressBar.visibility = View.VISIBLE
-    }
-
-    private fun loadFail() {
-        requireActivity().toast(getString(R.string.could_not_load_data_from_networks))
-        binding.progressBar.visibility = View.INVISIBLE
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -85,13 +50,20 @@ class ProfileFragment : Fragment() {
         configureToolbar()
     }
 
-    private fun setViewData(user: User) {
+    private fun setObserver() {
+        viewModel.errors.observe(requireActivity(), {
+            requireActivity().toast("Произошла ошибка")
+        })
+
+        viewModel.userLiveData.observe(requireActivity(), { user ->
+            setViewData(user)
+        })
+    }
+
+    private fun setViewData(user: UserChat) {
         binding.etFirstName.text = user.firstName
         binding.etLastName.text = user.lastName
-        binding.btnUserPhoto.background = BitmapDrawable(
-            resources,
-            BitmapFactory.decodeByteArray(user.image, 0, user.image.size)
-        )
+        binding.btnUserPhoto.background = user.image
     }
 
     private fun configureToolbar() {

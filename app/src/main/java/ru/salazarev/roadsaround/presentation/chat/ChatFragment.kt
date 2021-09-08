@@ -1,7 +1,5 @@
 package ru.salazarev.roadsaround.presentation.chat
 
-import android.graphics.BitmapFactory
-import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -22,6 +20,7 @@ class ChatFragment : Fragment() {
     private var _binding: FragmentChatBinding? = null
     private val binding get() = _binding!!
 
+    @Inject
     lateinit var chatViewModelFactory: ChatViewModelFactory
 
     private lateinit var viewModel: ChatViewModel
@@ -32,7 +31,8 @@ class ChatFragment : Fragment() {
     ): View {
         _binding = FragmentChatBinding.inflate(inflater, container, false)
 
-        //App.appComponent.getMainComponentBuilder().fragmentManager(childFragmentManager).build().inject(this)
+        App.appComponent.getMainComponentBuilder().fragmentManager(childFragmentManager).build()
+            .inject(this)
 
         viewModel =
             ViewModelProvider(this, chatViewModelFactory).get(ChatViewModel::class.java)
