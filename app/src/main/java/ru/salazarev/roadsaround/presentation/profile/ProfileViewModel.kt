@@ -24,7 +24,7 @@ class ProfileViewModel @Inject constructor(
     }
 
     private fun loadQuotationList() {
-        val user: Single<UserChat?> = Single.fromCallable {
+        val single: Single<UserChat?> = Single.fromCallable {
             return@fromCallable interactor.getUserData()
         }.map { user ->
             UserChat(
@@ -38,6 +38,6 @@ class ProfileViewModel @Inject constructor(
             .doFinally { progress.value = false }
             .doOnSubscribe { progress.value = true }
 
-        user.subscribe(userLiveData::setValue) { userLiveData.value = null }
+        single.subscribe(userLiveData::setValue) { userLiveData.value = null }
     }
 }

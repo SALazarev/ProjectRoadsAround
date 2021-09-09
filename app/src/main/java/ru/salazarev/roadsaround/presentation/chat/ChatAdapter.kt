@@ -5,8 +5,9 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import ru.salazarev.roadsaround.R
 import ru.salazarev.roadsaround.models.domain.Message
+import ru.salazarev.roadsaround.models.presentation.MessageChat
 
-class ChatAdapter(val data: List<Message>) : RecyclerView.Adapter<MessageViewHolder>() {
+class ChatAdapter(val data: List<MessageChat>) : RecyclerView.Adapter<MessageViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MessageViewHolder {
         return MessageViewHolder(

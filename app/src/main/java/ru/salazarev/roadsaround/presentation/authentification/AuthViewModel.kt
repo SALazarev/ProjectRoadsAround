@@ -32,7 +32,7 @@ class AuthViewModel @Inject constructor(private val interactor: UserInteractor) 
     }
 
     fun resetPassword(email: String) {
-        val user: Single<Boolean> = Single.fromCallable {
+        val single: Single<Boolean> = Single.fromCallable {
             return@fromCallable interactor.resetUserPassword(email)
         }
             .subscribeOn(Schedulers.io())
@@ -40,6 +40,6 @@ class AuthViewModel @Inject constructor(private val interactor: UserInteractor) 
             .doFinally { progress.value = false }
             .doOnSubscribe { progress.value = true }
 
-        user.subscribe(resetPassStatus::setValue) { resetPassStatus.value = false }
+        single.subscribe(resetPassStatus::setValue) { resetPassStatus.value = false }
     }
 }

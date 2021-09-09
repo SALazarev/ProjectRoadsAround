@@ -53,6 +53,7 @@ class ChatFragment : Fragment() {
             }
 
             setObserver()
+            viewModel.getMessages()
         }
     }
 
@@ -70,6 +71,10 @@ class ChatFragment : Fragment() {
         viewModel.progress.observe(viewLifecycleOwner, { loadStatus ->
             if (loadStatus) binding.progressBar.visibility = View.VISIBLE
             else binding.progressBar.visibility = View.INVISIBLE
+        })
+
+        viewModel.messages.observe(viewLifecycleOwner,{ messages ->
+            binding.rvMessages.adapter = ChatAdapter(messages)
         })
     }
 

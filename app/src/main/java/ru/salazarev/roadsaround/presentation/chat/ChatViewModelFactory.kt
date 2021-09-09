@@ -9,10 +9,11 @@ import javax.inject.Inject
 
 class ChatViewModelFactory @Inject constructor(
     private val chatInteractor: ChatInteractor,
+    private val imageConverter: ImageConverter
 ) : ViewModelProvider.Factory {
 
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel?> create(aClass: Class<T>): T {
-        return ChatViewModel(chatInteractor) as T
+        return ChatViewModel(chatInteractor,imageConverter) as T
     }
 }
