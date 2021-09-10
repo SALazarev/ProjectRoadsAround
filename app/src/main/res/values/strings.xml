@@ -35,4 +35,7 @@
     <string name="auth_unsuccessful">Авторизация не состоялась</string>
     <string name="reset_pass_unsuccessfull">Не удалось сбросить пароль</string>
     <string name="message_load_unsuccess">Не удалось загрузить сообщение</string>
+    <string name="name">Имя</string>
+    <string name="text_message">Текст сообщения</string>
+    <string name="time">Время</string>
 </resources>

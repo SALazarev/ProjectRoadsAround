@@ -28,5 +28,6 @@ class MessageDiffUtilCallback(private val oldList: List<MessageChat>,
         return oldItem.name == newItem.name
                 && oldItem.message == newItem.message
                 && oldItem.time == newItem.time
+                && oldItem.photo?.constantState == newItem.photo?.constantState
     }
 }

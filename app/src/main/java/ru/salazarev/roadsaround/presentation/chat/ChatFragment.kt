@@ -1,11 +1,14 @@
 package ru.salazarev.roadsaround.presentation.chat
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.content.res.AppCompatResources.getDrawable
+import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import ru.salazarev.roadsaround.App
@@ -13,6 +16,7 @@ import ru.salazarev.roadsaround.R
 import ru.salazarev.roadsaround.databinding.FragmentChatBinding
 import ru.salazarev.roadsaround.toast
 import javax.inject.Inject
+
 
 class ChatFragment : Fragment() {
 
@@ -48,6 +52,15 @@ class ChatFragment : Fragment() {
         adapter = ChatAdapter()
         binding.rvMessages.adapter = adapter
 
+        val itemDecoration = DividerItemDecoration(
+            context,
+            DividerItemDecoration.VERTICAL
+        )
+            itemDecoration.setDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.rv_divider)!!)
+        binding.rvMessages.addItemDecoration(
+            itemDecoration
+        )
+
         binding.includeToolbar.includeToolbar.apply {
             inflateMenu(R.menu.toolbar_chat_menu)
             title = "Тестовый чат"
@@ -79,6 +92,7 @@ class ChatFragment : Fragment() {
 
         viewModel.messages.observe(viewLifecycleOwner, { messages ->
             adapter.setItems(messages)
+            binding.rvMessages.scrollToPosition(adapter.itemCount - 1)
         })
 
         viewModel.test.observe(viewLifecycleOwner, {

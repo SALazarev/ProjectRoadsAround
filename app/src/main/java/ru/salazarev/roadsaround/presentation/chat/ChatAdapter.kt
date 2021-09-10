@@ -34,4 +34,6 @@ class ChatAdapter(var data: List<MessageChat> = mutableListOf()) : RecyclerView.
         data = items
         diffResult.dispatchUpdatesTo(this)
     }
+
+
 }
