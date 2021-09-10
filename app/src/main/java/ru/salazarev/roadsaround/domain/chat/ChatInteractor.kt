@@ -53,14 +53,13 @@ class ChatInteractor @Inject constructor(
 
     fun test(source: PublishSubject<String>){
         val sss = PublishSubject.create<String>()
-            sss.subscribeOn(Schedulers.io()).observeOn(Schedulers.io())
-            sss.subscribe({
+            sss.subscribe({ name ->
                 val single: Single<User> = Single.fromCallable {
                     return@fromCallable userInteractor.getUserData()
                 }
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
-                single.subscribe({source.onNext(it.firstName)}) { Log.d("TAG","Беда") }
+                single.subscribe({source.onNext("$name +${it.firstName}")}) { Log.d("TAG","Беда") }
             }){}
         chatRepository.test(sss)
     }
