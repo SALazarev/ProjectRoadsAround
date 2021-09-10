@@ -50,14 +50,20 @@ class ChatInteractor @Inject constructor(
         })
     }
 
-    fun test(){
+    fun test(source: PublishSubject<String>){
         chatRepository.test().subscribe(object: Observer<String> {
             override fun onSubscribe(d: Disposable?) {
 
             }
 
             override fun onNext(t: String?) {
-                test2(t!!)
+                val single: Single<User> = Single.fromCallable {
+                    return@fromCallable userInteractor.getUserData()
+                }
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+
+                single.subscribe({source.onNext("${it.firstName} $t")}) { Log.d("TAG",it.toString()) }
             }
 
             override fun onError(e: Throwable?) {
@@ -69,19 +75,4 @@ class ChatInteractor @Inject constructor(
 
         })
     }
-
-    private fun test2(t: String) {
-        val single: Single<User> = Single.fromCallable {
-            return@fromCallable userInteractor.getUserData()
-        }
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-
-        single.subscribe({test3(it,t)}) { Log.d("TAG",it.toString()) }
-    }
-
-    private fun test3(user: User, message: String){
-        Log.d("TAG","${user.firstName} $message")
-    }
-
 }

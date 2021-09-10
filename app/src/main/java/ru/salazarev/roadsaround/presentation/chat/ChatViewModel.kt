@@ -61,7 +61,9 @@ class ChatViewModel(
 //
 //        completable.subscribe({  }) {  }
 
-      val observable = chatInteractor.test()
+        val source = PublishSubject.create<String>()
+        source.subscribe(test::setValue)
+      chatInteractor.test(source)
 //        observable.subscribe(object: Observer<String>{
 //            override fun onSubscribe(d: Disposable?) {
 //
