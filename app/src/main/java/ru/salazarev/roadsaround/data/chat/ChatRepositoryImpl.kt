@@ -1,5 +1,6 @@
 package ru.salazarev.roadsaround.data.chat
 
+import com.google.android.gms.tasks.Tasks
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FieldValue
 import io.reactivex.rxjava3.subjects.PublishSubject
@@ -15,12 +16,13 @@ class ChatRepositoryImpl @Inject constructor(
     override fun sendMessage(authorId: String, textMessage: String) {
         val ref = collectionRef.document()
         val message = hashMapOf(
-            databaseModel.getMessage().getColumns().id to collectionRef.id,
+            databaseModel.getMessage().getColumns().id to ref.id,
             databaseModel.getMessage().getColumns().authorId to authorId,
             databaseModel.getMessage().getColumns().text to textMessage,
             databaseModel.getMessage().getColumns().time to FieldValue.serverTimestamp()
         )
-        ref.set(message)
+      Tasks.await(ref.set(message))
+
     }
 
     override fun getChatMessages(callback: PublishSubject<List<MessageData>>) {

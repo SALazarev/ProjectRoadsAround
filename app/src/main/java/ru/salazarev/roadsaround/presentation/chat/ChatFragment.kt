@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.content.res.AppCompatResources.getDrawable
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -48,7 +47,6 @@ class ChatFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         adapter = ChatAdapter()
         binding.rvMessages.adapter = adapter
 
@@ -56,7 +54,12 @@ class ChatFragment : Fragment() {
             context,
             DividerItemDecoration.VERTICAL
         )
-            itemDecoration.setDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.rv_divider)!!)
+        itemDecoration.setDrawable(
+            ContextCompat.getDrawable(
+                requireContext(),
+                R.drawable.rv_divider
+            )!!
+        )
         binding.rvMessages.addItemDecoration(
             itemDecoration
         )
@@ -65,8 +68,10 @@ class ChatFragment : Fragment() {
             inflateMenu(R.menu.toolbar_chat_menu)
             title = "Тестовый чат"
 
-            binding.rvMessages.layoutManager =
-                LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
+            val layoutManager =  LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
+                layoutManager.stackFromEnd = true
+            binding.rvMessages.layoutManager =layoutManager
+
 
             binding.btnSend.setOnClickListener {
                 sendMessage()
@@ -78,7 +83,11 @@ class ChatFragment : Fragment() {
     }
 
     private fun sendMessage() {
-        viewModel.sendMessage(binding.etEnterText.text.toString())
+        if (binding.etEnterText.text.toString().trim().isNotEmpty()){
+            binding.btnSend.isEnabled = false
+            viewModel.sendMessage(binding.etEnterText.text.toString())
+        }
+        else requireActivity().toast(getString(R.string.incorrectly_entered_text))
     }
 
     private fun setObserver() {
@@ -91,8 +100,11 @@ class ChatFragment : Fragment() {
         })
 
         viewModel.messages.observe(viewLifecycleOwner, { messages ->
+            binding.btnSend.isEnabled = true
             adapter.setItems(messages)
             binding.rvMessages.scrollToPosition(adapter.itemCount - 1)
+            binding.etEnterText.setText("")
+
         })
 
         viewModel.test.observe(viewLifecycleOwner, {

@@ -29,13 +29,21 @@ class ChatViewModel(
             .doFinally { progress.value = false }
             .doOnSubscribe { progress.value = true }
 
-        completable.subscribe({ result.value = true }) { result.value = false }
+        completable.subscribe({test2() }) { result.value = false }
+    }
+
+    private fun test2() {
+        result.value = true
     }
 
     fun getMessages() {
         val callback = PublishSubject.create<List<Message>>()
-        callback.subscribe(::getMessagesInLiveData)
+        callback.subscribe(::getMessagesInLiveData){test()}
         chatInteractor.getChatMessages(callback)
+    }
+
+    fun test(){
+        progress.value = false
     }
 
     private fun getMessagesInLiveData(data: List<Message>){

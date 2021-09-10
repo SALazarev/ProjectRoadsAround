@@ -15,11 +15,7 @@ class MessageDiffUtilCallback(private val oldList: List<MessageChat>,
     }
 
     override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-        val oldElement = oldList[oldItemPosition]
-        val newElement = newList[newItemPosition]
-        val oldId: String = oldElement.id
-        val newId: String = newElement.id
-        return oldId == newId
+        return oldList[oldItemPosition].id == newList[newItemPosition].id
     }
 
     override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
@@ -28,6 +24,5 @@ class MessageDiffUtilCallback(private val oldList: List<MessageChat>,
         return oldItem.name == newItem.name
                 && oldItem.message == newItem.message
                 && oldItem.time == newItem.time
-                && oldItem.photo?.constantState == newItem.photo?.constantState
     }
 }

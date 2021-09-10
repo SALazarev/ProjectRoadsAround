@@ -38,4 +38,5 @@
     <string name="name">Имя</string>
     <string name="text_message">Текст сообщения</string>
     <string name="time">Время</string>
+    <string name="incorrectly_entered_text">Некорректно введённый текст</string>
 </resources>
