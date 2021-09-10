@@ -4,6 +4,7 @@ import android.util.Log
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.*
 import io.reactivex.rxjava3.disposables.Disposable
+import io.reactivex.rxjava3.processors.PublishProcessor
 import io.reactivex.rxjava3.schedulers.Schedulers
 import io.reactivex.rxjava3.subjects.AsyncSubject
 import io.reactivex.rxjava3.subjects.PublishSubject
@@ -51,28 +52,16 @@ class ChatInteractor @Inject constructor(
     }
 
     fun test(source: PublishSubject<String>){
-        chatRepository.test().subscribe(object: Observer<String> {
-            override fun onSubscribe(d: Disposable?) {
-
-            }
-
-            override fun onNext(t: String?) {
+        val sss = PublishSubject.create<String>()
+            sss.subscribeOn(Schedulers.io()).observeOn(Schedulers.io())
+            sss.subscribe({
                 val single: Single<User> = Single.fromCallable {
                     return@fromCallable userInteractor.getUserData()
                 }
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
-
-                single.subscribe({source.onNext("${it.firstName} $t")}) { Log.d("TAG",it.toString()) }
-            }
-
-            override fun onError(e: Throwable?) {
-            }
-
-            override fun onComplete() {
-
-            }
-
-        })
+                single.subscribe({source.onNext(it.firstName)}) { Log.d("TAG","Беда") }
+            }){}
+        chatRepository.test(sss)
     }
 }

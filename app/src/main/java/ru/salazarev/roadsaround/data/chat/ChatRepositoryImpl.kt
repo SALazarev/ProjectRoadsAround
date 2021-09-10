@@ -2,9 +2,11 @@ package ru.salazarev.roadsaround.data.chat
 
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
+import io.reactivex.rxjava3.core.Flowable
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.core.ObservableEmitter
 import io.reactivex.rxjava3.core.ObservableOnSubscribe
+import io.reactivex.rxjava3.subjects.PublishSubject
 import ru.salazarev.roadsaround.domain.chat.ChatRepoListener
 import ru.salazarev.roadsaround.domain.chat.ChatRepository
 import ru.salazarev.roadsaround.models.data.MessageData
@@ -47,36 +49,24 @@ class ChatRepositoryImpl @Inject constructor(
             }
         }
 
-        val handler: ObservableOnSubscribe<List<MessageData>> = object: ObservableOnSubscribe<List<MessageData>>{
-            override fun subscribe(emitter: ObservableEmitter<List<MessageData>>?) {
-                TODO("Not yet implemented")
-            }
+        val handler: ObservableOnSubscribe<List<MessageData>> =
+            object : ObservableOnSubscribe<List<MessageData>> {
+                override fun subscribe(emitter: ObservableEmitter<List<MessageData>>?) {
+                    TODO("Not yet implemented")
+                }
 
-        }
+            }
         return Observable.create(handler)
     }
 
-    override fun test(): Observable<String>{
-        val executor: ScheduledExecutorService = Executors.newSingleThreadScheduledExecutor()
-        val handler = ObservableOnSubscribe { emitter: ObservableEmitter<String> ->
-            val future: Future<*> = executor.submit {
-
-                docRef.addSnapshotListener { snapshot, error ->
-                    if (snapshot != null && snapshot.metadata.hasPendingWrites()) {
-                        //local
-                    } else {
-                        val data: List<MessageData> = snapshot!!.toObjects(MessageData::class.java)
-                        emitter.onNext("Сообщение отправлено")
-                    }
-                }
-            }
-            emitter.setCancellable {
-                future.cancel(
-                    false
-                )
+    override fun test(obser: PublishSubject<String>) {
+        docRef.addSnapshotListener { snapshot, error ->
+            if (snapshot != null && snapshot.metadata.hasPendingWrites()) {
+            } else {
+                val data: List<MessageData> = snapshot!!.toObjects(MessageData::class.java)
+                obser.onNext("Сообщение отправлено")
             }
         }
-        return Observable.create(handler)
     }
 
 }
