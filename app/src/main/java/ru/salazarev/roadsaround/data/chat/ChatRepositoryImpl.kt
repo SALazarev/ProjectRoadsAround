@@ -38,25 +38,14 @@ class ChatRepositoryImpl @Inject constructor(
         ref.set(message)
     }
 
-    override fun getChatMessages(listener: ChatRepoListener): Observable<List<MessageData>> {
-
+    override fun getChatMessages(callback: PublishSubject<List<MessageData>>) {
         docRef.addSnapshotListener { snapshot, error ->
             if (snapshot != null && snapshot.metadata.hasPendingWrites()) {
-                //local
             } else {
                 val data: List<MessageData> = snapshot!!.toObjects(MessageData::class.java)
-                listener.getData(data)
+                callback.onNext(data)
             }
         }
-
-        val handler: ObservableOnSubscribe<List<MessageData>> =
-            object : ObservableOnSubscribe<List<MessageData>> {
-                override fun subscribe(emitter: ObservableEmitter<List<MessageData>>?) {
-                    TODO("Not yet implemented")
-                }
-
-            }
-        return Observable.create(handler)
     }
 
     override fun test(obser: PublishSubject<String>) {

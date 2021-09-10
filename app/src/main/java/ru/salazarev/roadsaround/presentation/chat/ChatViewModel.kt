@@ -61,26 +61,25 @@ class ChatViewModel(
 //
 //        completable.subscribe({  }) {  }
 
-        val source = PublishSubject.create<String>()
-        source.subscribe(test::setValue)
-      chatInteractor.test(source)
-//        observable.subscribe(object: Observer<String>{
-//            override fun onSubscribe(d: Disposable?) {
-//
-//            }
-//
-//            override fun onNext(t: String?) {
-//                test.value = t
-//            }
-//
-//            override fun onError(e: Throwable?) {
-//                test.value = e.toString()
-//            }
-//
-//            override fun onComplete() {
-//
-//            }
-//
-//        })
+        val callback = PublishSubject.create<List<Message>>()
+        callback.subscribe(::test)
+        chatInteractor.getChatMessages(callback)
+
+//        val source = PublishSubject.create<String>()
+//        source.subscribe(test::setValue)
+//      chatInteractor.test(source)
+    }
+
+    fun test(data: List<Message>){
+        messages.value = data.map{
+            MessageChat(
+                it.id,
+                it.idAuthor,
+                it.name,
+                it.message,
+                it.time,
+                imageConverter.convert(it.image!!)
+            )
+        }
     }
 }
