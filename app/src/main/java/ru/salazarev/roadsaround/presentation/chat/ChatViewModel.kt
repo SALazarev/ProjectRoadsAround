@@ -62,23 +62,23 @@ class ChatViewModel(
 //        completable.subscribe({  }) {  }
 
       val observable = chatInteractor.test()
-        observable.subscribe(object: Observer<String>{
-            override fun onSubscribe(d: Disposable?) {
-
-            }
-
-            override fun onNext(t: String?) {
-                test.value = t
-            }
-
-            override fun onError(e: Throwable?) {
-                test.value = e.toString()
-            }
-
-            override fun onComplete() {
-
-            }
-
-        })
+//        observable.subscribe(object: Observer<String>{
+//            override fun onSubscribe(d: Disposable?) {
+//
+//            }
+//
+//            override fun onNext(t: String?) {
+//                test.value = t
+//            }
+//
+//            override fun onError(e: Throwable?) {
+//                test.value = e.toString()
+//            }
+//
+//            override fun onComplete() {
+//
+//            }
+//
+//        })
     }
 }

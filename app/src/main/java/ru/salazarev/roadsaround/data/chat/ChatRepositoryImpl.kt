@@ -18,11 +18,13 @@ class ChatRepositoryImpl @Inject constructor(
     private val database: FirebaseFirestore,
     private val databaseModel: MessagesCollectionModel
 ) : ChatRepository {
+    private val docRef = database
+        .collection("chats").document("test_chat")
+        .collection("messages")
+
     override fun sendMessage(authorId: String, textMessage: String) {
 
-        val docRef = database
-            .collection("chats").document("test_chat")
-            .collection("messages").document()
+        val ref = docRef.document()
 
         val message = hashMapOf(
             databaseModel.getMessage().getColumns().id to docRef.id,
@@ -31,13 +33,10 @@ class ChatRepositoryImpl @Inject constructor(
             databaseModel.getMessage().getColumns().time to FieldValue.serverTimestamp()
         )
 
-        docRef.set(message)
+        ref.set(message)
     }
 
     override fun getChatMessages(listener: ChatRepoListener): Observable<List<MessageData>> {
-        val docRef = database
-            .collection("chats").document("test_chat")
-            .collection("messages")
 
         docRef.addSnapshotListener { snapshot, error ->
             if (snapshot != null && snapshot.metadata.hasPendingWrites()) {
@@ -61,9 +60,6 @@ class ChatRepositoryImpl @Inject constructor(
         val executor: ScheduledExecutorService = Executors.newSingleThreadScheduledExecutor()
         val handler = ObservableOnSubscribe { emitter: ObservableEmitter<String> ->
             val future: Future<*> = executor.submit {
-                val docRef = database
-                    .collection("chats").document("test_chat")
-                    .collection("messages")
 
                 docRef.addSnapshotListener { snapshot, error ->
                     if (snapshot != null && snapshot.metadata.hasPendingWrites()) {

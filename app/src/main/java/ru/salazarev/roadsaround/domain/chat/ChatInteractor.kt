@@ -1,12 +1,21 @@
 package ru.salazarev.roadsaround.domain.chat
 
-import io.reactivex.rxjava3.core.Observable
+import android.util.Log
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.core.*
+import io.reactivex.rxjava3.disposables.Disposable
+import io.reactivex.rxjava3.schedulers.Schedulers
 import io.reactivex.rxjava3.subjects.AsyncSubject
 import io.reactivex.rxjava3.subjects.PublishSubject
 import ru.salazarev.roadsaround.domain.user.Authentication
 import ru.salazarev.roadsaround.domain.user.UserInteractor
 import ru.salazarev.roadsaround.models.data.MessageData
 import ru.salazarev.roadsaround.models.domain.Message
+import ru.salazarev.roadsaround.models.domain.User
+import ru.salazarev.roadsaround.models.presentation.UserChat
+import java.util.concurrent.Executors
+import java.util.concurrent.Future
+import java.util.concurrent.ScheduledExecutorService
 import javax.inject.Inject
 
 class ChatInteractor @Inject constructor(
@@ -41,6 +50,38 @@ class ChatInteractor @Inject constructor(
         })
     }
 
-    fun test() = chatRepository.test()
+    fun test(){
+        chatRepository.test().subscribe(object: Observer<String> {
+            override fun onSubscribe(d: Disposable?) {
+
+            }
+
+            override fun onNext(t: String?) {
+                test2(t!!)
+            }
+
+            override fun onError(e: Throwable?) {
+            }
+
+            override fun onComplete() {
+
+            }
+
+        })
+    }
+
+    private fun test2(t: String) {
+        val single: Single<User> = Single.fromCallable {
+            return@fromCallable userInteractor.getUserData()
+        }
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+
+        single.subscribe({test3(it,t)}) { Log.d("TAG",it.toString()) }
+    }
+
+    private fun test3(user: User, message: String){
+        Log.d("TAG","${user.firstName} $message")
+    }
 
 }
