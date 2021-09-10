@@ -8,9 +8,10 @@
 
     <ImageView
         android:id="@+id/iv_user_photo"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:layout_gravity="bottom" />
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:layout_gravity="bottom"
+        android:background="@mipmap/ic_launcher_round"/>
 
     <LinearLayout
         android:id="@+id/ll_message_place"

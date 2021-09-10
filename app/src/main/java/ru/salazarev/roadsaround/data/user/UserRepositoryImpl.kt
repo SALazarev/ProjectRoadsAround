@@ -8,6 +8,7 @@ import com.google.firebase.storage.UploadTask
 import ru.salazarev.roadsaround.domain.user.UserRepository
 import ru.salazarev.roadsaround.models.data.UserData
 import ru.salazarev.roadsaround.models.domain.User
+import java.util.concurrent.ExecutionException
 import javax.inject.Inject
 
 class UserRepositoryImpl @Inject constructor(
@@ -38,7 +39,9 @@ class UserRepositoryImpl @Inject constructor(
             val path: String =
                 imageHelper.let { "${it.folder}/${it.getFileName(id)}.${it.jpegFileFormat}" }
             val islandRef = storage.child(path)
-            val arrayBytes = Tasks.await(islandRef.getBytes(imageHelper.imageBuffer))
+            val arrayBytes = try{
+                Tasks.await(islandRef.getBytes(imageHelper.imageBuffer))
+            } catch (e: ExecutionException){null}
             arrayBytes
         } else null
 

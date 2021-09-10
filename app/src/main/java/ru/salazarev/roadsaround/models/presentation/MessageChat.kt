@@ -8,5 +8,5 @@ data class MessageChat(
     val name: String,
     val message: String,
     val time: String,
-    val photo: Drawable
+    val photo: Drawable?
 )

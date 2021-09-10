@@ -40,13 +40,14 @@ class ChatViewModel(
 
     private fun getMessagesInLiveData(data: List<Message>){
         messages.value = data.map{
+            val image =  if (it.image!=null) imageConverter.convert(it.image) else null
             MessageChat(
                 it.id,
                 it.idAuthor,
                 it.name,
                 it.message,
                 it.time,
-                imageConverter.convert(it.image!!)
+                image
             )
         }
     }

@@ -11,7 +11,7 @@ class MessageViewHolder(item: View): RecyclerView.ViewHolder(item){
 
     fun set(data: MessageChat) {
         binding.apply {
-            ivUserPhoto.background = data.photo
+            data.photo?.let{ivUserPhoto.background = it}
             tvName.text = data.name
             tvMessage.text = data.message
             tvTime.text = data.time
