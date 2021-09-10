@@ -76,6 +76,10 @@ class ChatFragment : Fragment() {
         viewModel.messages.observe(viewLifecycleOwner,{ messages ->
             binding.rvMessages.adapter = ChatAdapter(messages)
         })
+
+        viewModel.test.observe(viewLifecycleOwner,{
+            requireActivity().toast(it)
+        })
     }
 
     override fun onDestroyView() {

@@ -5,8 +5,11 @@ import androidx.lifecycle.ViewModel
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.core.Observer
 import io.reactivex.rxjava3.core.Single
+import io.reactivex.rxjava3.disposables.Disposable
 import io.reactivex.rxjava3.schedulers.Schedulers
+import io.reactivex.rxjava3.subjects.AsyncSubject
 import io.reactivex.rxjava3.subjects.PublishSubject
 import ru.salazarev.roadsaround.domain.chat.ChatDomainListener
 import ru.salazarev.roadsaround.domain.chat.ChatInteractor
@@ -22,6 +25,7 @@ class ChatViewModel(
     val progress = MutableLiveData<Boolean>()
     val result = MutableLiveData<Boolean>()
     val messages = MutableLiveData<List<MessageChat>>()
+    val test = MutableLiveData<String>()
 
     fun sendMessage(text: String) {
         val completable = Completable.fromCallable {
@@ -36,25 +40,45 @@ class ChatViewModel(
     }
 
     fun getMessages() {
-        val completable = Completable.fromCallable {
-            return@fromCallable chatInteractor.getChatMessages(object: ChatDomainListener{
-                override fun getData(data: List<Message>) {
-                    messages.value = data.map{
-                        MessageChat(
-                            it.id,
-                            it.idAuthor,
-                            it.name,
-                            it.message,
-                            it.time,
-                            imageConverter.convert(it.image!!)
-                        )
-                    }
-                }
-            })
-        }
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
+//        val completable = Completable.fromCallable {
+//            return@fromCallable chatInteractor.getChatMessages(object: ChatDomainListener{
+//                override fun getData(data: List<Message>) {
+//                    messages.value = data.map{
+//                        MessageChat(
+//                            it.id,
+//                            it.idAuthor,
+//                            it.name,
+//                            it.message,
+//                            it.time,
+//                            imageConverter.convert(it.image!!)
+//                        )
+//                    }
+//                }
+//            })
+//        }
+//            .subscribeOn(Schedulers.io())
+//            .observeOn(AndroidSchedulers.mainThread())
+//
+//        completable.subscribe({  }) {  }
 
-        completable.subscribe({  }) {  }
+      val observable = chatInteractor.test()
+        observable.subscribe(object: Observer<String>{
+            override fun onSubscribe(d: Disposable?) {
+
+            }
+
+            override fun onNext(t: String?) {
+                test.value = t
+            }
+
+            override fun onError(e: Throwable?) {
+                test.value = e.toString()
+            }
+
+            override fun onComplete() {
+
+            }
+
+        })
     }
 }

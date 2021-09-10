@@ -1,5 +1,8 @@
 package ru.salazarev.roadsaround.domain.chat
 
+import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.subjects.AsyncSubject
+import io.reactivex.rxjava3.subjects.PublishSubject
 import ru.salazarev.roadsaround.domain.user.Authentication
 import ru.salazarev.roadsaround.domain.user.UserInteractor
 import ru.salazarev.roadsaround.models.data.MessageData
@@ -38,5 +41,6 @@ class ChatInteractor @Inject constructor(
         })
     }
 
+    fun test() = chatRepository.test()
 
 }
