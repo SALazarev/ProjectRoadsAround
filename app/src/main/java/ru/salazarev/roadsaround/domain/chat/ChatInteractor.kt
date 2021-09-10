@@ -1,6 +1,5 @@
 package ru.salazarev.roadsaround.domain.chat
 
-import android.util.Log
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.*
 import io.reactivex.rxjava3.schedulers.Schedulers
@@ -10,6 +9,8 @@ import ru.salazarev.roadsaround.domain.user.UserInteractor
 import ru.salazarev.roadsaround.models.data.MessageData
 import ru.salazarev.roadsaround.models.domain.Message
 import ru.salazarev.roadsaround.models.domain.User
+import java.text.SimpleDateFormat
+import java.util.*
 import javax.inject.Inject
 
 class ChatInteractor @Inject constructor(
@@ -17,8 +18,6 @@ class ChatInteractor @Inject constructor(
     private val userInteractor: UserInteractor,
     private val auth: Authentication
 ) {
-
-
     fun sendMessage(textMessage: String) {
         chatRepository.sendMessage(auth.getUserId(), textMessage)
     }
@@ -31,13 +30,16 @@ class ChatInteractor @Inject constructor(
             }
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-            single.subscribe({callback.onNext(getData(list,it))}){}
+            single.subscribe({ callback.onNext(getMessages(list, it)) }) {}
         }){}
         chatRepository.getChatMessages(localCallback)
     }
 
-    fun getData(data: List<MessageData>, user: User): List<Message> {
+    private fun getMessages(data: List<MessageData>, user: User): List<Message> {
+        val calendar = Calendar.getInstance()
+        val dateFormat = SimpleDateFormat("HH:mm:ss dd/MM/yyyy", Locale.ROOT)
         return data.map {
+            calendar.time = it.time!!.toDate()
             val name =
                 if (user.lastName == "") user.firstName else "${user.firstName} ${user.lastName}"
             Message(
@@ -45,22 +47,9 @@ class ChatInteractor @Inject constructor(
                 it.authorId,
                 name,
                 it.text,
-                it.time!!.toDate().toString(),
+                dateFormat.format(calendar.time),
                 user.image
             )
         }
-    }
-
-    fun test(source: PublishSubject<String>){
-        val sss = PublishSubject.create<String>()
-            sss.subscribe({ name ->
-                val single: Single<User> = Single.fromCallable {
-                    return@fromCallable userInteractor.getUserData()
-                }
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                single.subscribe({source.onNext("$name +${it.firstName}")}) { Log.d("TAG","Беда") }
-            }){}
-        chatRepository.test(sss)
     }
 }

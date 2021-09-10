@@ -1,5 +1,6 @@
 package ru.salazarev.roadsaround.di
 
+import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -17,6 +18,7 @@ import ru.salazarev.roadsaround.domain.chat.ChatRepository
 import ru.salazarev.roadsaround.domain.user.Authentication
 import ru.salazarev.roadsaround.domain.user.UserRepository
 import ru.salazarev.roadsaround.network.AuthenticationImpl
+import javax.inject.Named
 import javax.inject.Singleton
 
 @Module
@@ -41,6 +43,13 @@ interface StorageModule {
         @Singleton
         @Provides
         fun provideMessagesCollectionsModel(): MessagesCollectionModel = MessagesCollectionModel
+
+        @Singleton
+        @Provides
+        @Named(MessagesCollectionModel.getMessage().collectionName)
+        fun provideMessagesCollectionsReference(database: FirebaseFirestore):CollectionReference = database
+            .collection("chats").document("test_chat")
+            .collection("messages")
     }
 
     @Binds
