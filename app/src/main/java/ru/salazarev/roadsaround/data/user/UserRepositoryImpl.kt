@@ -26,6 +26,8 @@ class UserRepositoryImpl @Inject constructor(
         saveData(UserData(user.id, user.firstName, user.lastName, path))
     }
 
+    override fun getUsersData(idList: List<String>) = idList.map { getUserData(it) }
+
     override fun getUserData(id: String): User {
         val docRef = database.collection(databaseModel.getUser().collectionName)
             .document(id)

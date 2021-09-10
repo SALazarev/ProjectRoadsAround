@@ -12,7 +12,6 @@ class ChatRepositoryImpl @Inject constructor(
     @Named(MessagesCollectionModel.getMessage().collectionName) private val collectionRef: CollectionReference,
     private val databaseModel: MessagesCollectionModel
 ) : ChatRepository {
-
     override fun sendMessage(authorId: String, textMessage: String) {
         val ref = collectionRef.document()
         val message = hashMapOf(

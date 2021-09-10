@@ -22,6 +22,8 @@ class UserInteractor @Inject constructor(
 
     fun getUserData(id: String = auth.getUserId()) = repository.getUserData(id)
 
+    fun getUsersData(idList: List<String>): List<User> = repository.getUsersData(idList)
+
     fun userAuthentication(email: String, password: String) {
         auth.authentication(email, password)
     }

@@ -24,6 +24,9 @@ class ChatFragment : Fragment() {
 
     private lateinit var viewModel: ChatViewModel
 
+
+    private lateinit var adapter: ChatAdapter
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -41,6 +44,10 @@ class ChatFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        adapter = ChatAdapter()
+        binding.rvMessages.adapter = adapter
+
         binding.includeToolbar.includeToolbar.apply {
             inflateMenu(R.menu.toolbar_chat_menu)
             title = "Тестовый чат"
@@ -62,22 +69,19 @@ class ChatFragment : Fragment() {
     }
 
     private fun setObserver() {
-
         viewModel.result.observe(viewLifecycleOwner, { loadStatus ->
-            if (loadStatus) requireActivity().toast("Ок")
-            else requireActivity().toast("Не загрузилось")
-
+            if (!loadStatus) requireActivity().toast(getString(R.string.message_load_unsuccess))
         })
         viewModel.progress.observe(viewLifecycleOwner, { loadStatus ->
             if (loadStatus) binding.progressBar.visibility = View.VISIBLE
             else binding.progressBar.visibility = View.INVISIBLE
         })
 
-        viewModel.messages.observe(viewLifecycleOwner,{ messages ->
-            binding.rvMessages.adapter = ChatAdapter(messages)
+        viewModel.messages.observe(viewLifecycleOwner, { messages ->
+            adapter.setItems(messages)
         })
 
-        viewModel.test.observe(viewLifecycleOwner,{
+        viewModel.test.observe(viewLifecycleOwner, {
             requireActivity().toast(it)
         })
     }

@@ -25,20 +25,23 @@ class ChatInteractor @Inject constructor(
     fun getChatMessages(callback: PublishSubject<List<Message>>) {
         val localCallback = PublishSubject.create<List<MessageData>>()
         localCallback.subscribe({ list ->
-            val single: Single<User> = Single.fromCallable {
-                return@fromCallable userInteractor.getUserData()
+            val idList = list.map{it.authorId}.distinct()
+            val single: Single<List<User>> = Single.fromCallable {
+                return@fromCallable userInteractor.getUsersData(idList)
             }
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-            single.subscribe({ callback.onNext(getMessages(list, it)) }) {}
+            single.subscribe({ users -> callback.onNext(getMessages(list.sortedBy { it.time!!.toDate().time }, users.map{it.id to it}.toMap())) }) {}
         }){}
         chatRepository.getChatMessages(localCallback)
     }
 
-    private fun getMessages(data: List<MessageData>, user: User): List<Message> {
+    private fun getMessages(data: List<MessageData>, users: Map<String, User>): List<Message> {
         val calendar = Calendar.getInstance()
         val dateFormat = SimpleDateFormat("HH:mm:ss dd/MM/yyyy", Locale.ROOT)
+
         return data.map {
+            val user: User = users.getValue(it.authorId)
             calendar.time = it.time!!.toDate()
             val name =
                 if (user.lastName == "") user.firstName else "${user.firstName} ${user.lastName}"
