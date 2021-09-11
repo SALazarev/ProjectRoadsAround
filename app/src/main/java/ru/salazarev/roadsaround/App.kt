@@ -6,6 +6,9 @@ import android.widget.Toast
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
+import com.google.firebase.firestore.FirebaseFirestoreSettings
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 import ru.salazarev.roadsaround.di.app.AppComponent
 import ru.salazarev.roadsaround.di.app.DaggerAppComponent
 
@@ -19,6 +22,14 @@ class App : Application() {
     override fun onCreate() {
         super.onCreate()
         appComponent =  DaggerAppComponent.builder().app(this).build()
+        setFireStore()
+    }
+
+    private fun setFireStore() {
+        val settings = FirebaseFirestoreSettings.Builder()
+            .setPersistenceEnabled(false)
+            .build()
+        Firebase.firestore.firestoreSettings = settings
     }
 }
 

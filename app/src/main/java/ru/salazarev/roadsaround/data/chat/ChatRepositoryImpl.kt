@@ -1,5 +1,6 @@
 package ru.salazarev.roadsaround.data.chat
 
+import android.util.Log
 import com.google.android.gms.tasks.Tasks
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FieldValue
@@ -21,8 +22,7 @@ class ChatRepositoryImpl @Inject constructor(
             databaseModel.getMessage().getColumns().text to textMessage,
             databaseModel.getMessage().getColumns().time to FieldValue.serverTimestamp()
         )
-      Tasks.await(ref.set(message))
-
+            ref.set(message).addOnSuccessListener {  Log.d("TAG", "OK") }.addOnFailureListener {  Log.d("TAG", "FAIL") }.addOnCanceledListener {  Log.d("TAG", "SHIT") }.addOnCompleteListener {  Log.d("TAG", "YEAH!") }
     }
 
     override fun getChatMessages(callback: PublishSubject<List<MessageData>>) {

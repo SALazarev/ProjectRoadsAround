@@ -2,6 +2,7 @@ package ru.salazarev.roadsaround.di
 
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.FirebaseFirestoreSettings
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.StorageReference
@@ -30,7 +31,7 @@ interface StorageModule {
 
         @Singleton
         @Provides
-        fun provideFirebaseStorage(): StorageReference = Firebase.storage.reference
+        fun provideFirebaseStorageReference(): StorageReference = Firebase.storage.reference
 
         @Singleton
         @Provides

@@ -4,12 +4,14 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Completable
+import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.schedulers.Schedulers
 import io.reactivex.rxjava3.subjects.PublishSubject
 import ru.salazarev.roadsaround.domain.chat.ChatInteractor
 import ru.salazarev.roadsaround.models.domain.Message
 import ru.salazarev.roadsaround.models.presentation.MessageChat
 import ru.salazarev.roadsaround.util.ImageConverter
+import java.util.concurrent.TimeUnit
 
 class ChatViewModel(
     private val chatInteractor: ChatInteractor,
@@ -29,21 +31,13 @@ class ChatViewModel(
             .doFinally { progress.value = false }
             .doOnSubscribe { progress.value = true }
 
-        completable.subscribe({test2() }) { result.value = false }
-    }
-
-    private fun test2() {
-        result.value = true
+        completable.subscribe({ result.value = true }) { result.value = false }
     }
 
     fun getMessages() {
         val callback = PublishSubject.create<List<Message>>()
-        callback.subscribe(::getMessagesInLiveData){test()}
+        callback.subscribe(::getMessagesInLiveData){progress.value = false}
         chatInteractor.getChatMessages(callback)
-    }
-
-    fun test(){
-        progress.value = false
     }
 
     private fun getMessagesInLiveData(data: List<Message>){

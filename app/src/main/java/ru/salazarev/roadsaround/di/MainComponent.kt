@@ -2,7 +2,6 @@ package ru.salazarev.roadsaround.di
 
 import androidx.fragment.app.FragmentManager
 import dagger.BindsInstance
-import dagger.Component
 import dagger.Subcomponent
 import ru.salazarev.roadsaround.presentation.MainActivity
 import ru.salazarev.roadsaround.presentation.authentification.AuthFragment

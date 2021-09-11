@@ -12,6 +12,7 @@ interface AppComponent {
     fun getMainComponentBuilder(): MainComponent.Builder
 
     fun inject(imageConverter: ImageConverter)
+    fun inject(app: App)
 
     @Component.Builder
     interface Builder {
