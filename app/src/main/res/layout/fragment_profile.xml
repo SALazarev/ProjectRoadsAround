@@ -30,7 +30,7 @@
 
         <ImageView
             android:id="@+id/btn_user_photo"
-            android:layout_marginTop="@dimen/margin_top_view"
+            android:layout_marginTop="@dimen/margin_text_input_view"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -41,7 +41,7 @@
             android:id="@+id/et_first_name"
             android:layout_width="250dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_top_view"
+            android:layout_marginTop="@dimen/margin_text_input_view"
             android:textSize="64sp"
             android:gravity="center"
             app:layout_constraintEnd_toEndOf="@+id/btn_user_photo"
@@ -52,7 +52,7 @@
             android:id="@+id/et_last_name"
             android:layout_width="250dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_top_view"
+            android:layout_marginTop="@dimen/margin_text_input_view"
             android:textSize="64sp"
             android:gravity="center"
             app:layout_constraintEnd_toEndOf="@+id/et_first_name"

@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView
 import ru.salazarev.roadsaround.App
 import ru.salazarev.roadsaround.R
 import ru.salazarev.roadsaround.databinding.FragmentChatBinding
+import ru.salazarev.roadsaround.presentation.MainActivity
 import ru.salazarev.roadsaround.toast
 import javax.inject.Inject
 
@@ -47,6 +48,19 @@ class ChatFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        setRecyclerView()
+        setToolbar()
+        setObserver()
+        binding.btnSend.setOnClickListener { sendMessage() }
+        viewModel.getMessages()
+    }
+
+    private fun setRecyclerView() {
+        val layoutManager = LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
+        layoutManager.stackFromEnd = true
+        binding.rvMessages.layoutManager = layoutManager
+
         adapter = ChatAdapter()
         binding.rvMessages.adapter = adapter
 
@@ -63,31 +77,26 @@ class ChatFragment : Fragment() {
         binding.rvMessages.addItemDecoration(
             itemDecoration
         )
+    }
 
+    private fun setToolbar() {
         binding.includeToolbar.includeToolbar.apply {
             inflateMenu(R.menu.toolbar_chat_menu)
-            title = "Тестовый чат"
-
-            val layoutManager =  LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
-                layoutManager.stackFromEnd = true
-            binding.rvMessages.layoutManager =layoutManager
-
-
-            binding.btnSend.setOnClickListener {
-                sendMessage()
+            title = context.getString(R.string.chat)
+            navigationContentDescription = context.getString(R.string.back)
+            navigationIcon = ContextCompat.getDrawable(context, R.drawable.outline_arrow_back_24)
+            setNavigationOnClickListener {
+                (activity as MainActivity).navController
+                    .navigate(R.id.action_chatFragment_to_mainFragment)
             }
-
-            setObserver()
-            viewModel.getMessages()
         }
     }
 
     private fun sendMessage() {
-        if (binding.etEnterText.text.toString().trim().isNotEmpty()){
-            binding.btnSend.isEnabled = false
+        if (binding.etEnterText.text.toString().trim().isNotEmpty()) {
             viewModel.sendMessage(binding.etEnterText.text.toString())
-        }
-        else requireActivity().toast(getString(R.string.incorrectly_entered_text))
+            binding.etEnterText.setText("")
+        } else requireActivity().toast(getString(R.string.incorrectly_entered_text))
     }
 
     private fun setObserver() {
@@ -100,11 +109,8 @@ class ChatFragment : Fragment() {
         })
 
         viewModel.messages.observe(viewLifecycleOwner, { messages ->
-            binding.btnSend.isEnabled = true
             adapter.setItems(messages)
             binding.rvMessages.scrollToPosition(adapter.itemCount - 1)
-            binding.etEnterText.setText("")
-
         })
 
         viewModel.test.observe(viewLifecycleOwner, {

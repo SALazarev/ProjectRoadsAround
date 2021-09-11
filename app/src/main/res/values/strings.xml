@@ -39,4 +39,18 @@
     <string name="text_message">Текст сообщения</string>
     <string name="time">Время</string>
     <string name="incorrectly_entered_text">Некорректно введённый текст</string>
+    <string name="title">Название</string>
+    <string name="motion_type">Тип движения</string>
+    <string name="add_event">Добавить событие</string>
+    <string name="description">Описание</string>
+    <string name="road">Маршрут</string>
+    <string name="create">Создать</string>
+    <string name="event_creation">Создание события</string>
+    <string name="confirm">Подтвердить</string>
+    <string name="settings_route">Установка маршрута</string>
+    <string name="edit_profile">изменить профиль</string>
+    <string name="back">Назад</string>
+    <string name="cancel_from_profile">выйти из профиля</string>
+    <string name="chat">Чат</string>
+    <string name="select_date">Выберите дату</string>
 </resources>

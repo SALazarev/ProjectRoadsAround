@@ -74,6 +74,7 @@ class RegFragment : Fragment() {
         binding.includeToolbar.includeToolbar.apply {
             inflateMenu(R.menu.toolbar_reg_menu)
             title = context.getString(R.string.registration)
+            navigationContentDescription = context.getString(R.string.back)
             navigationIcon = ContextCompat.getDrawable(context, R.drawable.outline_arrow_back_24)
             setNavigationOnClickListener {
                 (activity as MainActivity)

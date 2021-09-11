@@ -5,7 +5,6 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
-import ru.salazarev.roadsaround.App
 import java.io.ByteArrayOutputStream
 import javax.inject.Inject
 

@@ -39,6 +39,10 @@ class RoutesFragment : Fragment() {
                         (activity as MainActivity).navController.navigate(R.id.action_mainFragment_to_chatFragment)
                         true
                     }
+                    R.id.btn_create_event ->{
+                        (activity as MainActivity).navController.navigate(R.id.action_mainFragment_to_editEventFragment)
+                        true
+                    }
                     else -> super.onOptionsItemSelected(it)
                 }
             }

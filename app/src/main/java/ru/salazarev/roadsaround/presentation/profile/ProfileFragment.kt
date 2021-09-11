@@ -72,7 +72,7 @@ class ProfileFragment : Fragment() {
         binding.includeToolbar.includeToolbar.apply {
             inflateMenu(R.menu.toolbar_profile_menu)
             title = context.getString(R.string.profile)
-            navigationContentDescription = context.getString(R.string.profile)
+            navigationContentDescription = context.getString(R.string.cancel_from_profile)
             navigationIcon = ContextCompat.getDrawable(context, R.drawable.outline_logout_24)
             setNavigationOnClickListener { alertDialog.show() }
         }

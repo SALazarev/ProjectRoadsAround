@@ -1,7 +1,6 @@
 package ru.salazarev.roadsaround.data.chat
 
 import android.util.Log
-import com.google.android.gms.tasks.Tasks
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FieldValue
 import io.reactivex.rxjava3.subjects.PublishSubject
@@ -27,8 +26,8 @@ class ChatRepositoryImpl @Inject constructor(
 
     override fun getChatMessages(callback: PublishSubject<List<MessageData>>) {
         collectionRef.addSnapshotListener { snapshot, error ->
-            if (snapshot == null || !snapshot.metadata.hasPendingWrites()) {
-                val data: List<MessageData> = snapshot!!.toObjects(MessageData::class.java)
+            if (snapshot != null && !snapshot.metadata.hasPendingWrites()) {
+                val data: List<MessageData> = snapshot.toObjects(MessageData::class.java)
                 callback.onNext(data)
             }
         }

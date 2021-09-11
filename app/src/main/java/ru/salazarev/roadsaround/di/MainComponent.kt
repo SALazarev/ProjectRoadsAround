@@ -6,6 +6,8 @@ import dagger.Subcomponent
 import ru.salazarev.roadsaround.presentation.MainActivity
 import ru.salazarev.roadsaround.presentation.authentification.AuthFragment
 import ru.salazarev.roadsaround.presentation.chat.ChatFragment
+import ru.salazarev.roadsaround.presentation.editevent.EditEventFragment
+import ru.salazarev.roadsaround.presentation.editroad.EditRoadFragment
 import ru.salazarev.roadsaround.presentation.main.MainFragment
 import ru.salazarev.roadsaround.presentation.profile.ProfileFragment
 import ru.salazarev.roadsaround.presentation.registration.RegFragment
@@ -22,6 +24,8 @@ interface MainComponent {
     fun inject(routesFragment: RoutesFragment)
     fun inject(chatFragment: ChatFragment)
     fun inject(authFragment: AuthFragment)
+    fun inject(editEventFragment: EditEventFragment)
+    fun inject(editRoadFragment: EditRoadFragment)
 
     @Subcomponent.Builder
     interface Builder {
