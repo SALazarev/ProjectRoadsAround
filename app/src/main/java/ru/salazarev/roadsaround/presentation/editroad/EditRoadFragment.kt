@@ -18,7 +18,6 @@ import com.google.android.gms.maps.SupportMapFragment
 import ru.salazarev.roadsaround.App
 import ru.salazarev.roadsaround.R
 import ru.salazarev.roadsaround.databinding.FragmentEditRoadBinding
-import ru.salazarev.roadsaround.observeOnce
 import ru.salazarev.roadsaround.presentation.MainActivity
 import ru.salazarev.roadsaround.toast
 import javax.inject.Inject
@@ -68,9 +67,21 @@ class EditRoadFragment : Fragment(), OnMapReadyCallback {
     }
 
     private fun setObserver() {
-        viewModel.result.observe(requireActivity(),{result ->
+        viewModel.resultCreateRoute.observe(requireActivity(),{ result ->
             if (!result) requireActivity().toast(getString(R.string.failed_bind_route))
         })
+        viewModel.markers.observe(requireActivity(),{markers ->
+            if (markers==null) requireActivity().toast(getString(R.string.route_not_complete))
+            else completeWork(markers)
+        })
+    }
+
+    private fun completeWork(result: String) {
+        val bundle = Bundle().apply {
+            putString("ROAD", result)
+        }
+        (activity as MainActivity).navController
+            .navigate(R.id.action_editRoadFragment_to_editEventFragment, bundle)
     }
 
     private fun configureToolbar() {
@@ -86,11 +97,7 @@ class EditRoadFragment : Fragment(), OnMapReadyCallback {
             setOnMenuItemClickListener {
                 when (it.itemId) {
                     R.id.btn_complete_edit_road -> {
-                        val bundle = Bundle().apply {
-                            putString("ROAD", "POINTS")
-                        }
-                        (activity as MainActivity).navController
-                            .navigate(R.id.action_editRoadFragment_to_editEventFragment, bundle)
+                        viewModel.getMarkers()
                         true
                     }
                     else -> super.onOptionsItemSelected(it)
@@ -100,7 +107,7 @@ class EditRoadFragment : Fragment(), OnMapReadyCallback {
     }
 
     override fun onMapReady(googleMap: GoogleMap) {
-        viewModel.setMap(googleMap)
+        viewModel.setMap(googleMap, getString(R.string.google_maps_key))
         checkLocatePermission()
     }
 

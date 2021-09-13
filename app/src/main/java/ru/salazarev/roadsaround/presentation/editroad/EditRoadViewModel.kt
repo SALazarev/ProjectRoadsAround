@@ -8,18 +8,22 @@ class EditRoadViewModel() : ViewModel() {
     lateinit var map: GoogleMap
     private set
 
-    val result = MutableLiveData<Boolean>()
+    val resultCreateRoute = MutableLiveData<Boolean>()
+    val markers = MutableLiveData<String?>()
 
-    fun setMap(googleMap: com.google.android.gms.maps.GoogleMap){
-        map = GoogleMap(googleMap, object : GoogleMap.FailCallback{
+    fun setMap(googleMap: com.google.android.gms.maps.GoogleMap, key: String){
+        map = GoogleMap(googleMap, key, object : GoogleMap.FailCallback{
             override fun onComplete(status: Boolean) {
-                result.value = status
+                resultCreateRoute.value = status
             }
-
         })
     }
 
     fun setCurrentLocation(latitude: Double, longitude: Double) {
         map.setCurrentLocation(latitude,longitude)
+    }
+
+    fun getMarkers(){
+       markers.value = map.getMarkers()
     }
 }

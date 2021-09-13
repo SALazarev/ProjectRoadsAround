@@ -7,7 +7,7 @@ import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Single
 import io.reactivex.rxjava3.schedulers.Schedulers
 
-class GoogleMap(val map: GoogleMap, val failCallback: FailCallback) {
+class GoogleMap(val map: GoogleMap, private val key: String, private val failCallback: FailCallback) {
 
     companion object {
         private const val DEFAULT_ZOOM = 15
@@ -39,20 +39,21 @@ class GoogleMap(val map: GoogleMap, val failCallback: FailCallback) {
         }"
     }
 
+    fun getMarkers(): String? = if (listMarker.size == 2) getUrl(
+        listMarker[0].position,
+        listMarker[1].position,
+        key
+    ) else null
+
+
     private fun pickPoint(coordinate: LatLng, key: String) {
-        if (listMarker.size == 0) {
+        if (listMarker.size < 2) {
             val markerOptions = MarkerOptions().position(coordinate)
             val marker = map.addMarker(markerOptions)
             listMarker += marker
-        } else if (listMarker.size == 1) {
-            val markerOpt = MarkerOptions().position(coordinate)
-            val marker = map.addMarker(markerOpt)
-            listMarker += marker
-            val url = getUrl(
-                listMarker[0].position,
-                listMarker[1].position,
-                key
-            )
+        }
+        if (listMarker.size == 2) {
+            val url = getUrl(listMarker[0].position, listMarker[1].position, key)
 
             val user = Single.fromCallable {
                 return@fromCallable UrlWorker().getRoad(url!!)
@@ -98,7 +99,7 @@ class GoogleMap(val map: GoogleMap, val failCallback: FailCallback) {
             true
         }
         map.setOnMapClickListener {
-            pickPoint(it, "AIzaSyDuQuolV9HCZrMrYNj53CXwE29sVR2W3IQ")
+            pickPoint(it, key)
         }
     }
 

@@ -17,6 +17,7 @@ import ru.salazarev.roadsaround.App
 import ru.salazarev.roadsaround.R
 import ru.salazarev.roadsaround.databinding.FragmentEditEventBinding
 import ru.salazarev.roadsaround.presentation.MainActivity
+import ru.salazarev.roadsaround.toast
 import javax.inject.Inject
 
 class EditEventFragment : Fragment() {
@@ -98,6 +99,7 @@ class EditEventFragment : Fragment() {
         val bundle = arguments
         if (bundle != null)
             if (bundle.containsKey("ROAD")){
+                requireActivity().toast(bundle.getString("ROAD",""))
                 binding.btnRoad.setIconResource(R.drawable.outline_done_24)
             }
     }
