@@ -2,7 +2,6 @@ package ru.salazarev.roadsaround.presentation.editroad
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import ru.salazarev.roadsaround.network.GoogleMap
 import javax.inject.Inject
 
 class EditRoadViewModelFactory @Inject constructor(

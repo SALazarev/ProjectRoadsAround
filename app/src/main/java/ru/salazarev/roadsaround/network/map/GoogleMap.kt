@@ -1,14 +1,13 @@
-package ru.salazarev.roadsaround.network
+package ru.salazarev.roadsaround.network.map
 
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.*
-import com.salazarev.googlemapapiexample.FetchUrlRemake
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Single
 import io.reactivex.rxjava3.schedulers.Schedulers
 
-class GoogleMap(val map: GoogleMap) {
+class GoogleMap(val map: GoogleMap, val failCallback: FailCallback) {
 
     companion object {
         private const val DEFAULT_ZOOM = 15
@@ -55,24 +54,19 @@ class GoogleMap(val map: GoogleMap) {
                 key
             )
 
-//            FetchUrl(object : TaskLoadedCallback {
-//                override fun onTaskDone(vararg values: Any?) {
-//                    if (currentPolyline != null) currentPolyline?.remove()
-//                    currentPolyline = map.addPolyline(values[0] as PolylineOptions?)
-//                }
-//
-//            }).execute(url)
-
             val user = Single.fromCallable {
-                return@fromCallable FetchUrlRemake().getRoad(url!!)
+                return@fromCallable UrlWorker().getRoad(url!!)
             }
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
 
             user.subscribe(
-                { if (currentPolyline != null) currentPolyline?.remove()
-                    currentPolyline = map.addPolyline(it) })
-            {}
+                {
+                    if (currentPolyline != null) currentPolyline?.remove()
+                    currentPolyline = map.addPolyline(it)
+                    failCallback.onComplete(true)
+                })
+            { failCallback.onComplete(false) }
 
         }
         if (listMarker.isNotEmpty()) updateTitle()
@@ -106,5 +100,9 @@ class GoogleMap(val map: GoogleMap) {
         map.setOnMapClickListener {
             pickPoint(it, "AIzaSyDuQuolV9HCZrMrYNj53CXwE29sVR2W3IQ")
         }
+    }
+
+    interface FailCallback {
+        fun onComplete(status: Boolean)
     }
 }

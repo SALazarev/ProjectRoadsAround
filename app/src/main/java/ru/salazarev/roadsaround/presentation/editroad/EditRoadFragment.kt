@@ -18,6 +18,7 @@ import com.google.android.gms.maps.SupportMapFragment
 import ru.salazarev.roadsaround.App
 import ru.salazarev.roadsaround.R
 import ru.salazarev.roadsaround.databinding.FragmentEditRoadBinding
+import ru.salazarev.roadsaround.observeOnce
 import ru.salazarev.roadsaround.presentation.MainActivity
 import ru.salazarev.roadsaround.toast
 import javax.inject.Inject
@@ -63,6 +64,13 @@ class EditRoadFragment : Fragment(), OnMapReadyCallback {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         configureToolbar()
+        setObserver()
+    }
+
+    private fun setObserver() {
+        viewModel.result.observe(requireActivity(),{result ->
+            if (!result) requireActivity().toast(getString(R.string.failed_bind_route))
+        })
     }
 
     private fun configureToolbar() {

@@ -54,4 +54,5 @@
     <string name="chat">Чат</string>
     <string name="select_date">Выберите дату</string>
     <string name="could_not_get_the_location_data">Не удалось получить данные о местоположении</string>
+    <string name="failed_bind_route">Не удалось построить маршрут</string>
 </resources>

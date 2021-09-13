@@ -1,4 +1,4 @@
-package com.salazarev.googlemapapiexample
+package ru.salazarev.roadsaround.network.map
 
 import android.graphics.Color
 import com.google.android.gms.maps.model.LatLng
@@ -12,7 +12,7 @@ import java.net.HttpURLConnection
 import java.net.URL
 
 
-class FetchUrlRemake {
+class UrlWorker {
 
     fun getRoad(urlStr: String): PolylineOptions = creatorLine(downloadUrl(urlStr))
 
@@ -44,36 +44,33 @@ class FetchUrlRemake {
         return data
     }
 
-    fun creatorLine(jsonData: String): PolylineOptions {
+    private fun creatorLine(jsonData: String): PolylineOptions {
         var routes: List<List<HashMap<String, String>>>? = null
         val jObject = JSONObject(jsonData)
         val parser = DataParser()
 
-        // Starts parsing data
         routes = parser.parse(jObject)
 
         var points: ArrayList<LatLng?>
         var lineOptions: PolylineOptions? = null
-        // Traversing through all the routes
+
         for (route in routes) {
             points = ArrayList()
             lineOptions = PolylineOptions()
-            // Fetching i-th route
-            // Fetching all the points in i-th route
+
             for (point in route) {
                 val lat = point["lat"]!!.toDouble()
                 val lng = point["lng"]!!.toDouble()
                 val position = LatLng(lat, lng)
                 points.add(position)
             }
-            // Adding all the points in the route to LineOptions
+
             lineOptions.apply{
                 addAll(points)
                 width(20f)
                 color(Color.RED)
             }
         }
-
         return lineOptions!!
     }
 }

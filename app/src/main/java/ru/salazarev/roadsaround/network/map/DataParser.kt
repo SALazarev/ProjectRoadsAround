@@ -1,4 +1,4 @@
-package com.salazarev.googlemapapiexample
+package ru.salazarev.roadsaround.network.map
 
 import com.google.android.gms.maps.model.LatLng
 import org.json.JSONArray
