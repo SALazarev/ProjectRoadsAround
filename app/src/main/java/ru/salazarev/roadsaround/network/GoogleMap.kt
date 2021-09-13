@@ -3,8 +3,10 @@ package ru.salazarev.roadsaround.network
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.*
-import com.salazarev.googlemapapiexample.FetchUrl
-import com.salazarev.googlemapapiexample.TaskLoadedCallback
+import com.salazarev.googlemapapiexample.FetchUrlRemake
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.core.Single
+import io.reactivex.rxjava3.schedulers.Schedulers
 
 class GoogleMap(val map: GoogleMap) {
 
@@ -52,13 +54,26 @@ class GoogleMap(val map: GoogleMap) {
                 listMarker[1].position,
                 key
             )
-            FetchUrl(object : TaskLoadedCallback {
-                override fun onTaskDone(vararg values: Any?) {
-                    if (currentPolyline != null) currentPolyline?.remove()
-                    currentPolyline = map.addPolyline(values[0] as PolylineOptions?)
-                }
 
-            }).execute(url)
+//            FetchUrl(object : TaskLoadedCallback {
+//                override fun onTaskDone(vararg values: Any?) {
+//                    if (currentPolyline != null) currentPolyline?.remove()
+//                    currentPolyline = map.addPolyline(values[0] as PolylineOptions?)
+//                }
+//
+//            }).execute(url)
+
+            val user = Single.fromCallable {
+                return@fromCallable FetchUrlRemake().getRoad(url!!)
+            }
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+
+            user.subscribe(
+                { if (currentPolyline != null) currentPolyline?.remove()
+                    currentPolyline = map.addPolyline(it) })
+            {}
+
         }
         if (listMarker.isNotEmpty()) updateTitle()
     }
