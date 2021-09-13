@@ -19,8 +19,6 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.*
-import com.salazarev.googlemapapiexample.FetchUrl
-import com.salazarev.googlemapapiexample.TaskLoadedCallback
 import ru.salazarev.roadsaround.App
 import ru.salazarev.roadsaround.R
 import ru.salazarev.roadsaround.databinding.FragmentEditRoadBinding
@@ -30,12 +28,6 @@ import javax.inject.Inject
 
 class EditRoadFragment : Fragment(), OnMapReadyCallback {
 
-//    enum class DirectionType(val type: String) {
-//        Driving("driving"),
-//        Walking("walking"),
-//        Cycling("cycling")
-//    }
-//
     companion object {
         private const val REQUEST_CODE = 100
         private const val DEFAULT_ZOOM = 15
@@ -45,8 +37,6 @@ class EditRoadFragment : Fragment(), OnMapReadyCallback {
     private val defaultLocation = LatLng(-33.8523341, 151.2106085)
     private var lastKnownLocation: Location? = null
     private lateinit var map: GoogleMap
-    private var currentPolyline: Polyline? = null
-    private val listMarker: MutableList<Marker> = mutableListOf()
 
     private var _binding: FragmentEditRoadBinding? = null
     private val binding get() = _binding!!
@@ -70,7 +60,8 @@ class EditRoadFragment : Fragment(), OnMapReadyCallback {
         val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
 
-        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(requireActivity())
+        fusedLocationProviderClient =
+            LocationServices.getFusedLocationProviderClient(requireActivity())
 
         return binding.root
     }
@@ -107,59 +98,18 @@ class EditRoadFragment : Fragment(), OnMapReadyCallback {
     }
 
     override fun onMapReady(googleMap: GoogleMap) {
-
-        map = googleMap
-
-        mapLocation()
-
-        map.setOnMarkerClickListener { marker ->
-            marker.remove()
-            listMarker.remove(marker)
-            if (listMarker.size == 1) currentPolyline?.remove()
-            updateTitle()
-            true
-        }
-        map.setOnMapClickListener {
-            if (listMarker.size == 0) {
-                val markerOptions = MarkerOptions().position(it)
-                val marker = map.addMarker(markerOptions)
-                listMarker += marker
-            } else if (listMarker.size == 1) {
-                val markerOpt = MarkerOptions().position(it)
-                val marker = map.addMarker(markerOpt)
-                listMarker += marker
-                val url = viewModel.getUrl(
-                    listMarker[0].position,
-                    listMarker[1].position,
-                    getString(R.string.google_maps_key)
-                )
-                FetchUrl(object: TaskLoadedCallback{
-                    override fun onTaskDone(vararg values: Any?) {
-                        if (currentPolyline != null) currentPolyline?.remove()
-                        currentPolyline = map.addPolyline(values[0] as PolylineOptions?)
-                    }
-
-                }).execute(url)
-            }
-            if (listMarker.isNotEmpty())  updateTitle()
-        }
+        getLocationPermission()
+        viewModel.setMap(googleMap)
     }
 
-    private fun updateTitle() {
-        if (listMarker.isNotEmpty()){
-            listMarker[0].title="Старт"
-            listMarker[0].showInfoWindow()
-        }
-    }
-
-    private fun mapLocation() {
+    private fun getLocationPermission() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (ContextCompat.checkSelfPermission(
                     requireContext(),
                     Manifest.permission.ACCESS_COARSE_LOCATION
                 ) == PackageManager.PERMISSION_GRANTED
             ) {
-                getDeviceLocation()
+                //   getDeviceLocation()
             } else {
                 ActivityCompat.requestPermissions(
                     requireActivity(),
@@ -168,20 +118,15 @@ class EditRoadFragment : Fragment(), OnMapReadyCallback {
                 )
             }
         } else {
-            getDeviceLocation()
+            //   getDeviceLocation()
         }
     }
 
     private fun getDeviceLocation() {
-        /*
-         * Get the best and most recent location of the device, which may be null in rare
-         * cases when a location is not available.
-         */
         try {
             val locationResult = fusedLocationProviderClient.lastLocation
             locationResult.addOnCompleteListener(requireActivity()) { task ->
                 if (task.isSuccessful) {
-                    // Set the map's camera position to the current location of the device.
                     lastKnownLocation = task.result
                     if (lastKnownLocation != null) {
                         map.moveCamera(
@@ -201,7 +146,8 @@ class EditRoadFragment : Fragment(), OnMapReadyCallback {
                     map.uiSettings?.isMyLocationButtonEnabled = false
                 }
             }
-        } catch (e: SecurityException) { }
+        } catch (e: SecurityException) {
+        }
 
     }
 
@@ -223,6 +169,4 @@ class EditRoadFragment : Fragment(), OnMapReadyCallback {
         super.onDestroyView()
         _binding = null
     }
-
-
 }

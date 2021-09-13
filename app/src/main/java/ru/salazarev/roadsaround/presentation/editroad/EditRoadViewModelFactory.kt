@@ -5,11 +5,11 @@ import androidx.lifecycle.ViewModelProvider
 import ru.salazarev.roadsaround.network.GoogleMap
 import javax.inject.Inject
 
-class EditRoadViewModelFactory @Inject constructor(private val mapApi: GoogleMap
+class EditRoadViewModelFactory @Inject constructor(
 ) : ViewModelProvider.Factory {
 
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel?> create(aClass: Class<T>): T {
-        return EditRoadViewModel(mapApi) as T
+        return EditRoadViewModel() as T
     }
 }
