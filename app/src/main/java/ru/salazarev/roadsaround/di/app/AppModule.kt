@@ -2,6 +2,7 @@ package ru.salazarev.roadsaround.di.app
 
 import android.content.Context
 import android.content.res.Resources
+import androidx.activity.result.contract.ActivityResultContracts
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.ktx.storage

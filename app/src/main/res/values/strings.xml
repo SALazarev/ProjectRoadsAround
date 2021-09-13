@@ -53,4 +53,5 @@
     <string name="cancel_from_profile">выйти из профиля</string>
     <string name="chat">Чат</string>
     <string name="select_date">Выберите дату</string>
+    <string name="could_not_get_the_location_data">Не удалось получить данные о местоположении</string>
 </resources>

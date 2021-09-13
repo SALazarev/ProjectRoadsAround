@@ -1,50 +1,44 @@
 package ru.salazarev.roadsaround.presentation.editroad
 
 import android.Manifest
-import android.content.pm.PackageManager
-import android.location.Location
 import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.app.ActivityCompat
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
-import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
-import com.google.android.gms.maps.model.*
 import ru.salazarev.roadsaround.App
 import ru.salazarev.roadsaround.R
 import ru.salazarev.roadsaround.databinding.FragmentEditRoadBinding
 import ru.salazarev.roadsaround.presentation.MainActivity
+import ru.salazarev.roadsaround.toast
 import javax.inject.Inject
 
 
 class EditRoadFragment : Fragment(), OnMapReadyCallback {
 
-    companion object {
-        private const val REQUEST_CODE = 100
-        private const val DEFAULT_ZOOM = 15
-    }
+    @Inject
+    lateinit var editRoadViewModelFactory: EditRoadViewModelFactory
 
     private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
-    private val defaultLocation = LatLng(-33.8523341, 151.2106085)
-    private var lastKnownLocation: Location? = null
-    private lateinit var map: GoogleMap
-
     private var _binding: FragmentEditRoadBinding? = null
     private val binding get() = _binding!!
 
     private lateinit var viewModel: EditRoadViewModel
 
-    @Inject
-    lateinit var editRoadViewModelFactory: EditRoadViewModelFactory
+    private val requestPermission =
+        registerForActivityResult(ActivityResultContracts.RequestPermission()) { permission ->
+            if (permission) getDeviceLocation()
+        }
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -98,27 +92,21 @@ class EditRoadFragment : Fragment(), OnMapReadyCallback {
     }
 
     override fun onMapReady(googleMap: GoogleMap) {
-        getLocationPermission()
         viewModel.setMap(googleMap)
+        checkLocatePermission()
     }
 
-    private fun getLocationPermission() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (ContextCompat.checkSelfPermission(
-                    requireContext(),
-                    Manifest.permission.ACCESS_COARSE_LOCATION
-                ) == PackageManager.PERMISSION_GRANTED
-            ) {
-                //   getDeviceLocation()
-            } else {
-                ActivityCompat.requestPermissions(
-                    requireActivity(),
-                    arrayOf(Manifest.permission.ACCESS_COARSE_LOCATION),
-                    REQUEST_CODE
-                )
-            }
+    private fun checkLocatePermission() {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+            getDeviceLocation()
         } else {
-            //   getDeviceLocation()
+            if (
+                (activity as MainActivity).hasPermission(Manifest.permission.ACCESS_COARSE_LOCATION)
+            ) {
+                getDeviceLocation()
+            } else {
+                requestPermission.launch(Manifest.permission.ACCESS_COARSE_LOCATION)
+            }
         }
     }
 
@@ -127,43 +115,15 @@ class EditRoadFragment : Fragment(), OnMapReadyCallback {
             val locationResult = fusedLocationProviderClient.lastLocation
             locationResult.addOnCompleteListener(requireActivity()) { task ->
                 if (task.isSuccessful) {
-                    lastKnownLocation = task.result
-                    if (lastKnownLocation != null) {
-                        map.moveCamera(
-                            CameraUpdateFactory.newLatLngZoom(
-                                LatLng(
-                                    lastKnownLocation!!.latitude,
-                                    lastKnownLocation!!.longitude
-                                ), DEFAULT_ZOOM.toFloat()
-                            )
-                        )
+                    if (task.result != null) {
+                        viewModel.setCurrentLocation(task.result.latitude, task.result.longitude)
                     }
-                } else {
-                    map.moveCamera(
-                        CameraUpdateFactory
-                            .newLatLngZoom(defaultLocation, DEFAULT_ZOOM.toFloat())
-                    )
-                    map.uiSettings?.isMyLocationButtonEnabled = false
                 }
             }
         } catch (e: SecurityException) {
+            requireActivity().toast(getString(R.string.could_not_get_the_location_data))
         }
-
     }
-
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
-    ) {
-        if (requestCode == REQUEST_CODE) {
-            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                getDeviceLocation()
-            }
-        } else
-            super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-    }
-
 
     override fun onDestroyView() {
         super.onDestroyView()

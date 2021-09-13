@@ -1,16 +1,14 @@
 package ru.salazarev.roadsaround.network
 
+import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
-import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.model.*
 import com.salazarev.googlemapapiexample.FetchUrl
 import com.salazarev.googlemapapiexample.TaskLoadedCallback
-import javax.inject.Inject
 
-class GoogleMap (val map: GoogleMap) {
+class GoogleMap(val map: GoogleMap) {
 
     companion object {
-        private const val REQUEST_CODE = 100
         private const val DEFAULT_ZOOM = 15
     }
 
@@ -40,7 +38,7 @@ class GoogleMap (val map: GoogleMap) {
         }"
     }
 
-    fun pickPoint(coordinate: LatLng, key: String) {
+    private fun pickPoint(coordinate: LatLng, key: String) {
         if (listMarker.size == 0) {
             val markerOptions = MarkerOptions().position(coordinate)
             val marker = map.addMarker(markerOptions)
@@ -79,15 +77,19 @@ class GoogleMap (val map: GoogleMap) {
         }
     }
 
+    fun setCurrentLocation(latitude: Double, longitude: Double) {
+        map.moveCamera(
+            CameraUpdateFactory.newLatLngZoom(LatLng(latitude, longitude), DEFAULT_ZOOM.toFloat())
+        )
+    }
+
     init {
         map.setOnMarkerClickListener { marker ->
             moveMarker(marker)
             true
         }
         map.setOnMapClickListener {
-           pickPoint(it,"AIzaSyDuQuolV9HCZrMrYNj53CXwE29sVR2W3IQ")
+            pickPoint(it, "AIzaSyDuQuolV9HCZrMrYNj53CXwE29sVR2W3IQ")
         }
-
-       // map.isMyLocationEnabled = true
     }
 }

@@ -23,4 +23,8 @@ class EditRoadViewModel() : ViewModel() {
     fun setMap(googleMap: com.google.android.gms.maps.GoogleMap){
         map = GoogleMap(googleMap)
     }
+
+    fun setCurrentLocation(latitude: Double, longitude: Double) {
+        map.setCurrentLocation(latitude,longitude)
+    }
 }
