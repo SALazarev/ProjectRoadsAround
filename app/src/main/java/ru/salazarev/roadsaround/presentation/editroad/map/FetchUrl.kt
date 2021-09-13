@@ -17,7 +17,6 @@ class FetchUrl(val callback: TaskLoadedCallback) : AsyncTask<String?, Void?, Str
      override fun doInBackground(vararg strings: String?): String {
         // For storing data from web service
         var data = ""
-        directionMode = strings[1]!!
         try {
             // Fetching the data from web service
             data = downloadUrl(strings[0]!!)

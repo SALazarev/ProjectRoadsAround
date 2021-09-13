@@ -30,12 +30,12 @@ import javax.inject.Inject
 
 class EditRoadFragment : Fragment(), OnMapReadyCallback {
 
-    enum class DirectionType(val type: String) {
-        Driving("driving"),
-        Walking("walking"),
-        Cycling("cycling")
-    }
-
+//    enum class DirectionType(val type: String) {
+//        Driving("driving"),
+//        Walking("walking"),
+//        Cycling("cycling")
+//    }
+//
     companion object {
         private const val REQUEST_CODE = 100
         private const val DEFAULT_ZOOM = 15
@@ -44,7 +44,7 @@ class EditRoadFragment : Fragment(), OnMapReadyCallback {
     private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
     private val defaultLocation = LatLng(-33.8523341, 151.2106085)
     private var lastKnownLocation: Location? = null
-    private lateinit var mMap: GoogleMap
+    private lateinit var map: GoogleMap
     private var currentPolyline: Polyline? = null
     private val listMarker: MutableList<Marker> = mutableListOf()
 
@@ -67,9 +67,9 @@ class EditRoadFragment : Fragment(), OnMapReadyCallback {
         viewModel =
             ViewModelProvider(this, editRoadViewModelFactory).get(EditRoadViewModel::class.java)
 
-        val mapFragment = childFragmentManager
-            .findFragmentById(R.id.map) as SupportMapFragment
+        val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
+
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(requireActivity())
 
         return binding.root
@@ -108,38 +108,38 @@ class EditRoadFragment : Fragment(), OnMapReadyCallback {
 
     override fun onMapReady(googleMap: GoogleMap) {
 
-        mMap = googleMap
+        map = googleMap
 
         mapLocation()
 
-        mMap.setOnMarkerClickListener { marker ->
+        map.setOnMarkerClickListener { marker ->
             marker.remove()
             listMarker.remove(marker)
             if (listMarker.size == 1) currentPolyline?.remove()
             updateTitle()
             true
         }
-        mMap.setOnMapClickListener {
+        map.setOnMapClickListener {
             if (listMarker.size == 0) {
-                val markerOpt = MarkerOptions().position(it)
-                val marker = mMap.addMarker(markerOpt)
+                val markerOptions = MarkerOptions().position(it)
+                val marker = map.addMarker(markerOptions)
                 listMarker += marker
             } else if (listMarker.size == 1) {
                 val markerOpt = MarkerOptions().position(it)
-                val marker = mMap.addMarker(markerOpt)
+                val marker = map.addMarker(markerOpt)
                 listMarker += marker
-                val url = getUrl(
+                val url = viewModel.getUrl(
                     listMarker[0].position,
                     listMarker[1].position,
-                    DirectionType.Walking.type
+                    getString(R.string.google_maps_key)
                 )
                 FetchUrl(object: TaskLoadedCallback{
                     override fun onTaskDone(vararg values: Any?) {
                         if (currentPolyline != null) currentPolyline?.remove()
-                        currentPolyline = mMap.addPolyline(values[0] as PolylineOptions?)
+                        currentPolyline = map.addPolyline(values[0] as PolylineOptions?)
                     }
 
-                }).execute(url, DirectionType.Walking.type)
+                }).execute(url)
             }
             if (listMarker.isNotEmpty())  updateTitle()
         }
@@ -184,7 +184,7 @@ class EditRoadFragment : Fragment(), OnMapReadyCallback {
                     // Set the map's camera position to the current location of the device.
                     lastKnownLocation = task.result
                     if (lastKnownLocation != null) {
-                        mMap.moveCamera(
+                        map.moveCamera(
                             CameraUpdateFactory.newLatLngZoom(
                                 LatLng(
                                     lastKnownLocation!!.latitude,
@@ -194,16 +194,14 @@ class EditRoadFragment : Fragment(), OnMapReadyCallback {
                         )
                     }
                 } else {
-                    mMap.moveCamera(
+                    map.moveCamera(
                         CameraUpdateFactory
                             .newLatLngZoom(defaultLocation, DEFAULT_ZOOM.toFloat())
                     )
-                    mMap.uiSettings?.isMyLocationButtonEnabled = false
+                    map.uiSettings?.isMyLocationButtonEnabled = false
                 }
             }
-        } catch (e: SecurityException) {
-
-        }
+        } catch (e: SecurityException) { }
 
     }
 
@@ -218,25 +216,6 @@ class EditRoadFragment : Fragment(), OnMapReadyCallback {
             }
         } else
             super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-    }
-
-    private fun getUrl(origin: LatLng, dest: LatLng, directionMode: String): String? {
-        // Origin of route
-        val strOrigin = "origin=${origin.latitude},${origin.longitude}"
-        // Destination of route
-        val strDest = "destination=${dest.latitude},${dest.longitude}"
-        // Mode
-        val mode = "mode=$directionMode"
-        // Building the parameters to the web service
-        val parameters = "$strOrigin&$strDest&$mode"
-        // Output format
-        val output = "json"
-        // Building the url to the web service
-        return "https://maps.googleapis.com/maps/api/directions/$output?$parameters&key=${
-            getString(
-                R.string.google_maps_key
-            )
-        }"
     }
 
 
