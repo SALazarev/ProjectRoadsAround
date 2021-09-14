@@ -12,11 +12,11 @@ class EditEventViewModel(
         const val ROUTE_KEY = "ROUTE_KEY"
         const val TIME_KEY = "TIME_KEY"
     }
-    fun setRoute(route: String) {
+    fun setRoute(route: String?) {
         savedStateHandle[ROUTE_KEY] = route
     }
 
-    fun setTime(time: Long) {
+    fun setTime(time: Long?) {
         savedStateHandle[TIME_KEY] = time
     }
 

@@ -25,6 +25,10 @@ import javax.inject.Inject
 
 class EditEventFragment : Fragment() {
 
+    companion object {
+        const val PICKERS_TAG = "TAG"
+    }
+
     private var _binding: FragmentEditEventBinding? = null
     private val binding get() = _binding!!
 
@@ -58,10 +62,10 @@ class EditEventFragment : Fragment() {
         setDropDownListMotionTypes()
         binding.btnRoad.setOnClickListener {
             val bundle = Bundle()
-            val route =  viewModel.getRoute()
-            if (route!=null) bundle.putString(EditRoadFragment.ROUTE_KEY, route)
+            val route = viewModel.getRoute()
+            if (route != null) bundle.putString(EditRoadFragment.ROUTE_KEY, route)
             (activity as MainActivity).navController
-                .navigate(R.id.action_editEventFragment_to_editRoadFragment,bundle)
+                .navigate(R.id.action_editEventFragment_to_editRoadFragment, bundle)
         }
         binding.btnTime.setOnClickListener { startDatePicker() }
     }
@@ -95,35 +99,37 @@ class EditEventFragment : Fragment() {
             .setValidator(DateValidatorPointForward.now())
             .build()
 
-        val datePicker = MaterialDatePicker.Builder.datePicker()
+        val builder = MaterialDatePicker.Builder.datePicker()
             .setTitleText(getString(R.string.select_date))
             .setCalendarConstraints(calendarConstraints)
-            .build()
+
+        viewModel.getTime()?.let { builder.setSelection(it) }
+        val datePicker = builder.build()
+
         datePicker.addOnPositiveButtonClickListener {
-            viewModel.setTime(it)
-            startTimePicker()
+            startTimePicker(it)
         }
-        datePicker.show(childFragmentManager, "TAG")
+        datePicker.show(childFragmentManager, PICKERS_TAG)
     }
 
-    private fun startTimePicker() {
-        val timePicker =
+    private fun startTimePicker(timeOfDatePicker: Long) {
+        val time = viewModel.getTime() ?: timeOfDatePicker
+        val calendar = Calendar.getInstance()
+        calendar.time = Date(time)
+        val builder =
             MaterialTimePicker.Builder()
                 .setTimeFormat(TimeFormat.CLOCK_24H)
-                .setHour(12)
-                .setMinute(0)
-                .build()
+                .setHour(calendar.get(Calendar.HOUR_OF_DAY))
+                .setMinute(calendar.get(Calendar.MINUTE))
+
+        val timePicker = builder.build()
         timePicker.addOnPositiveButtonClickListener {
-            val calendar = Calendar.getInstance()
-            val dateFormat = SimpleDateFormat("HH:mm:ss dd/MM/yyyy", Locale.ROOT)
-            calendar.time = Date(viewModel.getTime()!!)
             calendar.set(Calendar.HOUR_OF_DAY, timePicker.hour)
             calendar.set(Calendar.MINUTE, timePicker.minute)
-            requireActivity().toast(dateFormat.format(calendar.time))
             viewModel.setTime(calendar.timeInMillis)
             binding.btnTime.setIconResource(R.drawable.outline_done_24)
         }
-        timePicker.show(childFragmentManager, "TAG")
+        timePicker.show(childFragmentManager, PICKERS_TAG)
     }
 
     private fun setDropDownListMotionTypes() {
@@ -157,6 +163,7 @@ class EditEventFragment : Fragment() {
             }
         }
     }
+
 
     private fun completeEvent() {
         val name = binding.etNameEvent.text.toString().trim().isNotEmpty()

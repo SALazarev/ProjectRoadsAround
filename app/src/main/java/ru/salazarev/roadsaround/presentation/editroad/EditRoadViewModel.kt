@@ -4,12 +4,11 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import ru.salazarev.roadsaround.network.map.GoogleMap
 
-class EditRoadViewModel() : ViewModel() {
+class EditRoadViewModel : ViewModel() {
     lateinit var map: GoogleMap
     private set
 
     val resultCreateRoute = MutableLiveData<Boolean>()
-    val markers = MutableLiveData<String?>()
 
     fun setMap(googleMap: com.google.android.gms.maps.GoogleMap, key: String){
         map = GoogleMap(googleMap, key, object : GoogleMap.FailCallback{
@@ -23,9 +22,7 @@ class EditRoadViewModel() : ViewModel() {
         map.setCurrentLocation(latitude,longitude)
     }
 
-    fun getMarkers(){
-       markers.value = map.getRouteUrl()
-    }
+    fun getRoute(): String? = map.getRouteJsonUrl()
 
     fun setRoute(route: String) {
         map.setRouteByUrl(route)

@@ -24,7 +24,7 @@ import javax.inject.Inject
 
 class EditRoadFragment : Fragment(), OnMapReadyCallback {
 
-    companion object{
+    companion object {
         const val ROUTE_KEY = "ROUTE_KEY"
     }
 
@@ -70,23 +70,24 @@ class EditRoadFragment : Fragment(), OnMapReadyCallback {
     }
 
     private fun setObserver() {
-        viewModel.resultCreateRoute.observe(requireActivity(),{ result ->
+        viewModel.resultCreateRoute.observe(requireActivity(), { result ->
             if (!result) requireActivity().toast(getString(R.string.failed_bind_route))
-        })
-        viewModel.markers.observe(requireActivity(),{markers ->
-            if (markers==null) requireActivity().toast(getString(R.string.route_not_complete))
-            else completeWork(markers)
         })
     }
 
-    private fun completeWork(result: String) {
+    private fun completeWork(withReturnResult: Boolean = false) {
+        val route = viewModel.getRoute()
         val bundle = Bundle().apply {
-            putString(ROUTE_KEY, result)
+            if (withReturnResult) {
+                if (route == null) {
+                    requireActivity().toast(getString(R.string.route_not_complete))
+                    return
+                } else putString(ROUTE_KEY, route)
+            }
         }
         (activity as MainActivity).navController
             .navigate(R.id.action_editRoadFragment_to_editEventFragment, bundle)
     }
-
 
     private fun configureToolbar() {
         binding.includeToolbar.includeToolbar.apply {
@@ -95,13 +96,12 @@ class EditRoadFragment : Fragment(), OnMapReadyCallback {
             navigationContentDescription = context.getString(R.string.back)
             navigationIcon = ContextCompat.getDrawable(context, R.drawable.outline_arrow_back_24)
             setNavigationOnClickListener {
-                (activity as MainActivity).navController
-                    .navigate(R.id.action_editRoadFragment_to_editEventFragment)
+                completeWork()
             }
             setOnMenuItemClickListener {
                 when (it.itemId) {
                     R.id.btn_complete_edit_road -> {
-                        viewModel.getMarkers()
+                        completeWork(true)
                         true
                     }
                     else -> super.onOptionsItemSelected(it)
@@ -112,15 +112,15 @@ class EditRoadFragment : Fragment(), OnMapReadyCallback {
 
     override fun onMapReady(googleMap: GoogleMap) {
         viewModel.setMap(googleMap, getString(R.string.google_maps_key))
-        checkArguments()
+        configureMap()
     }
 
-    private fun checkArguments() {
+    private fun configureMap() {
         val bundle = arguments
         if (bundle != null) {
             val route = bundle.getString(ROUTE_KEY)
             if (route != null) viewModel.setRoute(route)
-            else   checkLocatePermission()
+            else checkLocatePermission()
         }
     }
 

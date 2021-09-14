@@ -21,12 +21,20 @@ class GoogleMap(
     private var listMarker: MutableList<Marker> = mutableListOf()
 
     enum class DirectionType(val type: String) {
-        Driving("driving"),
         Walking("walking"),
-        Cycling("cycling")
     }
 
-    fun getUrl(origin: LatLng, dest: LatLng, key: String): String? {
+    init {
+        map.setOnMarkerClickListener { marker ->
+            moveMarker(marker)
+            true
+        }
+        map.setOnMapClickListener {
+            pickPoint(it, key)
+        }
+    }
+
+    private fun getUrl(origin: LatLng, dest: LatLng, key: String): String {
         // Origin of route
         val strOrigin = "origin=${origin.latitude},${origin.longitude}"
         // Destination of route
@@ -43,7 +51,7 @@ class GoogleMap(
         }"
     }
 
-    fun getRouteUrl(): String? = if (listMarker.size == 2) getUrl(
+    fun getRouteJsonUrl(): String? = if (listMarker.size == 2) getUrl(
         listMarker[0].position,
         listMarker[1].position,
         key
@@ -58,7 +66,7 @@ class GoogleMap(
             val url = getUrl(listMarker[0].position, listMarker[1].position, key)
 
             val user = Single.fromCallable {
-                return@fromCallable UrlWorker().getRoad(url!!)
+                return@fromCallable UrlWorker().getRoad(url)
             }
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -103,31 +111,21 @@ class GoogleMap(
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
-            {
-                addMarker( it.points[0])
-                addMarker( it.points[it.points.size-1])
-                setCurrentLocation(it.points[0].latitude, it.points[0].longitude)
-                updateTitle()
-                currentPolyline = map.addPolyline(it)
-                failCallback.onComplete(true)
-            })
-        { failCallback.onComplete(false) }
+                {
+                    addMarker(it.points[0])
+                    addMarker(it.points[it.points.size - 1])
+                    setCurrentLocation(it.points[0].latitude, it.points[0].longitude)
+                    updateTitle()
+                    currentPolyline = map.addPolyline(it)
+                    failCallback.onComplete(true)
+                })
+            { failCallback.onComplete(false) }
     }
 
     private fun addMarker(coordinate: LatLng) {
         val markerOptions = MarkerOptions().position(coordinate)
         val marker = map.addMarker(markerOptions)
         listMarker.add(marker)
-    }
-
-    init {
-        map.setOnMarkerClickListener { marker ->
-            moveMarker(marker)
-            true
-        }
-        map.setOnMapClickListener {
-            pickPoint(it, key)
-        }
     }
 
     interface FailCallback {
