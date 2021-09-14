@@ -80,4 +80,10 @@ dependencies {
     testImplementation "io.mockk:mockk:1.12.0"
     testImplementation "com.google.truth:truth:1.1.3"
     testImplementation "androidx.arch.core:core-testing:2.1.0"
+
+    //SavedState
+    def version = "2.2.0"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$version"
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:$version"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-savedstate:$version"
 }

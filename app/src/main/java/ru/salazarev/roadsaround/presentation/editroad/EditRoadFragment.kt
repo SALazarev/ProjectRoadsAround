@@ -19,14 +19,12 @@ import ru.salazarev.roadsaround.App
 import ru.salazarev.roadsaround.R
 import ru.salazarev.roadsaround.databinding.FragmentEditRoadBinding
 import ru.salazarev.roadsaround.presentation.MainActivity
+import ru.salazarev.roadsaround.presentation.editevent.EditEventFragment.Companion.ROUTE_KEY
+import ru.salazarev.roadsaround.presentation.editevent.EditEventFragment.Companion.TIME_KEY
 import ru.salazarev.roadsaround.toast
 import javax.inject.Inject
 
 class EditRoadFragment : Fragment(), OnMapReadyCallback {
-
-    companion object {
-        const val ROUTE_KEY = "ROUTE_KEY"
-    }
 
     @Inject
     lateinit var editRoadViewModelFactory: EditRoadViewModelFactory
@@ -83,6 +81,11 @@ class EditRoadFragment : Fragment(), OnMapReadyCallback {
                     requireActivity().toast(getString(R.string.route_not_complete))
                     return
                 } else putString(ROUTE_KEY, route)
+            }
+            val bundle = arguments
+            if (bundle != null) {
+                val time = bundle.getLong(TIME_KEY)
+                putLong(TIME_KEY, time)
             }
         }
         (activity as MainActivity).navController

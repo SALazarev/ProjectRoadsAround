@@ -22,4 +22,5 @@ class EditEventViewModel(
 
     fun getTime(): Long? = savedStateHandle.get(TIME_KEY)
     fun getRoute(): String? = savedStateHandle.get(ROUTE_KEY)
+
 }

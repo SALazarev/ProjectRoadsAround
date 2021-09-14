@@ -17,16 +17,16 @@ import ru.salazarev.roadsaround.App
 import ru.salazarev.roadsaround.R
 import ru.salazarev.roadsaround.databinding.FragmentEditEventBinding
 import ru.salazarev.roadsaround.presentation.MainActivity
-import ru.salazarev.roadsaround.presentation.editroad.EditRoadFragment
-import ru.salazarev.roadsaround.toast
-import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject
+
 
 class EditEventFragment : Fragment() {
 
     companion object {
         const val PICKERS_TAG = "TAG"
+        const val ROUTE_KEY = "ROUTE_KEY"
+        const val TIME_KEY = "TIME_KEY"
     }
 
     private var _binding: FragmentEditEventBinding? = null
@@ -63,7 +63,9 @@ class EditEventFragment : Fragment() {
         binding.btnRoad.setOnClickListener {
             val bundle = Bundle()
             val route = viewModel.getRoute()
-            if (route != null) bundle.putString(EditRoadFragment.ROUTE_KEY, route)
+            if (route != null) bundle.putString(ROUTE_KEY, route)
+            val time = viewModel.getTime()
+            if (time != null) bundle.putLong(TIME_KEY, time)
             (activity as MainActivity).navController
                 .navigate(R.id.action_editEventFragment_to_editRoadFragment, bundle)
         }
@@ -73,8 +75,10 @@ class EditEventFragment : Fragment() {
     private fun checkArguments() {
         val bundle = arguments
         if (bundle != null) {
-            val route = bundle.getString(EditRoadFragment.ROUTE_KEY)
+            val route = bundle.getString(ROUTE_KEY)
             if (route != null) viewModel.setRoute(route)
+            val time = bundle.getLong(TIME_KEY)
+            if (time!=0L)viewModel.setTime(time)
         }
     }
 
@@ -169,10 +173,10 @@ class EditEventFragment : Fragment() {
         val name = binding.etNameEvent.text.toString().trim().isNotEmpty()
     }
 
-
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+
     }
 
 }
