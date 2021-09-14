@@ -56,7 +56,7 @@
         app:layout_constraintTop_toBottomOf="@+id/til_title">
 
         <AutoCompleteTextView
-            android:id="@+id/actv_name_event"
+            android:id="@+id/actv_motion_type"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="none" />
