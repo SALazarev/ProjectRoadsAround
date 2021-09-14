@@ -1,7 +1,7 @@
 package ru.salazarev.roadsaround.presentation.authentification
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Single
@@ -13,7 +13,10 @@ class AuthViewModel @Inject constructor(private val interactor: UserInteractor) 
 
     val authStatus = MutableLiveData<Boolean>()
 
-    val resetPassStatus = MutableLiveData<Boolean>()
+
+    private val _resetPassStatus = MutableLiveData<Boolean>()
+    val resetPassStatus: LiveData<Boolean> = _resetPassStatus
+
 
     val progress = MutableLiveData<Boolean>()
 

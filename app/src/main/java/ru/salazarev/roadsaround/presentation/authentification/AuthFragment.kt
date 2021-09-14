@@ -69,7 +69,7 @@ class AuthFragment : Fragment() {
             if (resetStatus) {
                 context?.toast(getString(R.string.mail_sent))
             } else {
-                context?.toast(getString(R.string.reset_pass_unsuccessfull))
+                context?.toast(getString(R.string.restore_pass_unsuccessfull))
             }
         })
         viewModel.progress.observe(viewLifecycleOwner, { loadStatus ->
