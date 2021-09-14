@@ -24,6 +24,10 @@ class EditRoadViewModel() : ViewModel() {
     }
 
     fun getMarkers(){
-       markers.value = map.getMarkers()
+       markers.value = map.getRouteUrl()
+    }
+
+    fun setRoute(route: String) {
+        map.setRouteByUrl(route)
     }
 }

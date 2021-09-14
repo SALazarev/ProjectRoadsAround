@@ -1,6 +1,7 @@
 package ru.salazarev.roadsaround.di
 
 import androidx.fragment.app.FragmentManager
+import androidx.lifecycle.SavedStateHandle
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import com.google.firebase.auth.FirebaseAuth
@@ -43,5 +44,8 @@ interface MainModule {
                 fm.findFragmentById(R.id.fragment_container_second) as NavHostFragment
             return navHostFragment.navController
         }
+
+        @Provides
+        fun provideSavedStateHandle():SavedStateHandle = SavedStateHandle()
     }
 }

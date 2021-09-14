@@ -22,8 +22,11 @@ import ru.salazarev.roadsaround.presentation.MainActivity
 import ru.salazarev.roadsaround.toast
 import javax.inject.Inject
 
-
 class EditRoadFragment : Fragment(), OnMapReadyCallback {
+
+    companion object{
+        const val ROUTE_KEY = "ROUTE_KEY"
+    }
 
     @Inject
     lateinit var editRoadViewModelFactory: EditRoadViewModelFactory
@@ -36,7 +39,7 @@ class EditRoadFragment : Fragment(), OnMapReadyCallback {
 
     private val requestPermission =
         registerForActivityResult(ActivityResultContracts.RequestPermission()) { permission ->
-            if (permission) getDeviceLocation()
+            if (permission) setLocationByDeviceLocation()
         }
 
 
@@ -78,11 +81,12 @@ class EditRoadFragment : Fragment(), OnMapReadyCallback {
 
     private fun completeWork(result: String) {
         val bundle = Bundle().apply {
-            putString("ROAD", result)
+            putString(ROUTE_KEY, result)
         }
         (activity as MainActivity).navController
             .navigate(R.id.action_editRoadFragment_to_editEventFragment, bundle)
     }
+
 
     private fun configureToolbar() {
         binding.includeToolbar.includeToolbar.apply {
@@ -108,24 +112,34 @@ class EditRoadFragment : Fragment(), OnMapReadyCallback {
 
     override fun onMapReady(googleMap: GoogleMap) {
         viewModel.setMap(googleMap, getString(R.string.google_maps_key))
-        checkLocatePermission()
+        checkArguments()
     }
+
+    private fun checkArguments() {
+        val bundle = arguments
+        if (bundle != null) {
+            val route = bundle.getString(ROUTE_KEY)
+            if (route != null) viewModel.setRoute(route)
+            else   checkLocatePermission()
+        }
+    }
+
 
     private fun checkLocatePermission() {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
-            getDeviceLocation()
+            setLocationByDeviceLocation()
         } else {
             if (
                 (activity as MainActivity).hasPermission(Manifest.permission.ACCESS_COARSE_LOCATION)
             ) {
-                getDeviceLocation()
+                setLocationByDeviceLocation()
             } else {
                 requestPermission.launch(Manifest.permission.ACCESS_COARSE_LOCATION)
             }
         }
     }
 
-    private fun getDeviceLocation() {
+    private fun setLocationByDeviceLocation() {
         try {
             val locationResult = fusedLocationProviderClient.lastLocation
             locationResult.addOnCompleteListener(requireActivity()) { task ->

@@ -7,14 +7,18 @@ import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Single
 import io.reactivex.rxjava3.schedulers.Schedulers
 
-class GoogleMap(val map: GoogleMap, private val key: String, private val failCallback: FailCallback) {
+class GoogleMap(
+    val map: GoogleMap,
+    private val key: String,
+    private val failCallback: FailCallback
+) {
 
     companion object {
         private const val DEFAULT_ZOOM = 15
     }
 
     private var currentPolyline: Polyline? = null
-    private val listMarker: MutableList<Marker> = mutableListOf()
+    private var listMarker: MutableList<Marker> = mutableListOf()
 
     enum class DirectionType(val type: String) {
         Driving("driving"),
@@ -28,7 +32,7 @@ class GoogleMap(val map: GoogleMap, private val key: String, private val failCal
         // Destination of route
         val strDest = "destination=${dest.latitude},${dest.longitude}"
         // Mode
-        val mode = "mode=${DirectionType.Walking}"
+        val mode = "mode=${DirectionType.Walking.type}"
         // Building the parameters to the web service
         val parameters = "$strOrigin&$strDest&$mode"
         // Output format
@@ -39,7 +43,7 @@ class GoogleMap(val map: GoogleMap, private val key: String, private val failCal
         }"
     }
 
-    fun getMarkers(): String? = if (listMarker.size == 2) getUrl(
+    fun getRouteUrl(): String? = if (listMarker.size == 2) getUrl(
         listMarker[0].position,
         listMarker[1].position,
         key
@@ -48,9 +52,7 @@ class GoogleMap(val map: GoogleMap, private val key: String, private val failCal
 
     private fun pickPoint(coordinate: LatLng, key: String) {
         if (listMarker.size < 2) {
-            val markerOptions = MarkerOptions().position(coordinate)
-            val marker = map.addMarker(markerOptions)
-            listMarker += marker
+            addMarker(coordinate)
         }
         if (listMarker.size == 2) {
             val url = getUrl(listMarker[0].position, listMarker[1].position, key)
@@ -91,6 +93,31 @@ class GoogleMap(val map: GoogleMap, private val key: String, private val failCal
         map.moveCamera(
             CameraUpdateFactory.newLatLngZoom(LatLng(latitude, longitude), DEFAULT_ZOOM.toFloat())
         )
+    }
+
+    fun setRouteByUrl(url: String) {
+
+        Single.fromCallable {
+            return@fromCallable UrlWorker().getRoad(url)
+        }
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(
+            {
+                addMarker( it.points[0])
+                addMarker( it.points[it.points.size-1])
+                setCurrentLocation(it.points[0].latitude, it.points[0].longitude)
+                updateTitle()
+                currentPolyline = map.addPolyline(it)
+                failCallback.onComplete(true)
+            })
+        { failCallback.onComplete(false) }
+    }
+
+    private fun addMarker(coordinate: LatLng) {
+        val markerOptions = MarkerOptions().position(coordinate)
+        val marker = map.addMarker(markerOptions)
+        listMarker.add(marker)
     }
 
     init {

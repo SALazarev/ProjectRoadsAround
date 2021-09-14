@@ -17,6 +17,7 @@ import ru.salazarev.roadsaround.App
 import ru.salazarev.roadsaround.R
 import ru.salazarev.roadsaround.databinding.FragmentEditEventBinding
 import ru.salazarev.roadsaround.presentation.MainActivity
+import ru.salazarev.roadsaround.presentation.editroad.EditRoadFragment
 import ru.salazarev.roadsaround.toast
 import java.text.SimpleDateFormat
 import java.util.*
@@ -53,12 +54,39 @@ class EditEventFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         configureToolbar()
         checkArguments()
+        setViews()
         setDropDownListMotionTypes()
         binding.btnRoad.setOnClickListener {
+            val bundle = Bundle()
+            val route =  viewModel.getRoute()
+            if (route!=null) bundle.putString(EditRoadFragment.ROUTE_KEY, route)
             (activity as MainActivity).navController
-                .navigate(R.id.action_editEventFragment_to_editRoadFragment)
+                .navigate(R.id.action_editEventFragment_to_editRoadFragment,bundle)
         }
         binding.btnTime.setOnClickListener { startDatePicker() }
+    }
+
+    private fun checkArguments() {
+        val bundle = arguments
+        if (bundle != null) {
+            val route = bundle.getString(EditRoadFragment.ROUTE_KEY)
+            if (route != null) viewModel.setRoute(route)
+        }
+    }
+
+    private fun setViews() {
+        val bundle = arguments
+        if (bundle != null) {
+            val route = viewModel.getRoute()
+            if (route != null) {
+                binding.btnRoad.setIconResource(R.drawable.outline_done_24)
+            }
+            val time = viewModel.getTime()
+            if (time != null) {
+                binding.btnTime.setIconResource(R.drawable.outline_done_24)
+            }
+        }
+
     }
 
     private fun startDatePicker() {
@@ -72,8 +100,9 @@ class EditEventFragment : Fragment() {
             .setCalendarConstraints(calendarConstraints)
             .build()
         datePicker.addOnPositiveButtonClickListener {
-            viewModel.time = it
-            startTimePicker() }
+            viewModel.setTime(it)
+            startTimePicker()
+        }
         datePicker.show(childFragmentManager, "TAG")
     }
 
@@ -83,35 +112,26 @@ class EditEventFragment : Fragment() {
                 .setTimeFormat(TimeFormat.CLOCK_24H)
                 .setHour(12)
                 .setMinute(0)
-                .setTitleText("Select Appointment time")
                 .build()
         timePicker.addOnPositiveButtonClickListener {
             val calendar = Calendar.getInstance()
             val dateFormat = SimpleDateFormat("HH:mm:ss dd/MM/yyyy", Locale.ROOT)
-            calendar.time = Date(viewModel.time)
+            calendar.time = Date(viewModel.getTime()!!)
             calendar.set(Calendar.HOUR_OF_DAY, timePicker.hour)
             calendar.set(Calendar.MINUTE, timePicker.minute)
-            requireActivity().toast( dateFormat.format(calendar.time))
+            requireActivity().toast(dateFormat.format(calendar.time))
+            viewModel.setTime(calendar.timeInMillis)
             binding.btnTime.setIconResource(R.drawable.outline_done_24)
         }
         timePicker.show(childFragmentManager, "TAG")
     }
 
     private fun setDropDownListMotionTypes() {
-        val items = listOf("Пешком", "Автомобиль", "Велосипед", "Самокат", "Мотоцикл")
+        val motions = resources.getStringArray(R.array.motionType)
         val adapter =
-            ArrayAdapter.createFromResource(requireContext(), R.array.motionType, R.layout.item_drop_down_list_motion_type)
+            ArrayAdapter(requireContext(), R.layout.item_drop_down_list_motion_type, motions)
         binding.actvMotionType.setAdapter(adapter)
-        binding.actvMotionType.setText(items[0],false)
-    }
-
-    private fun checkArguments() {
-        val bundle = arguments
-        if (bundle != null)
-            if (bundle.containsKey("ROAD")){
-                requireActivity().toast(bundle.getString("ROAD",""))
-                binding.btnRoad.setIconResource(R.drawable.outline_done_24)
-            }
+        binding.actvMotionType.setText(motions[0], false)
     }
 
     private fun configureToolbar() {
@@ -127,7 +147,7 @@ class EditEventFragment : Fragment() {
             setOnMenuItemClickListener {
                 when (it.itemId) {
                     R.id.btn_complete_edit_event -> {
-                       completeEvent()
+                        completeEvent()
                         (activity as MainActivity).navController
                             .navigate(R.id.action_editEventFragment_to_mainFragment)
                         true
@@ -140,8 +160,6 @@ class EditEventFragment : Fragment() {
 
     private fun completeEvent() {
         val name = binding.etNameEvent.text.toString().trim().isNotEmpty()
-
-            // viewModel.completeEvent()
     }
 
 
