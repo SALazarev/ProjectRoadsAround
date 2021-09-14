@@ -3,46 +3,48 @@ package ru.salazarev.roadsaround.presentation.authentification
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
-import io.reactivex.rxjava3.core.Completable
-import io.reactivex.rxjava3.core.Single
 import io.reactivex.rxjava3.schedulers.Schedulers
 import ru.salazarev.roadsaround.domain.user.UserInteractor
+import ru.salazarev.roadsaround.presentation.common.BaseViewModel
+import ru.salazarev.roadsaround.util.addTo
 import javax.inject.Inject
 
-class AuthViewModel @Inject constructor(private val interactor: UserInteractor) : ViewModel() {
+class AuthViewModel @Inject constructor(private val interactor: UserInteractor) : BaseViewModel() {
 
-    val authStatus = MutableLiveData<Boolean>()
+    private val _authStatus = MutableLiveData<Boolean>()
+    val authStatus: LiveData<Boolean> = _authStatus
 
 
     private val _resetPassStatus = MutableLiveData<Boolean>()
     val resetPassStatus: LiveData<Boolean> = _resetPassStatus
 
 
-    val progress = MutableLiveData<Boolean>()
+    private val _progress = MutableLiveData<Boolean>()
+    val progress: LiveData<Boolean> = _progress
+
 
     fun authenticationUser(email: String, password: String) {
-        val user = Completable.fromCallable {
-            return@fromCallable interactor.userAuthentication(email, password)
-        }
+        interactor.userAuthentication(email, password)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .doFinally { progress.value = false }
-            .doOnSubscribe { progress.value = true }
-
-        user.subscribe(
-            { authStatus.value = true })
-        { authStatus.value = false }
+            .doOnSubscribe { _progress.value = true }
+            .doFinally { _progress.value = false }
+            .subscribe(
+                { _authStatus.value = true },
+                { _authStatus.value = false }
+            )
+            .addTo(compositeDisposable)
     }
 
     fun resetPassword(email: String) {
-        val single: Single<Boolean> = Single.fromCallable {
-            return@fromCallable interactor.resetUserPassword(email)
-        }
+        interactor.resetUserPassword(email)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .doFinally { progress.value = false }
-            .doOnSubscribe { progress.value = true }
-
-        single.subscribe(resetPassStatus::setValue) { resetPassStatus.value = false }
+            .doFinally { _progress.value = false }
+            .doOnSubscribe { _progress.value = true }
+            .subscribe(_resetPassStatus::setValue, {_resetPassStatus.value = false })
+            .addTo(compositeDisposable)
     }
+
 }
+

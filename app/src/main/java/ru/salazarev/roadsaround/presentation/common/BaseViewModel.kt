@@ -1,0 +1,14 @@
+package ru.salazarev.roadsaround.presentation.common
+
+import androidx.lifecycle.ViewModel
+import io.reactivex.rxjava3.disposables.CompositeDisposable
+
+open class BaseViewModel : ViewModel() {
+
+    val compositeDisposable: CompositeDisposable = CompositeDisposable()
+
+    override fun onCleared() {
+        super.onCleared()
+        compositeDisposable.clear()
+    }
+}

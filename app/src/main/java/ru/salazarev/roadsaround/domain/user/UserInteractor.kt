@@ -1,5 +1,7 @@
 package ru.salazarev.roadsaround.domain.user
 
+import io.reactivex.rxjava3.core.Completable
+import io.reactivex.rxjava3.core.Single
 import ru.salazarev.roadsaround.models.domain.User
 import javax.inject.Inject
 
@@ -24,9 +26,11 @@ class UserInteractor @Inject constructor(
 
     fun getUsersData(idList: List<String>): List<User> = repository.getUsersData(idList)
 
-    fun userAuthentication(email: String, password: String) {
-        auth.authentication(email, password)
+    fun userAuthentication(email: String, password: String): Completable {
+        return Completable.fromCallable { auth.authentication(email, password) }
     }
 
-    fun resetUserPassword(email: String): Boolean = auth.resetPassword(email)
+    fun resetUserPassword(email: String): Single<Boolean> {
+        return Single.fromCallable { auth.resetPassword(email) }
+    }
 }
