@@ -19,6 +19,7 @@ import ru.salazarev.roadsaround.App
 import ru.salazarev.roadsaround.R
 import ru.salazarev.roadsaround.databinding.FragmentEditRoadBinding
 import ru.salazarev.roadsaround.presentation.MainActivity
+import ru.salazarev.roadsaround.presentation.editevent.EditEventFragment.Companion.MOTION_TYPE_KEY
 import ru.salazarev.roadsaround.presentation.editevent.EditEventFragment.Companion.ROUTE_KEY
 import ru.salazarev.roadsaround.presentation.editevent.EditEventFragment.Companion.TIME_KEY
 import ru.salazarev.roadsaround.toast
@@ -86,6 +87,8 @@ class EditRoadFragment : Fragment(), OnMapReadyCallback {
             if (bundle != null) {
                 val time = bundle.getLong(TIME_KEY)
                 putLong(TIME_KEY, time)
+                val motionType = bundle.getString(MOTION_TYPE_KEY)
+                putString(MOTION_TYPE_KEY, motionType)
             }
         }
         (activity as MainActivity).navController

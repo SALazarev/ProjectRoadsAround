@@ -27,6 +27,7 @@ class EditEventFragment : Fragment() {
         const val PICKERS_TAG = "TAG"
         const val ROUTE_KEY = "ROUTE_KEY"
         const val TIME_KEY = "TIME_KEY"
+        const val MOTION_TYPE_KEY = "MOTION_TYPE_KEY"
     }
 
     private var _binding: FragmentEditEventBinding? = null
@@ -58,14 +59,18 @@ class EditEventFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         configureToolbar()
         checkArguments()
-        setViews()
         setDropDownListMotionTypes()
         binding.btnRoad.setOnClickListener {
             val bundle = Bundle()
+
             val route = viewModel.getRoute()
             if (route != null) bundle.putString(ROUTE_KEY, route)
+
             val time = viewModel.getTime()
             if (time != null) bundle.putLong(TIME_KEY, time)
+
+            val motionType = binding.actvMotionType.text.toString()
+            if (motionType.isNotEmpty()) bundle.putString(MOTION_TYPE_KEY, motionType)
             (activity as MainActivity).navController
                 .navigate(R.id.action_editEventFragment_to_editRoadFragment, bundle)
         }
@@ -76,25 +81,21 @@ class EditEventFragment : Fragment() {
         val bundle = arguments
         if (bundle != null) {
             val route = bundle.getString(ROUTE_KEY)
-            if (route != null) viewModel.setRoute(route)
-            val time = bundle.getLong(TIME_KEY)
-            if (time!=0L)viewModel.setTime(time)
-        }
-    }
-
-    private fun setViews() {
-        val bundle = arguments
-        if (bundle != null) {
-            val route = viewModel.getRoute()
             if (route != null) {
+                viewModel.setRoute(route)
                 binding.btnRoad.setIconResource(R.drawable.outline_done_24)
             }
-            val time = viewModel.getTime()
-            if (time != null) {
+
+            val time = bundle.getLong(TIME_KEY)
+            if (time != 0L) {
+                viewModel.setTime(time)
                 binding.btnTime.setIconResource(R.drawable.outline_done_24)
             }
+            val motionType = bundle.getString(MOTION_TYPE_KEY)
+            if (!motionType.isNullOrEmpty()) {
+                binding.actvMotionType.setText(motionType, false)
+            }
         }
-
     }
 
     private fun startDatePicker() {
@@ -141,7 +142,6 @@ class EditEventFragment : Fragment() {
         val adapter =
             ArrayAdapter(requireContext(), R.layout.item_drop_down_list_motion_type, motions)
         binding.actvMotionType.setAdapter(adapter)
-        binding.actvMotionType.setText(motions[0], false)
     }
 
     private fun configureToolbar() {
