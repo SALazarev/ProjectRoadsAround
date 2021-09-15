@@ -9,6 +9,7 @@ import ru.salazarev.roadsaround.domain.user.UserInteractor
 import ru.salazarev.roadsaround.models.data.MessageData
 import ru.salazarev.roadsaround.models.domain.Message
 import ru.salazarev.roadsaround.models.domain.User
+import java.lang.NullPointerException
 import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject
@@ -22,18 +23,33 @@ class ChatInteractor @Inject constructor(
         chatRepository.sendMessage(auth.getUserId(), textMessage)
     }
 
-    fun getChatMessages(callback: PublishSubject<List<Message>>) {
+    fun getChatMessages():PublishSubject<List<Message>> {
         val localCallback = PublishSubject.create<List<MessageData>>()
+        chatRepository.subscribeOnChatMessages(localCallback)
+
+        val callback = PublishSubject.create<List<Message>>()
+
         localCallback.subscribe({ list ->
-            val idList = list.map{it.authorId}.distinct()
+            val idList = list.map { it.authorId }.distinct()
             val single: Single<List<User>> = Single.fromCallable {
                 return@fromCallable userInteractor.getUsersData(idList)
             }
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-            single.subscribe({ users -> callback.onNext(getMessages(list.sortedBy { it.time!!.toDate().time }, users.map{it.id to it}.toMap())) }) {}
-        }){}
-        chatRepository.getChatMessages(localCallback)
+            single.subscribe(
+                { users ->
+                    callback.onNext(
+                        getMessages(
+                            list.sortedBy { it.time!!.toDate().time },
+                            users.map { it.id to it }.toMap()
+                        )
+                    )
+                },
+                {
+                })
+
+        }) {}
+        return callback
     }
 
     private fun getMessages(data: List<MessageData>, users: Map<String, User>): List<Message> {

@@ -24,11 +24,11 @@ class ChatRepositoryImpl @Inject constructor(
             ref.set(message).addOnSuccessListener {  Log.d("TAG", "OK") }.addOnFailureListener {  Log.d("TAG", "FAIL") }.addOnCanceledListener {  Log.d("TAG", "SHIT") }.addOnCompleteListener {  Log.d("TAG", "YEAH!") }
     }
 
-    override fun getChatMessages(callback: PublishSubject<List<MessageData>>) {
+    override fun subscribeOnChatMessages(callback: PublishSubject<List<MessageData>>) {
         collectionRef.addSnapshotListener { snapshot, error ->
-            if (snapshot != null && !snapshot.metadata.hasPendingWrites()) {
-                val data: List<MessageData> = snapshot.toObjects(MessageData::class.java)
-                callback.onNext(data)
+            if (snapshot != null){
+                    val data: List<MessageData> = snapshot.toObjects(MessageData::class.java)
+                    callback.onNext(data)
             }
         }
     }

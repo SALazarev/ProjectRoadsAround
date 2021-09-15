@@ -1,4 +1,4 @@
-package ru.salazarev.roadsaround.presentation.routes
+package ru.salazarev.roadsaround.presentation.searchevent
 
 import androidx.lifecycle.MutableLiveData
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
@@ -9,7 +9,7 @@ import ru.salazarev.roadsaround.presentation.common.BaseViewModel
 import ru.salazarev.roadsaround.util.addTo
 import javax.inject.Inject
 
-class RoutesViewModel @Inject constructor(
+class SearchEventViewModel @Inject constructor(
     private val interactor: EventInteractor
 ) : BaseViewModel() {
 
@@ -18,11 +18,11 @@ class RoutesViewModel @Inject constructor(
     val progress = MutableLiveData<Boolean>()
 
     init {
-        loadQuotationList()
+        loadEventList()
     }
 
-    private fun loadQuotationList() {
-        interactor.getUserEvents().subscribeOn(Schedulers.io())
+    private fun loadEventList() {
+        interactor.getUsersEvents().subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .doFinally { progress.value = false }
             .doOnSubscribe { progress.value = true }

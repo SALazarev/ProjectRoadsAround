@@ -9,16 +9,17 @@ import io.reactivex.rxjava3.subjects.PublishSubject
 import ru.salazarev.roadsaround.domain.chat.ChatInteractor
 import ru.salazarev.roadsaround.models.domain.Message
 import ru.salazarev.roadsaround.models.presentation.MessageChat
+import ru.salazarev.roadsaround.presentation.common.BaseViewModel
 import ru.salazarev.roadsaround.util.ImageConverter
+import ru.salazarev.roadsaround.util.addTo
 
 class ChatViewModel(
     private val chatInteractor: ChatInteractor,
     private val imageConverter: ImageConverter,
-) : ViewModel() {
+) : BaseViewModel() {
     val progress = MutableLiveData<Boolean>()
     val result = MutableLiveData<Boolean>()
     val messages = MutableLiveData<List<MessageChat>>()
-    val test = MutableLiveData<String>()
 
     fun sendMessage(text: String) {
         val completable = Completable.fromCallable {
@@ -34,17 +35,20 @@ class ChatViewModel(
 
     fun getMessages() {
         progress.value = true
-        val callback = PublishSubject.create<List<Message>>()
-        callback.subscribe({
-            progress.value = false
-            getMessagesInLiveData(it)
-        }){progress.value = false}
-        chatInteractor.getChatMessages(callback)
+        chatInteractor.getChatMessages().subscribe(
+            {
+                progress.value = false
+                getMessagesInLiveData(it)
+            },
+            {
+                progress.value = false
+            }
+        ).addTo(compositeDisposable)
     }
 
-    private fun getMessagesInLiveData(data: List<Message>){
-        messages.value = data.map{
-            val image =  if (it.image!=null) imageConverter.convert(it.image) else null
+    private fun getMessagesInLiveData(data: List<Message>) {
+        messages.value = data.map {
+            val image = if (it.image != null) imageConverter.convert(it.image) else null
             MessageChat(
                 it.id,
                 it.idAuthor,

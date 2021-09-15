@@ -12,6 +12,7 @@ import ru.salazarev.roadsaround.presentation.main.MainFragment
 import ru.salazarev.roadsaround.presentation.profile.ProfileFragment
 import ru.salazarev.roadsaround.presentation.registration.RegFragment
 import ru.salazarev.roadsaround.presentation.routes.RoutesFragment
+import ru.salazarev.roadsaround.presentation.searchevent.SearchEventFragment
 import javax.inject.Singleton
 
 @Singleton
@@ -26,6 +27,7 @@ interface MainComponent {
     fun inject(authFragment: AuthFragment)
     fun inject(editEventFragment: EditEventFragment)
     fun inject(editRoadFragment: EditRoadFragment)
+    fun inject(searchEventFragment: SearchEventFragment)
 
     @Subcomponent.Builder
     interface Builder {

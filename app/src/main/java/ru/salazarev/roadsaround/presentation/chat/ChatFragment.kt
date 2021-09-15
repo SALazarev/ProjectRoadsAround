@@ -113,10 +113,6 @@ class ChatFragment : Fragment() {
             adapter.setItems(messages)
             binding.rvMessages.scrollToPosition(adapter.itemCount - 1)
         })
-
-        viewModel.test.observe(viewLifecycleOwner, {
-            requireActivity().toast(it)
-        })
     }
 
     override fun onDestroyView() {

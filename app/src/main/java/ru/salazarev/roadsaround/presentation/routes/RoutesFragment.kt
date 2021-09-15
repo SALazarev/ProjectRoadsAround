@@ -15,8 +15,6 @@ import ru.salazarev.roadsaround.R
 import ru.salazarev.roadsaround.databinding.FragmentRoutesBinding
 import ru.salazarev.roadsaround.presentation.MainActivity
 import ru.salazarev.roadsaround.presentation.chat.messagelist.EventListAdapter
-import ru.salazarev.roadsaround.presentation.profile.ProfileViewModel
-import ru.salazarev.roadsaround.presentation.profile.ProfileViewModelFactory
 import ru.salazarev.roadsaround.toast
 import javax.inject.Inject
 
@@ -98,7 +96,7 @@ class RoutesFragment : Fragment() {
 
     private fun setObserver() {
 
-        viewModel.userLiveData.observe(viewLifecycleOwner, { listData ->
+        viewModel.eventsLiveData.observe(viewLifecycleOwner, { listData ->
             if (listData == null) requireActivity().toast(getString(R.string.сould_not_load_data))
             else adapter.setItems(listData)
         })

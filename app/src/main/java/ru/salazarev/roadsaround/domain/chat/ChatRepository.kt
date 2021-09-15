@@ -6,5 +6,5 @@ import ru.salazarev.roadsaround.models.data.MessageData
 
 interface ChatRepository {
     fun sendMessage(authorId: String, textMessage: String)
-    fun getChatMessages(callback: PublishSubject<List<MessageData>>)
+    fun subscribeOnChatMessages(callback: PublishSubject<List<MessageData>>)
 }

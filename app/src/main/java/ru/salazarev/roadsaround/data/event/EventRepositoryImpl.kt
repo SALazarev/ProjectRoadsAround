@@ -41,6 +41,7 @@ class EventRepositoryImpl @Inject constructor(
     }
 
     override fun getAllEvents(): List<EventData> {
-     TODO()
+        val ref= database.collection(databaseModel.getEvent().collectionName)
+        return Tasks.await(ref.get()).toObjects(EventData::class.java)
     }
 }

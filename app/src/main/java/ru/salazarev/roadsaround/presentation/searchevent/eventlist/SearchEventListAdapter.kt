@@ -7,10 +7,10 @@ import androidx.recyclerview.widget.RecyclerView
 import ru.salazarev.roadsaround.R
 import ru.salazarev.roadsaround.models.presentation.Event
 
-class EventListAdapter(var data: List<Event> = mutableListOf()) : RecyclerView.Adapter<EventViewHolder>() {
+class SearchEventListAdapter(var data: List<Event> = mutableListOf()) : RecyclerView.Adapter<SearchEventViewHolder>() {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): EventViewHolder {
-        return EventViewHolder(
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SearchEventViewHolder {
+        return SearchEventViewHolder(
             LayoutInflater.from(parent.context).inflate(
                 R.layout.rv_item_event,
                 parent, false
@@ -18,7 +18,7 @@ class EventListAdapter(var data: List<Event> = mutableListOf()) : RecyclerView.A
         )
     }
 
-    override fun onBindViewHolder(holder: EventViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: SearchEventViewHolder, position: Int) {
         holder.set(data[position])
     }
 
