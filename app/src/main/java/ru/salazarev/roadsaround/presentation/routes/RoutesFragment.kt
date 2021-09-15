@@ -5,11 +5,16 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import ru.salazarev.roadsaround.App
 import ru.salazarev.roadsaround.R
 import ru.salazarev.roadsaround.databinding.FragmentRoutesBinding
 import ru.salazarev.roadsaround.presentation.MainActivity
+import ru.salazarev.roadsaround.presentation.chat.messagelist.EventListAdapter
 import ru.salazarev.roadsaround.presentation.profile.ProfileViewModel
 import ru.salazarev.roadsaround.presentation.profile.ProfileViewModelFactory
 import ru.salazarev.roadsaround.toast
@@ -24,6 +29,8 @@ class RoutesFragment : Fragment() {
     lateinit var routesViewModelFactory: RoutesViewModelFactory
 
     private lateinit var viewModel: RoutesViewModel
+
+    private lateinit var adapter: EventListAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -43,22 +50,8 @@ class RoutesFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         configureToolbar()
+        setRecyclerView()
         setObserver()
-    }
-
-    private fun setObserver() {
-
-        viewModel.userLiveData.observe(viewLifecycleOwner, { listData ->
-            if (!listData.isNullOrEmpty()) requireActivity().toast(getString(R.string.сould_not_load_data))
-            else {
-                val test = listData
-            }
-        })
-
-        viewModel.progress.observe(viewLifecycleOwner, { loadStatus ->
-            if (loadStatus) binding.progressBar.visibility = View.VISIBLE
-            else binding.progressBar.visibility = View.INVISIBLE
-        })
     }
 
     private fun configureToolbar() {
@@ -80,6 +73,42 @@ class RoutesFragment : Fragment() {
             }
         }
     }
+
+    private fun setRecyclerView() {
+        val layoutManager = LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
+        binding.rvEvent.layoutManager = layoutManager
+
+        adapter = EventListAdapter()
+        binding.rvEvent.adapter = adapter
+
+        val itemDecoration = DividerItemDecoration(
+            context,
+            DividerItemDecoration.VERTICAL
+        )
+        itemDecoration.setDrawable(
+            ContextCompat.getDrawable(
+                requireContext(),
+                R.drawable.rv_divider
+            )!!
+        )
+        binding.rvEvent.addItemDecoration(
+            itemDecoration
+        )
+    }
+
+    private fun setObserver() {
+
+        viewModel.userLiveData.observe(viewLifecycleOwner, { listData ->
+            if (listData == null) requireActivity().toast(getString(R.string.сould_not_load_data))
+            else adapter.setItems(listData)
+        })
+
+        viewModel.progress.observe(viewLifecycleOwner, { loadStatus ->
+            if (loadStatus) binding.progressBar.visibility = View.VISIBLE
+            else binding.progressBar.visibility = View.INVISIBLE
+        })
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null

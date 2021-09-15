@@ -14,6 +14,7 @@ import ru.salazarev.roadsaround.App
 import ru.salazarev.roadsaround.R
 import ru.salazarev.roadsaround.databinding.FragmentChatBinding
 import ru.salazarev.roadsaround.presentation.MainActivity
+import ru.salazarev.roadsaround.presentation.chat.messagelist.ChatAdapter
 import ru.salazarev.roadsaround.toast
 import javax.inject.Inject
 
@@ -100,8 +101,8 @@ class ChatFragment : Fragment() {
     }
 
     private fun setObserver() {
-        viewModel.result.observe(viewLifecycleOwner, { loadStatus ->
-            if (!loadStatus) requireActivity().toast(getString(R.string.message_load_unsuccess))
+        viewModel.result.observe(viewLifecycleOwner, { result ->
+            if (!result) requireActivity().toast(getString(R.string.message_load_unsuccess))
         })
         viewModel.progress.observe(viewLifecycleOwner, { loadStatus ->
             if (loadStatus) binding.progressBar.visibility = View.VISIBLE

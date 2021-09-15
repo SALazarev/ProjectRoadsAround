@@ -1,32 +1,33 @@
-package ru.salazarev.roadsaround.presentation.chat
+package ru.salazarev.roadsaround.presentation.chat.messagelist
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import ru.salazarev.roadsaround.R
+import ru.salazarev.roadsaround.models.presentation.Event
 import ru.salazarev.roadsaround.models.presentation.MessageChat
 
-class ChatAdapter(var data: List<MessageChat> = mutableListOf()) : RecyclerView.Adapter<MessageViewHolder>() {
+class EventListAdapter(var data: List<Event> = mutableListOf()) : RecyclerView.Adapter<EventViewHolder>() {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MessageViewHolder {
-        return MessageViewHolder(
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): EventViewHolder {
+        return EventViewHolder(
             LayoutInflater.from(parent.context).inflate(
-                R.layout.rv_item_message,
+                R.layout.rv_item_event,
                 parent, false
             )
         )
     }
 
-    override fun onBindViewHolder(holder: MessageViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: EventViewHolder, position: Int) {
         holder.set(data[position])
     }
 
     override fun getItemCount(): Int = data.size
 
-    fun setItems(items: List<MessageChat>) {
+    fun setItems(items: List<Event>) {
         val diffResult = DiffUtil.calculateDiff(
-            MessageDiffUtilCallback(
+            EventDiffUtilCallback(
                 data,
                 items
             )

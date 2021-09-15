@@ -24,16 +24,14 @@ class EventRepositoryImpl @Inject constructor(
         val event = hashMapOf(
             databaseModel.getEvent().getColumns().id to ref.id,
             databaseModel.getEvent().getColumns().authorId to eventData.authorId,
+            databaseModel.getEvent().getColumns().name to eventData.name,
             databaseModel.getEvent().getColumns().note to eventData.note,
             databaseModel.getEvent().getColumns().time to eventData.time,
             databaseModel.getEvent().getColumns().route to eventData.route,
             databaseModel.getEvent().getColumns().motionType to eventData.motionType,
             databaseModel.getEvent().getColumns().members to eventData.members
         )
-        ref.set(event).addOnSuccessListener { Log.d("TAG", "OK") }
-            .addOnFailureListener { Log.d("TAG", "FAIL") }
-            .addOnCanceledListener { Log.d("TAG", "SHIT") }
-            .addOnCompleteListener { Log.d("TAG", "YEAH!") }
+        ref.set(event)
     }
 
     override fun getUserEvents(id: String): List<EventData> {

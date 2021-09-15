@@ -1,4 +1,4 @@
-package ru.salazarev.roadsaround.presentation.chat
+package ru.salazarev.roadsaround.presentation.chat.messagelist
 
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView

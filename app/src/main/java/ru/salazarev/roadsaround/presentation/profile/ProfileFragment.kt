@@ -11,7 +11,7 @@ import androidx.lifecycle.ViewModelProvider
 import ru.salazarev.roadsaround.App
 import ru.salazarev.roadsaround.R
 import ru.salazarev.roadsaround.databinding.FragmentProfileBinding
-import ru.salazarev.roadsaround.models.presentation.UserChat
+import ru.salazarev.roadsaround.models.presentation.UserProfile
 import ru.salazarev.roadsaround.presentation.MainActivity
 import ru.salazarev.roadsaround.toast
 import javax.inject.Inject
@@ -62,7 +62,7 @@ class ProfileFragment : Fragment() {
         })
     }
 
-    private fun setViewData(user: UserChat) {
+    private fun setViewData(user: UserProfile) {
         binding.etFirstName.text = user.firstName
         binding.etLastName.text = user.lastName
         if (user.image != null) binding.btnUserPhoto.background = user.image
