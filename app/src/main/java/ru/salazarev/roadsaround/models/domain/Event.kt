@@ -1,5 +1,7 @@
 package ru.salazarev.roadsaround.models.domain
 
+import ru.salazarev.roadsaround.domain.event.EventInteractor
+
 data class Event(
     var id: String,
     var authorId: String,
@@ -8,5 +10,14 @@ data class Event(
     var motionType: String,
     var time: String,
     var route: String,
-    var members: List<User>
-)
+    var members: List<User>,
+    var typeWorkWithEvent: TypeWorkWithEvent
+){
+    companion object{
+        enum class TypeWorkWithEvent{
+            GUEST,
+            AUTHOR,
+            MEMBER
+        }
+    }
+}

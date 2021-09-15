@@ -9,7 +9,10 @@ import ru.salazarev.roadsaround.models.presentation.EventPreview
 import ru.salazarev.roadsaround.presentation.main.eventlist.ClickItemCallback
 import ru.salazarev.roadsaround.presentation.main.eventlist.EventViewHolder
 
-class EventListAdapter(val callback: ClickItemCallback, var data: List<EventPreview> = mutableListOf()) : RecyclerView.Adapter<EventViewHolder>() {
+class EventListAdapter(
+    val callback: ClickItemCallback,
+    var data: List<EventPreview> = mutableListOf()
+) : RecyclerView.Adapter<EventViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): EventViewHolder {
         return EventViewHolder(
@@ -21,8 +24,9 @@ class EventListAdapter(val callback: ClickItemCallback, var data: List<EventPrev
     }
 
     override fun onBindViewHolder(holder: EventViewHolder, position: Int) {
-        holder.set(data[position])
-        holder.setOnClick { callback.onClick(data[position].id) }
+        val item = data[position]
+        holder.set(item)
+        holder.setOnClick { callback.onClick(item.id, item.nameEvent) }
     }
 
     override fun getItemCount(): Int = data.size

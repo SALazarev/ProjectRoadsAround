@@ -17,6 +17,7 @@ class EventInteractor @Inject constructor(
     private val userRepository: UserRepository,
     private val authentication: Authentication
 ) {
+
     fun createEvent(
         name: String, note: String, motionType: String, time: Long, route: String
     ): Completable {
@@ -94,12 +95,20 @@ class EventInteractor @Inject constructor(
 
     fun getEvent(eventId: String): Single<Event> {
         return Single.fromCallable {
+            val userId = authentication.getUserId()
             val eventData = eventRepository.getEvent(eventId)
             val usersData = userRepository.getUsersData(eventData.members)
 
             val calendar = Calendar.getInstance()
             calendar.time = Date(eventData.time)
             val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.ROOT)
+
+            val typeWorkWithEvent =
+                when {
+                    userId == eventData.authorId -> Event.Companion.TypeWorkWithEvent.AUTHOR
+                    usersData.map { it.id }.contains(userId) -> Event.Companion.TypeWorkWithEvent.MEMBER
+                    else -> Event.Companion.TypeWorkWithEvent.GUEST
+                }
 
             Event(
                 eventData.id,
@@ -109,7 +118,8 @@ class EventInteractor @Inject constructor(
                 eventData.motionType,
                 dateFormat.format(calendar.time),
                 eventData.route,
-                usersData
+                usersData,
+                typeWorkWithEvent
             )
         }
     }

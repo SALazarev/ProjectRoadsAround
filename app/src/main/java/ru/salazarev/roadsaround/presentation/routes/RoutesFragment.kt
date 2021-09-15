@@ -15,7 +15,10 @@ import ru.salazarev.roadsaround.R
 import ru.salazarev.roadsaround.databinding.FragmentRoutesBinding
 import ru.salazarev.roadsaround.presentation.MainActivity
 import ru.salazarev.roadsaround.presentation.chat.messagelist.EventListAdapter
-import ru.salazarev.roadsaround.presentation.main.MainFragment.Companion.EVENT_KEY
+import ru.salazarev.roadsaround.presentation.main.MainFragment
+import ru.salazarev.roadsaround.presentation.main.MainFragment.Companion.EVENT_ID_KEY
+import ru.salazarev.roadsaround.presentation.main.MainFragment.Companion.NAME_EVENT_KEY
+import ru.salazarev.roadsaround.presentation.main.MainFragment.Companion.TYPE_WORK_WITH_EVENT_KEY
 import ru.salazarev.roadsaround.presentation.main.eventlist.ClickItemCallback
 import ru.salazarev.roadsaround.toast
 import javax.inject.Inject
@@ -64,7 +67,7 @@ class RoutesFragment : Fragment() {
                         (activity as MainActivity).navController.navigate(R.id.action_mainFragment_to_chatFragment)
                         true
                     }
-                    R.id.btn_create_event ->{
+                    R.id.btn_create_event -> {
                         (activity as MainActivity).navController.navigate(R.id.action_mainFragment_to_editEventFragment)
                         true
                     }
@@ -78,10 +81,11 @@ class RoutesFragment : Fragment() {
         val layoutManager = LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
         binding.rvEvent.layoutManager = layoutManager
 
-        adapter = EventListAdapter(object: ClickItemCallback {
-            override fun onClick(id: String) {
+        adapter = EventListAdapter(object : ClickItemCallback {
+            override fun onClick(id: String, name: String) {
                 val bundle = Bundle()
-                bundle.putString(EVENT_KEY, id)
+                bundle.putString(EVENT_ID_KEY, id)
+                bundle.putString(NAME_EVENT_KEY, name)
                 (activity as MainActivity).navController.navigate(
                     R.id.action_mainFragment_to_eventInformationFragment,
                     bundle

@@ -63,6 +63,10 @@
     <string name="motorbike">Мотоцикл</string>
     <string name="not_all_necessary_data">Указаны не все необходимые данные</string>
     <string name="organizer">Организатор</string>
+    <string name="participate">Принять участие</string>
+    <string name="members">Участники</string>
+    <string name="route">Маршрут</string>
+    <string name="event">Событие</string>
 
     <string-array name="motionType">
         <item>@string/foot</item>

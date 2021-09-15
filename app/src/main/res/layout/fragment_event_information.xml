@@ -100,10 +100,21 @@
             style="@style/TextViewOnlyDemo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Главный герой — 27-летний Илья Горюнов, семь лет отсидевший в тюрьме по ложному обвинению в распространении наркотиков. Когда Илья выходит на свободу, он понимает, что прежняя жизнь, по которой он тосковал, разрушена, и вернуться к ней он больше не сможет. Хотя он не собирался мстить человеку, котор"
-            android:maxLines="3"/>
+            android:inputType="textMultiLine"
+            android:maxLines="4"/>
     </com.google.android.material.textfield.TextInputLayout>
 
 
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_participate"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/participate"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginStart="@dimen/margin_text_input_view"
+        android:layout_marginBottom="@dimen/margin_text_input_view"
+        android:layout_marginEnd="@dimen/margin_text_input_view"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

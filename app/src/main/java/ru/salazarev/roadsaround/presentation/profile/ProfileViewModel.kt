@@ -28,7 +28,8 @@ class ProfileViewModel @Inject constructor(
             return@fromCallable interactor.getUserData()
         }.map { user ->
             UserPresentation(
-                user!!.firstName,
+                user.id,
+                user.firstName,
                 user.lastName,
                 if (user.image != null) imageConverter.convert(user.image) else null
             )
