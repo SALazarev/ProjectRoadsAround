@@ -6,7 +6,7 @@ import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Single
 import io.reactivex.rxjava3.schedulers.Schedulers
 import ru.salazarev.roadsaround.domain.user.UserInteractor
-import ru.salazarev.roadsaround.models.presentation.UserProfile
+import ru.salazarev.roadsaround.models.presentation.UserPresentation
 import ru.salazarev.roadsaround.util.ImageConverter
 import javax.inject.Inject
 
@@ -15,7 +15,7 @@ class ProfileViewModel @Inject constructor(
     private val imageConverter: ImageConverter
 ) : ViewModel() {
 
-    val userLiveData = MutableLiveData<UserProfile?>()
+    val userLiveData = MutableLiveData<UserPresentation?>()
 
     val progress = MutableLiveData<Boolean>()
 
@@ -24,10 +24,10 @@ class ProfileViewModel @Inject constructor(
     }
 
     private fun loadQuotationList() {
-        val single: Single<UserProfile?> = Single.fromCallable {
+        val single: Single<UserPresentation?> = Single.fromCallable {
             return@fromCallable interactor.getUserData()
         }.map { user ->
-            UserProfile(
+            UserPresentation(
                 user!!.firstName,
                 user.lastName,
                 if (user.image != null) imageConverter.convert(user.image) else null

@@ -15,6 +15,10 @@ import javax.inject.Named
 
 class MainFragment : Fragment() {
 
+    companion object{
+        const val EVENT_KEY = "EVENT_KEY"
+    }
+
     @Inject
     @Named("secondNavController")
     lateinit var navSecondController: NavController

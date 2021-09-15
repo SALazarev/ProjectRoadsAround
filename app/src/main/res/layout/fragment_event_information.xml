@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".presentation.eventinformation.EventInformationFragment">
 
     <include
@@ -12,107 +12,98 @@
 
     <ProgressBar
         android:id="@+id/progress_bar"
-        android:visibility="invisible"
         android:layout_width="100dp"
         android:layout_height="100dp"
+        android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/til_title"
+        android:id="@+id/til_name_author"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/margin_text_input_view"
         android:layout_marginTop="@dimen/margin_text_input_view"
         android:layout_marginEnd="@dimen/margin_text_input_view"
-        android:hint="@string/title"
+        android:hint="@string/organizer"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/include_toolbar">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/et_name_event"
+            android:id="@+id/et_name_author"
+            style="@style/TextViewOnlyDemo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
     </com.google.android.material.textfield.TextInputLayout>
 
-<!--    <com.google.android.material.textfield.TextInputLayout-->
-<!--        android:id="@+id/til_title"-->
-<!--        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"-->
-<!--        android:layout_width="0dp"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_marginStart="@dimen/margin_text_input_view"-->
-<!--        android:layout_marginTop="@dimen/margin_text_input_view"-->
-<!--        android:layout_marginEnd="@dimen/margin_text_input_view"-->
-<!--        android:hint="@string/title"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintTop_toBottomOf="@+id/include_toolbar">-->
 
-<!--        <com.google.android.material.textfield.TextInputEditText-->
-<!--            android:id="@+id/et_name_event"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content" />-->
-<!--    </com.google.android.material.textfield.TextInputLayout>-->
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/til_motion_type"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_text_input_view"
+        android:layout_marginTop="@dimen/margin_text_input_view"
+        android:layout_marginEnd="@dimen/margin_text_input_view"
+        android:hint="@string/motion_type"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/til_name_author">
 
-<!--    <com.google.android.material.textfield.TextInputLayout-->
-<!--        android:id="@+id/til_title"-->
-<!--        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"-->
-<!--        android:layout_width="0dp"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_marginStart="@dimen/margin_text_input_view"-->
-<!--        android:layout_marginTop="@dimen/margin_text_input_view"-->
-<!--        android:layout_marginEnd="@dimen/margin_text_input_view"-->
-<!--        android:hint="@string/title"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintTop_toBottomOf="@+id/include_toolbar">-->
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/et_motion_type"
+            style="@style/TextViewOnlyDemo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </com.google.android.material.textfield.TextInputLayout>
 
-<!--        <com.google.android.material.textfield.TextInputEditText-->
-<!--            android:id="@+id/et_name_event"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content" />-->
-<!--    </com.google.android.material.textfield.TextInputLayout>-->
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/til_time"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_text_input_view"
+        android:layout_marginTop="@dimen/margin_text_input_view"
+        android:layout_marginEnd="@dimen/margin_text_input_view"
+        android:hint="@string/time"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/til_motion_type">
 
-<!--    <com.google.android.material.textfield.TextInputLayout-->
-<!--        android:id="@+id/til_title"-->
-<!--        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"-->
-<!--        android:layout_width="0dp"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_marginStart="@dimen/margin_text_input_view"-->
-<!--        android:layout_marginTop="@dimen/margin_text_input_view"-->
-<!--        android:layout_marginEnd="@dimen/margin_text_input_view"-->
-<!--        android:hint="@string/title"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintTop_toBottomOf="@+id/include_toolbar">-->
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/et_time"
+            style="@style/TextViewOnlyDemo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </com.google.android.material.textfield.TextInputLayout>
 
-<!--        <com.google.android.material.textfield.TextInputEditText-->
-<!--            android:id="@+id/et_name_event"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content" />-->
-<!--    </com.google.android.material.textfield.TextInputLayout>-->
 
-<!--    <com.google.android.material.textfield.TextInputLayout-->
-<!--        android:id="@+id/til_title"-->
-<!--        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"-->
-<!--        android:layout_width="0dp"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_marginStart="@dimen/margin_text_input_view"-->
-<!--        android:layout_marginTop="@dimen/margin_text_input_view"-->
-<!--        android:layout_marginEnd="@dimen/margin_text_input_view"-->
-<!--        android:hint="@string/title"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintTop_toBottomOf="@+id/include_toolbar">-->
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/til_description"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_text_input_view"
+        android:layout_marginTop="@dimen/margin_text_input_view"
+        android:layout_marginEnd="@dimen/margin_text_input_view"
+        android:hint="@string/description"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/til_time">
 
-<!--        <com.google.android.material.textfield.TextInputEditText-->
-<!--            android:id="@+id/et_name_event"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content" />-->
-<!--    </com.google.android.material.textfield.TextInputLayout>-->
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/et_description"
+            style="@style/TextViewOnlyDemo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Главный герой — 27-летний Илья Горюнов, семь лет отсидевший в тюрьме по ложному обвинению в распространении наркотиков. Когда Илья выходит на свободу, он понимает, что прежняя жизнь, по которой он тосковал, разрушена, и вернуться к ней он больше не сможет. Хотя он не собирался мстить человеку, котор"
+            android:maxLines="3"/>
+    </com.google.android.material.textfield.TextInputLayout>
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

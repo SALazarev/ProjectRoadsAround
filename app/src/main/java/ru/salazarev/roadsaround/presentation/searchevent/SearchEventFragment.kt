@@ -14,8 +14,9 @@ import ru.salazarev.roadsaround.App
 import ru.salazarev.roadsaround.R
 import ru.salazarev.roadsaround.databinding.FragmentSearchEventBinding
 import ru.salazarev.roadsaround.presentation.MainActivity
-import ru.salazarev.roadsaround.presentation.chat.messagelist.SearchEventListAdapter
-import ru.salazarev.roadsaround.presentation.searchevent.eventlist.ClickItemCallback
+import ru.salazarev.roadsaround.presentation.chat.messagelist.EventListAdapter
+import ru.salazarev.roadsaround.presentation.main.MainFragment.Companion.EVENT_KEY
+import ru.salazarev.roadsaround.presentation.main.eventlist.ClickItemCallback
 import ru.salazarev.roadsaround.toast
 import javax.inject.Inject
 
@@ -24,7 +25,7 @@ class SearchEventFragment : Fragment() {
     private var _binding: FragmentSearchEventBinding? = null
     private val binding get() = _binding!!
 
-    private lateinit var adapter: SearchEventListAdapter
+    private lateinit var adapter: EventListAdapter
 
     @Inject
     lateinit var searchEventViewModelFactory: SearchEventViewModelFactory
@@ -59,9 +60,14 @@ class SearchEventFragment : Fragment() {
         val layoutManager = LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
         binding.rvEvent.layoutManager = layoutManager
 
-        adapter = SearchEventListAdapter(object: ClickItemCallback{
+        adapter = EventListAdapter(object : ClickItemCallback {
             override fun onClick(id: String) {
-                (activity as MainActivity).navController.navigate(R.id.action_mainFragment_to_eventInformationFragment)
+                val bundle = Bundle()
+                bundle.putString(EVENT_KEY, id)
+                (activity as MainActivity).navController.navigate(
+                    R.id.action_mainFragment_to_eventInformationFragment,
+                    bundle
+                )
             }
         })
         binding.rvEvent.adapter = adapter

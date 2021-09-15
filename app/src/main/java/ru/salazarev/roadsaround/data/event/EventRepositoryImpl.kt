@@ -1,13 +1,12 @@
 package ru.salazarev.roadsaround.data.event
 
-import android.util.Log
 import com.google.android.gms.tasks.Tasks
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreSettings
+import com.google.firebase.firestore.ktx.toObject
 
 import ru.salazarev.roadsaround.domain.event.EventRepository
 import ru.salazarev.roadsaround.models.data.EventData
-import ru.salazarev.roadsaround.models.data.MessageData
 import javax.inject.Inject
 
 class EventRepositoryImpl @Inject constructor(
@@ -43,5 +42,10 @@ class EventRepositoryImpl @Inject constructor(
     override fun getAllEvents(): List<EventData> {
         val ref= database.collection(databaseModel.getEvent().collectionName)
         return Tasks.await(ref.get()).toObjects(EventData::class.java)
+    }
+
+    override fun getEvent(eventId: String): EventData {
+        val ref= database.collection(databaseModel.getEvent().collectionName).document(eventId)
+        return Tasks.await(ref.get()).toObject<EventData>()!!
     }
 }

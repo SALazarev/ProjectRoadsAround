@@ -5,9 +5,9 @@ import io.reactivex.rxjava3.core.Single
 import ru.salazarev.roadsaround.domain.user.Authentication
 import ru.salazarev.roadsaround.domain.user.UserRepository
 import ru.salazarev.roadsaround.models.data.EventData
+import ru.salazarev.roadsaround.models.domain.Event
 import ru.salazarev.roadsaround.models.domain.User
 import ru.salazarev.roadsaround.models.presentation.EventPreview
-import ru.salazarev.roadsaround.models.presentation.EventInformation
 import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject
@@ -47,7 +47,13 @@ class EventInteractor @Inject constructor(
             val listEventData = eventRepository.getUserEvents(userId)
             listEventData.map {
                 calendar.time = Date(it.time)
-                EventPreview(it.id, nameAuthor, it.motionType, it.name, dateFormat.format(calendar.time))
+                EventPreview(
+                    it.id,
+                    nameAuthor,
+                    it.motionType,
+                    it.name,
+                    dateFormat.format(calendar.time)
+                )
             }
         }
     }
@@ -76,14 +82,36 @@ class EventInteractor @Inject constructor(
             calendar.time = Date(it.time)
             val authorName =
                 if (user.lastName == "") user.firstName else "${user.firstName} ${user.lastName}"
-            EventPreview(it.id, authorName, it.motionType, it.name, dateFormat.format(calendar.time))
+            EventPreview(
+                it.id,
+                authorName,
+                it.motionType,
+                it.name,
+                dateFormat.format(calendar.time)
+            )
         }
     }
 
-    fun getEvent(): Single<List<EventInformation>> {
-//        return Single.fromCallable {
-//        }
-        TODO()
+    fun getEvent(eventId: String): Single<Event> {
+        return Single.fromCallable {
+            val eventData = eventRepository.getEvent(eventId)
+            val usersData = userRepository.getUsersData(eventData.members)
+
+            val calendar = Calendar.getInstance()
+            calendar.time = Date(eventData.time)
+            val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.ROOT)
+
+            Event(
+                eventData.id,
+                eventData.authorId,
+                eventData.name,
+                eventData.note,
+                eventData.motionType,
+                dateFormat.format(calendar.time),
+                eventData.route,
+                usersData
+            )
+        }
     }
 
 

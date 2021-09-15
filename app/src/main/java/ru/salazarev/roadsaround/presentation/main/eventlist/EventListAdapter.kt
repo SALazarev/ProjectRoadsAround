@@ -6,8 +6,10 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import ru.salazarev.roadsaround.R
 import ru.salazarev.roadsaround.models.presentation.EventPreview
+import ru.salazarev.roadsaround.presentation.main.eventlist.ClickItemCallback
+import ru.salazarev.roadsaround.presentation.main.eventlist.EventViewHolder
 
-class EventListAdapter(var data: List<EventPreview> = mutableListOf()) : RecyclerView.Adapter<EventViewHolder>() {
+class EventListAdapter(val callback: ClickItemCallback, var data: List<EventPreview> = mutableListOf()) : RecyclerView.Adapter<EventViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): EventViewHolder {
         return EventViewHolder(
@@ -20,13 +22,14 @@ class EventListAdapter(var data: List<EventPreview> = mutableListOf()) : Recycle
 
     override fun onBindViewHolder(holder: EventViewHolder, position: Int) {
         holder.set(data[position])
+        holder.setOnClick { callback.onClick(data[position].id) }
     }
 
     override fun getItemCount(): Int = data.size
 
     fun setItems(items: List<EventPreview>) {
         val diffResult = DiffUtil.calculateDiff(
-            SearchEventDiffUtilCallback(
+            EventDiffUtilCallback(
                 data,
                 items
             )
