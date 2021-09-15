@@ -6,7 +6,8 @@ import ru.salazarev.roadsaround.domain.user.Authentication
 import ru.salazarev.roadsaround.domain.user.UserRepository
 import ru.salazarev.roadsaround.models.data.EventData
 import ru.salazarev.roadsaround.models.domain.User
-import ru.salazarev.roadsaround.models.presentation.Event
+import ru.salazarev.roadsaround.models.presentation.EventPreview
+import ru.salazarev.roadsaround.models.presentation.EventInformation
 import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject
@@ -35,7 +36,7 @@ class EventInteractor @Inject constructor(
         }
     }
 
-    fun getUserEvents(): Single<List<Event>> {
+    fun getUserEventsPreview(): Single<List<EventPreview>> {
         return Single.fromCallable {
             val userId = authentication.getUserId()
             val user = userRepository.getUserData(userId)
@@ -46,12 +47,12 @@ class EventInteractor @Inject constructor(
             val listEventData = eventRepository.getUserEvents(userId)
             listEventData.map {
                 calendar.time = Date(it.time)
-                Event(it.id, nameAuthor, it.motionType, it.name, dateFormat.format(calendar.time))
+                EventPreview(it.id, nameAuthor, it.motionType, it.name, dateFormat.format(calendar.time))
             }
         }
     }
 
-    fun getUsersEvents(): Single<List<Event>> {
+    fun getUsersEventsPreview(): Single<List<EventPreview>> {
         return Single.fromCallable {
             val listEventData = eventRepository.getAllEvents()
             val usersId = listEventData.map { it.authorId }.distinct()
@@ -66,7 +67,7 @@ class EventInteractor @Inject constructor(
         }
     }
 
-    private fun getEvents(data: List<EventData>, users: Map<String, User>): List<Event> {
+    private fun getEvents(data: List<EventData>, users: Map<String, User>): List<EventPreview> {
         val calendar = Calendar.getInstance()
         val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.ROOT)
 
@@ -75,8 +76,14 @@ class EventInteractor @Inject constructor(
             calendar.time = Date(it.time)
             val authorName =
                 if (user.lastName == "") user.firstName else "${user.firstName} ${user.lastName}"
-            Event(it.id, authorName, it.motionType, it.name, dateFormat.format(calendar.time))
+            EventPreview(it.id, authorName, it.motionType, it.name, dateFormat.format(calendar.time))
         }
+    }
+
+    fun getEvent(): Single<List<EventInformation>> {
+//        return Single.fromCallable {
+//        }
+        TODO()
     }
 
 

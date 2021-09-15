@@ -5,9 +5,9 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import ru.salazarev.roadsaround.R
-import ru.salazarev.roadsaround.models.presentation.Event
+import ru.salazarev.roadsaround.models.presentation.EventPreview
 
-class EventListAdapter(var data: List<Event> = mutableListOf()) : RecyclerView.Adapter<EventViewHolder>() {
+class EventListAdapter(var data: List<EventPreview> = mutableListOf()) : RecyclerView.Adapter<EventViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): EventViewHolder {
         return EventViewHolder(
@@ -24,7 +24,7 @@ class EventListAdapter(var data: List<Event> = mutableListOf()) : RecyclerView.A
 
     override fun getItemCount(): Int = data.size
 
-    fun setItems(items: List<Event>) {
+    fun setItems(items: List<EventPreview>) {
         val diffResult = DiffUtil.calculateDiff(
             SearchEventDiffUtilCallback(
                 data,

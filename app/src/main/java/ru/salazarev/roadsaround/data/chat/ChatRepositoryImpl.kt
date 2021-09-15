@@ -26,7 +26,7 @@ class ChatRepositoryImpl @Inject constructor(
 
     override fun subscribeOnChatMessages(callback: PublishSubject<List<MessageData>>) {
         collectionRef.addSnapshotListener { snapshot, error ->
-            if (snapshot != null){
+            if (snapshot != null && !snapshot.metadata.hasPendingWrites()){
                     val data: List<MessageData> = snapshot.toObjects(MessageData::class.java)
                     callback.onNext(data)
             }

@@ -15,6 +15,7 @@ import ru.salazarev.roadsaround.R
 import ru.salazarev.roadsaround.databinding.FragmentRoutesBinding
 import ru.salazarev.roadsaround.presentation.MainActivity
 import ru.salazarev.roadsaround.presentation.chat.messagelist.EventListAdapter
+import ru.salazarev.roadsaround.presentation.searchevent.eventlist.ClickItemCallback
 import ru.salazarev.roadsaround.toast
 import javax.inject.Inject
 
@@ -76,7 +77,12 @@ class RoutesFragment : Fragment() {
         val layoutManager = LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
         binding.rvEvent.layoutManager = layoutManager
 
-        adapter = EventListAdapter()
+//        adapter = EventListAdapter(object: ClickItemCallback {
+//            override fun onClick(id: String) {
+//                (activity as MainActivity).navController.navigate(R.id.action_mainFragment_to_eventInformationFragment)
+//            }
+//
+//        })
         binding.rvEvent.adapter = adapter
 
         val itemDecoration = DividerItemDecoration(

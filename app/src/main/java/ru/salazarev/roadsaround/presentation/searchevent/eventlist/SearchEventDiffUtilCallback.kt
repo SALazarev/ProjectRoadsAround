@@ -1,12 +1,11 @@
 package ru.salazarev.roadsaround.presentation.chat.messagelist
 
 import androidx.recyclerview.widget.DiffUtil
-import ru.salazarev.roadsaround.models.presentation.Event
-import ru.salazarev.roadsaround.models.presentation.MessageChat
+import ru.salazarev.roadsaround.models.presentation.EventPreview
 
 class SearchEventDiffUtilCallback(
-    private val oldList: List<Event>,
-    private val newList: List<Event>
+    private val oldList: List<EventPreview>,
+    private val newList: List<EventPreview>
 ) : DiffUtil.Callback() {
 
     override fun getOldListSize(): Int {

@@ -5,9 +5,11 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import ru.salazarev.roadsaround.R
-import ru.salazarev.roadsaround.models.presentation.Event
+import ru.salazarev.roadsaround.models.presentation.EventPreview
+import ru.salazarev.roadsaround.presentation.searchevent.eventlist.ClickItemCallback
+import ru.salazarev.roadsaround.presentation.searchevent.eventlist.SearchEventViewHolder
 
-class SearchEventListAdapter(var data: List<Event> = mutableListOf()) : RecyclerView.Adapter<SearchEventViewHolder>() {
+class SearchEventListAdapter(val callback: ClickItemCallback, var data: List<EventPreview> = mutableListOf()) : RecyclerView.Adapter<SearchEventViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SearchEventViewHolder {
         return SearchEventViewHolder(
@@ -20,11 +22,12 @@ class SearchEventListAdapter(var data: List<Event> = mutableListOf()) : Recycler
 
     override fun onBindViewHolder(holder: SearchEventViewHolder, position: Int) {
         holder.set(data[position])
+        holder.setOnClick { callback.onClick(data[position].id) }
     }
 
     override fun getItemCount(): Int = data.size
 
-    fun setItems(items: List<Event>) {
+    fun setItems(items: List<EventPreview>) {
         val diffResult = DiffUtil.calculateDiff(
             SearchEventDiffUtilCallback(
                 data,
