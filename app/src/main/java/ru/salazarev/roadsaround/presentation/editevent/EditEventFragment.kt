@@ -17,6 +17,7 @@ import ru.salazarev.roadsaround.App
 import ru.salazarev.roadsaround.R
 import ru.salazarev.roadsaround.databinding.FragmentEditEventBinding
 import ru.salazarev.roadsaround.presentation.MainActivity
+import ru.salazarev.roadsaround.toast
 import java.util.*
 import javax.inject.Inject
 
@@ -75,6 +76,12 @@ class EditEventFragment : Fragment() {
                 .navigate(R.id.action_editEventFragment_to_editRoadFragment, bundle)
         }
         binding.btnTime.setOnClickListener { startDatePicker() }
+
+        viewModel.result.observe(viewLifecycleOwner,{
+            result ->
+            if (result) requireActivity().toast("OK")
+            else requireActivity().toast("PROBLEM")
+        })
     }
 
     private fun checkArguments() {
@@ -158,8 +165,8 @@ class EditEventFragment : Fragment() {
                 when (it.itemId) {
                     R.id.btn_complete_edit_event -> {
                         completeEvent()
-                        (activity as MainActivity).navController
-                            .navigate(R.id.action_editEventFragment_to_mainFragment)
+//                        (activity as MainActivity).navController
+//                            .navigate(R.id.action_editEventFragment_to_mainFragment)
                         true
                     }
                     else -> super.onOptionsItemSelected(it)
@@ -170,7 +177,16 @@ class EditEventFragment : Fragment() {
 
 
     private fun completeEvent() {
-        val name = binding.etNameEvent.text.toString().trim().isNotEmpty()
+        val name = binding.etNameEvent.text.toString()
+        val note = binding.etDescription.text.toString()
+        val motionType = binding.actvMotionType.text.toString()
+        val time = viewModel.getTime()
+        val route = viewModel.getRoute()
+
+        if (name.trim().isNotEmpty() && motionType.isNotEmpty() && time!=null && route!=null)
+            viewModel.createEvent(name,note,motionType,time,route)
+        else requireActivity().toast(getString(R.string.not_all_necessary_data))
+
     }
 
     override fun onDestroyView() {

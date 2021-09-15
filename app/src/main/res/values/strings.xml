@@ -61,6 +61,7 @@
     <string name="scooter">Самокат</string>
     <string name="car">Автомобиль</string>
     <string name="motorbike">Мотоцикл</string>
+    <string name="not_all_necessary_data">Указаны не все необходимые данные</string>
 
     <string-array name="motionType">
         <item>@string/foot</item>

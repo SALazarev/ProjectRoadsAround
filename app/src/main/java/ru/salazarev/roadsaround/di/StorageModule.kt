@@ -12,10 +12,13 @@ import dagger.Module
 import dagger.Provides
 import ru.salazarev.roadsaround.data.chat.ChatRepositoryImpl
 import ru.salazarev.roadsaround.data.chat.MessagesCollectionModel
+import ru.salazarev.roadsaround.data.event.EventRepositoryImpl
+import ru.salazarev.roadsaround.data.event.EventsCollectionModel
 import ru.salazarev.roadsaround.data.user.UsersCollectionModel
 import ru.salazarev.roadsaround.data.user.ImageStorageHelper
 import ru.salazarev.roadsaround.data.user.UserRepositoryImpl
 import ru.salazarev.roadsaround.domain.chat.ChatRepository
+import ru.salazarev.roadsaround.domain.event.EventRepository
 import ru.salazarev.roadsaround.domain.user.Authentication
 import ru.salazarev.roadsaround.domain.user.UserRepository
 import ru.salazarev.roadsaround.network.AuthenticationImpl
@@ -47,10 +50,20 @@ interface StorageModule {
 
         @Singleton
         @Provides
+        fun provideEventsCollectionsModel(): EventsCollectionModel = EventsCollectionModel
+
+        @Singleton
+        @Provides
         @Named(MessagesCollectionModel.getMessage().collectionName)
         fun provideMessagesCollectionsReference(database: FirebaseFirestore):CollectionReference = database
             .collection("chats").document("test_chat")
             .collection("messages")
+
+        @Singleton
+        @Provides
+        @Named(EventsCollectionModel.getEvent().collectionName)
+        fun provideEventsCollectionsReference(database: FirebaseFirestore):CollectionReference = database
+            .collection("events")
     }
 
     @Binds
@@ -58,6 +71,9 @@ interface StorageModule {
 
     @Binds
     fun bindChatRepository(repo: ChatRepositoryImpl): ChatRepository
+
+    @Binds
+    fun bindEventRepository(repo: EventRepositoryImpl): EventRepository
 
     @Binds
     fun bindAuthentication(auth: AuthenticationImpl): Authentication
