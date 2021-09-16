@@ -4,140 +4,161 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/design_default_color_background"
     tools:context=".presentation.eventinformation.EventInformationFragment">
 
     <include
         android:id="@id/include_toolbar"
         layout="@layout/view_toolbar" />
 
-    <ProgressBar
+    <include
+        android:id="@id/view_information_not_load"
+        layout="@layout/view_information_not_load" />
+
+    <com.google.android.material.progressindicator.CircularProgressIndicator
         android:id="@+id/progress_bar"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:visibility="invisible"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:indeterminate="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/til_name_author"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/margin_text_input_view"
-        android:layout_marginTop="@dimen/margin_text_input_view"
-        android:layout_marginEnd="@dimen/margin_text_input_view"
-        android:hint="@string/organizer"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/include_toolbar">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/et_name_author"
-            style="@style/TextViewOnlyDemo"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-    </com.google.android.material.textfield.TextInputLayout>
-
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/til_motion_type"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/margin_text_input_view"
-        android:layout_marginTop="@dimen/margin_text_input_view"
-        android:layout_marginEnd="@dimen/margin_text_input_view"
-        android:hint="@string/motion_type"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/til_name_author">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/et_motion_type"
-            style="@style/TextViewOnlyDemo"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/til_time"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/margin_text_input_view"
-        android:layout_marginTop="@dimen/margin_text_input_view"
-        android:layout_marginEnd="@dimen/margin_text_input_view"
-        android:hint="@string/time"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/til_motion_type">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/et_time"
-            style="@style/TextViewOnlyDemo"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-    </com.google.android.material.textfield.TextInputLayout>
-
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/til_description"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/margin_text_input_view"
-        android:layout_marginTop="@dimen/margin_text_input_view"
-        android:layout_marginEnd="@dimen/margin_text_input_view"
-        android:hint="@string/description"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/til_time">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/et_description"
-            style="@style/TextViewOnlyDemo"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="textMultiLine|textNoSuggestions"
-            android:maxLines="4"/>
-    </com.google.android.material.textfield.TextInputLayout>
-
-
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/btn_members"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:icon="@drawable/outline_groups_24"
-        android:text="@string/members"
-        android:layout_marginTop="@dimen/margin_text_input_view"
-        app:layout_constraintEnd_toStartOf="@id/btn_road"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/til_description" />
-
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/btn_road"
-        android:text="@string/road"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:icon="@drawable/outline_map_24"
-        android:layout_marginTop="@dimen/margin_text_input_view"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/btn_members"
-        app:layout_constraintTop_toBottomOf="@+id/til_description" />
-
-
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/btn_participate"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="@string/participate"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layout_main"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginStart="@dimen/margin_text_input_view"
-        android:layout_marginBottom="@dimen/margin_text_input_view"
-        android:layout_marginEnd="@dimen/margin_text_input_view"/>
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/include_toolbar"
+        android:visibility="invisible">
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til_name_author"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_text_input_view"
+            android:layout_marginTop="@dimen/margin_text_input_view"
+            android:layout_marginEnd="@dimen/margin_text_input_view"
+            android:hint="@string/organizer"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_name_author"
+                style="@style/TextViewOnlyDemo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til_motion_type"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_text_input_view"
+            android:layout_marginTop="@dimen/margin_text_input_view"
+            android:layout_marginEnd="@dimen/margin_text_input_view"
+            android:hint="@string/motion_type"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/til_name_author">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_motion_type"
+                style="@style/TextViewOnlyDemo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til_time"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_text_input_view"
+            android:layout_marginTop="@dimen/margin_text_input_view"
+            android:layout_marginEnd="@dimen/margin_text_input_view"
+            android:hint="@string/time"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/til_motion_type">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_time"
+                style="@style/TextViewOnlyDemo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til_description"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_text_input_view"
+            android:layout_marginTop="@dimen/margin_text_input_view"
+            android:layout_marginEnd="@dimen/margin_text_input_view"
+            android:hint="@string/description"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/til_time">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_description"
+                style="@style/TextViewOnlyDemo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textMultiLine|textNoSuggestions"
+                android:maxLines="4"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_members"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:icon="@drawable/outline_groups_24"
+            android:text="@string/members"
+            android:layout_marginTop="@dimen/margin_text_input_view"
+            app:layout_constraintEnd_toStartOf="@id/btn_road"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/til_description" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_road"
+            android:text="@string/road"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:icon="@drawable/outline_map_24"
+            android:layout_marginTop="@dimen/margin_text_input_view"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/btn_members"
+            app:layout_constraintTop_toBottomOf="@+id/til_description" />
+
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_participate"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/participate"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginStart="@dimen/margin_text_input_view"
+            android:layout_marginBottom="@dimen/margin_text_input_view"
+            android:layout_marginEnd="@dimen/margin_text_input_view"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

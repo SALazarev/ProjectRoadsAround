@@ -59,12 +59,12 @@ class EventRepositoryImpl @Inject constructor(
 
     override fun getAllEvents(): List<EventData> {
         val ref = database.collection(databaseModel.getEvent().collectionName)
-        return Tasks.await(ref.get()).toObjects(EventData::class.java)
+        return Tasks.await(ref.get(Source.SERVER)).toObjects(EventData::class.java)
     }
 
     override fun getEvent(eventId: String): EventData {
         val ref = database.collection(databaseModel.getEvent().collectionName).document(eventId)
-        return Tasks.await(ref.get()).toObject<EventData>()!!
+        return Tasks.await(ref.get(Source.SERVER)).toObject<EventData>()!!
     }
 
     override fun addUserInEvent(userId: String, eventId: String) {

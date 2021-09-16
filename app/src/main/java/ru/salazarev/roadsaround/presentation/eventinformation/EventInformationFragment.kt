@@ -57,6 +57,11 @@ class EventInformationFragment : Fragment() {
         configureToolbar()
         configureFragmentByTypeWork()
         setObservers()
+
+        binding.viewInformationNotLoad.btnParticipate.setOnClickListener {
+            binding.viewInformationNotLoad.viewInformationNotLoad.visibility = View.INVISIBLE
+            arguments?.getString(EVENT_ID_KEY)?.let { viewModel.getEventData(it) }
+        }
         binding.btnMembers.setOnClickListener {
             val bundle = Bundle()
             val idEvent = arguments?.getString(EVENT_ID_KEY)
@@ -67,8 +72,11 @@ class EventInformationFragment : Fragment() {
         }
         binding.btnRoad.setOnClickListener {
             val bundle = Bundle()
-            viewModel.data.value?.let {  bundle.putString(ROUTE_KEY, it.route) }
-            bundle.putString(EDIT_ROAD_TYPE_WORK, EditRoadFragment.Companion.EditRoadTypeWork.VIEW.name)
+            viewModel.data.value?.let { bundle.putString(ROUTE_KEY, it.route) }
+            bundle.putString(
+                EDIT_ROAD_TYPE_WORK,
+                EditRoadFragment.Companion.EditRoadTypeWork.VIEW.name
+            )
             (activity as MainActivity).navController.navigate(
                 R.id.action_eventInformationFragment_to_editRoadFragment, bundle
             )
@@ -156,15 +164,21 @@ class EventInformationFragment : Fragment() {
 
 
     private fun setObservers() {
+
         viewModel.data.observe(viewLifecycleOwner, { event ->
-            if (event != null) {
+            if (event == null) {
+                binding.viewInformationNotLoad.viewInformationNotLoad.visibility = View.VISIBLE
+                binding.layoutMain.visibility = View.INVISIBLE
+            } else {
                 val user = event.members.find { it.id == event.authorId }!!
                 binding.etNameAuthor.setText(user.name)
                 binding.etMotionType.setText(event.motionType)
                 binding.etTime.setText(event.time)
                 if (event.note.isNotEmpty()) binding.etDescription.setText(event.note)
                 else binding.tilDescription.visibility = View.GONE
-            } else requireActivity().toast("Проблема с загрузкой")
+                binding.viewInformationNotLoad.viewInformationNotLoad.visibility = View.INVISIBLE
+                binding.layoutMain.visibility = View.VISIBLE
+            }
         })
 
         viewModel.progress.observe(viewLifecycleOwner, { loadStatus ->
