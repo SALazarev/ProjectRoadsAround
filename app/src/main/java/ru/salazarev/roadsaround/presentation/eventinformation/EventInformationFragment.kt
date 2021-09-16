@@ -96,7 +96,8 @@ class EventInformationFragment : Fragment() {
     private fun setMemberMode() {
         binding.btnParticipate.apply {
             text = context.getString(R.string.leave_from_event)
-            // setOnClickListener { viewModel.leaveFromEvent() }
+            val eventId = arguments?.getString(EVENT_ID_KEY) ?: ""
+            setOnClickListener { viewModel.leaveFromEvent(eventId) }
         }
     }
 
@@ -133,9 +134,14 @@ class EventInformationFragment : Fragment() {
             else binding.progressBar.visibility = View.INVISIBLE
         })
 
-        viewModel.resultUpdate.observe(viewLifecycleOwner, { result ->
+        viewModel.resultParticipate.observe(viewLifecycleOwner, { result ->
             if (result) setMemberMode()
-            else requireActivity().toast("Не удалось загрузить данныек")
+            else requireActivity().toast(resources.getString(R.string.failed_load_data))
+        })
+
+        viewModel.resultLeave.observe(viewLifecycleOwner, { result ->
+            if (result) setGuestMode()
+            else requireActivity().toast(resources.getString(R.string.failed_load_data))
         })
     }
 

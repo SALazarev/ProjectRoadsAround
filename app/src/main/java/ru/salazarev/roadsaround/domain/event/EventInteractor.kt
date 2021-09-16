@@ -141,9 +141,16 @@ class EventInteractor @Inject constructor(
     }
 
     fun addUserInEvent(eventId: String): Completable {
-        return Completable.fromCallable{
+        return Completable.fromCallable {
             val userId = authentication.getUserId()
-            eventRepository.addUserInEvent(userId,eventId)
+            eventRepository.addUserInEvent(userId, eventId)
+        }
+    }
+
+    fun leaveUserFromEvent(eventId: String): Completable {
+        return Completable.fromCallable {
+            val userId = authentication.getUserId()
+            eventRepository.leaveUserFromEvent(userId, eventId)
         }
     }
 

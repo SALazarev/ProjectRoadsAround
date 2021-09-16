@@ -54,4 +54,9 @@ class EventRepositoryImpl @Inject constructor(
         val ref= database.collection(databaseModel.getEvent().collectionName).document(eventId)
         ref.update( databaseModel.getEvent().getColumns().members, FieldValue.arrayUnion(userId))
     }
+
+    override fun leaveUserFromEvent(userId: String, eventId: String) {
+        val ref= database.collection(databaseModel.getEvent().collectionName).document(eventId)
+        ref.update( databaseModel.getEvent().getColumns().members, FieldValue.arrayRemove(userId))
+    }
 }

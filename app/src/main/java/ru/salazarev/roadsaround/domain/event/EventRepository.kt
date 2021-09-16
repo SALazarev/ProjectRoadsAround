@@ -8,4 +8,5 @@ interface EventRepository {
     fun getAllEvents():List<EventData>
     fun getEvent(eventId: String): EventData
     fun addUserInEvent(userId: String, eventId: String)
+    fun leaveUserFromEvent(userId: String, eventId: String)
 }
