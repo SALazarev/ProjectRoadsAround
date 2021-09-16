@@ -15,11 +15,11 @@ class EventRepositoryImpl @Inject constructor(
     private val databaseModel: EventsCollectionModel
 ) : EventRepository {
     override fun sendEvent(eventData: EventData) {
-        val settings = FirebaseFirestoreSettings.Builder()
-            .setPersistenceEnabled(false)
-            .build()
+        if (eventData.id == "") createEvent(eventData)
+        else updateEvent(eventData)
+    }
 
-        database.firestoreSettings = settings
+    private fun createEvent(eventData: EventData) {
         val ref = database.collection(databaseModel.getEvent().collectionName).document()
         val event = hashMapOf(
             databaseModel.getEvent().getColumns().id to ref.id,
@@ -34,29 +34,45 @@ class EventRepositoryImpl @Inject constructor(
         ref.set(event)
     }
 
+    private fun updateEvent(eventData: EventData) {
+        val ref =
+            database.collection(databaseModel.getEvent().collectionName).document(eventData.id)
+        val event = hashMapOf(
+            databaseModel.getEvent().getColumns().id to eventData.id,
+            databaseModel.getEvent().getColumns().authorId to eventData.authorId,
+            databaseModel.getEvent().getColumns().name to eventData.name,
+            databaseModel.getEvent().getColumns().note to eventData.note,
+            databaseModel.getEvent().getColumns().time to eventData.time,
+            databaseModel.getEvent().getColumns().route to eventData.route,
+            databaseModel.getEvent().getColumns().motionType to eventData.motionType,
+            databaseModel.getEvent().getColumns().members to eventData.members
+        )
+        ref.update(event)
+    }
+
     override fun getUserEvents(id: String): List<EventData> {
-        val ref= database.collection(databaseModel.getEvent().collectionName)
-            .whereArrayContains( databaseModel.getEvent().getColumns().members, id)
+        val ref = database.collection(databaseModel.getEvent().collectionName)
+            .whereArrayContains(databaseModel.getEvent().getColumns().members, id)
         return Tasks.await(ref.get()).toObjects(EventData::class.java)
     }
 
     override fun getAllEvents(): List<EventData> {
-        val ref= database.collection(databaseModel.getEvent().collectionName)
+        val ref = database.collection(databaseModel.getEvent().collectionName)
         return Tasks.await(ref.get()).toObjects(EventData::class.java)
     }
 
     override fun getEvent(eventId: String): EventData {
-        val ref= database.collection(databaseModel.getEvent().collectionName).document(eventId)
+        val ref = database.collection(databaseModel.getEvent().collectionName).document(eventId)
         return Tasks.await(ref.get()).toObject<EventData>()!!
     }
 
     override fun addUserInEvent(userId: String, eventId: String) {
-        val ref= database.collection(databaseModel.getEvent().collectionName).document(eventId)
-        ref.update( databaseModel.getEvent().getColumns().members, FieldValue.arrayUnion(userId))
+        val ref = database.collection(databaseModel.getEvent().collectionName).document(eventId)
+        ref.update(databaseModel.getEvent().getColumns().members, FieldValue.arrayUnion(userId))
     }
 
     override fun leaveUserFromEvent(userId: String, eventId: String) {
-        val ref= database.collection(databaseModel.getEvent().collectionName).document(eventId)
-        ref.update( databaseModel.getEvent().getColumns().members, FieldValue.arrayRemove(userId))
+        val ref = database.collection(databaseModel.getEvent().collectionName).document(eventId)
+        ref.update(databaseModel.getEvent().getColumns().members, FieldValue.arrayRemove(userId))
     }
 }

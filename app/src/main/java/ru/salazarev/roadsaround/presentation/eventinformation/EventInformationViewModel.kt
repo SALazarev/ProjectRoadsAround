@@ -10,6 +10,8 @@ import ru.salazarev.roadsaround.models.presentation.UserPresentation
 import ru.salazarev.roadsaround.presentation.BaseViewModel
 import ru.salazarev.roadsaround.util.ImageConverter
 import ru.salazarev.roadsaround.util.addTo
+import java.text.SimpleDateFormat
+import java.util.*
 import javax.inject.Inject
 
 class EventInformationViewModel @Inject constructor(
@@ -48,13 +50,18 @@ class EventInformationViewModel @Inject constructor(
             val image = if (it.image != null) imageConverter.convert(it.image) else null
             UserPresentation(it.id, memberName, image)
         }
+
+        val calendar = Calendar.getInstance()
+        calendar.time = Date(event.time)
+        val dateFormat = SimpleDateFormat("HH:mm dd/MM/yyyy", Locale.ROOT)
+
         return EventPresentation(
             event.id,
             event.authorId,
             event.name,
-            event.note,
+            event.description,
             event.motionType,
-            event.time,
+            dateFormat.format(calendar.time),
             event.route,
             users
         )

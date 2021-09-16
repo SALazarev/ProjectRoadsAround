@@ -17,6 +17,7 @@ import ru.salazarev.roadsaround.App
 import ru.salazarev.roadsaround.R
 import ru.salazarev.roadsaround.databinding.FragmentEditEventBinding
 import ru.salazarev.roadsaround.presentation.MainActivity
+import ru.salazarev.roadsaround.presentation.main.MainFragment
 import ru.salazarev.roadsaround.toast
 import java.util.*
 import javax.inject.Inject
@@ -40,11 +41,25 @@ class EditEventFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        requireActivity().supportFragmentManager.setFragmentResultListener(ROUTE_REQUEST,this){key, bundle ->
+        requireActivity().supportFragmentManager.setFragmentResultListener(
+            ROUTE_REQUEST,
+            this
+        ) { _, bundle ->
             val route = bundle.getString(ROUTE_KEY)
-           viewModel.setRoute(route)
-            if(viewModel.getRoute()!=null) binding.btnRoad.setIconResource(R.drawable.outline_done_24)
+            viewModel.setRoute(route)
+            updateViewStatus()
         }
+
+        App.appComponent.getMainComponentBuilder().fragmentManager(childFragmentManager).build()
+            .inject(this)
+        viewModel =
+            ViewModelProvider(this, editEventViewModelFactory).get(EditEventViewModel::class.java)
+        setData()
+    }
+
+    private fun updateViewStatus() {
+        if (viewModel.getRoute() != null) binding.btnRoad.setIconResource(R.drawable.outline_done_24)
+        if (viewModel.getTime() != null) binding.btnTime.setIconResource(R.drawable.outline_done_24)
     }
 
 
@@ -54,22 +69,21 @@ class EditEventFragment : Fragment() {
     ): View {
         _binding = FragmentEditEventBinding.inflate(inflater, container, false)
 
-        App.appComponent.getMainComponentBuilder().fragmentManager(childFragmentManager).build()
-            .inject(this)
-        viewModel =
-            ViewModelProvider(this, editEventViewModelFactory).get(EditEventViewModel::class.java)
-
         return binding.root
 
+    }
+
+    private fun setData() {
+        arguments?.getString(MainFragment.EVENT_ID_KEY)?.let {
+            viewModel.getEventData(it)
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         configureToolbar()
         setDropDownListMotionTypes()
-        if(viewModel.getRoute()!=null) binding.btnRoad.setIconResource(R.drawable.outline_done_24)
-       if(viewModel.getTime()!=null) binding.btnTime.setIconResource(R.drawable.outline_done_24)
-
+        updateViewStatus()
 
         binding.btnRoad.setOnClickListener {
             val bundle = Bundle()
@@ -79,12 +93,41 @@ class EditEventFragment : Fragment() {
                 .navigate(R.id.action_editEventFragment_to_editRoadFragment, bundle)
         }
         binding.btnTime.setOnClickListener { startDatePicker() }
+        setObservers()
+    }
 
-        viewModel.result.observe(viewLifecycleOwner,{
-            result ->
+    private fun setDropDownListMotionTypes() {
+        val motions = resources.getStringArray(R.array.motionType)
+        val adapter =
+            ArrayAdapter(requireContext(), R.layout.item_drop_down_list_motion_type, motions)
+        binding.actvMotionType.setAdapter(adapter)
+    }
+
+    private fun setObservers() {
+        viewModel.result.observe(viewLifecycleOwner, { result ->
             if (result) (activity as MainActivity).navController
                 .navigate(R.id.action_editEventFragment_to_mainFragment)
             else requireActivity().toast("PROBLEM")
+        })
+        viewModel.data.observe(viewLifecycleOwner, { event ->
+            if (!viewModel.getLoadStatus()) {
+                viewModel.setRoute(event.route)
+                viewModel.setTime(event.time)
+                binding.etDescription.setText(event.description)
+                binding.etNameEvent.setText(event.name)
+                binding.actvMotionType.setText(event.motionType, false)
+
+                viewModel.setMembers(event.members.map { it.id })
+                viewModel.setIdEvent(event.id)
+                viewModel.setLoadStatus(true)
+                updateViewStatus()
+            }
+
+        })
+
+        viewModel.progress.observe(viewLifecycleOwner, { loadStatus ->
+            if (loadStatus) binding.progressBar.visibility = View.VISIBLE
+            else binding.progressBar.visibility = View.INVISIBLE
         })
     }
 
@@ -119,19 +162,14 @@ class EditEventFragment : Fragment() {
 
         val timePicker = builder.build()
         timePicker.addOnPositiveButtonClickListener {
-            calendar.set(Calendar.HOUR_OF_DAY, timePicker.hour)
-            calendar.set(Calendar.MINUTE, timePicker.minute)
-            viewModel.setTime(calendar.timeInMillis)
+            val calendar2 = Calendar.getInstance()
+            calendar2.time = Date(timeOfDatePicker)
+            calendar2.set(Calendar.HOUR_OF_DAY, timePicker.hour)
+            calendar2.set(Calendar.MINUTE, timePicker.minute)
+            viewModel.setTime(calendar2.timeInMillis)
             binding.btnTime.setIconResource(R.drawable.outline_done_24)
         }
         timePicker.show(childFragmentManager, PICKERS_TAG)
-    }
-
-    private fun setDropDownListMotionTypes() {
-        val motions = resources.getStringArray(R.array.motionType)
-        val adapter =
-            ArrayAdapter(requireContext(), R.layout.item_drop_down_list_motion_type, motions)
-        binding.actvMotionType.setAdapter(adapter)
     }
 
     private fun configureToolbar() {
@@ -140,10 +178,7 @@ class EditEventFragment : Fragment() {
             title = context.getString(R.string.event_creation)
             navigationContentDescription = context.getString(R.string.back)
             navigationIcon = ContextCompat.getDrawable(context, R.drawable.outline_arrow_back_24)
-            setNavigationOnClickListener {
-                (activity as MainActivity).navController
-                    .navigate(R.id.action_editEventFragment_to_mainFragment)
-            }
+            setNavigationOnClickListener { requireActivity().onBackPressed() }
             setOnMenuItemClickListener {
                 when (it.itemId) {
                     R.id.btn_complete_edit_event -> {
@@ -164,8 +199,8 @@ class EditEventFragment : Fragment() {
         val time = viewModel.getTime()
         val route = viewModel.getRoute()
 
-        if (name.trim().isNotEmpty() && motionType.isNotEmpty() && time!=null && route!=null)
-            viewModel.createEvent(name,note,motionType,time,route)
+        if (name.trim().isNotEmpty() && motionType.isNotEmpty() && time != null && route != null)
+            viewModel.createEvent(name, note, motionType, time, route)
         else requireActivity().toast(getString(R.string.not_all_necessary_data))
 
     }

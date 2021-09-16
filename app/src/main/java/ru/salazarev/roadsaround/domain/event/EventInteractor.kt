@@ -27,19 +27,27 @@ class EventInteractor @Inject constructor(
     }
 
     fun createEvent(
-        name: String, note: String, motionType: String, time: Long, route: String
+        id: String,
+        name: String,
+        note: String,
+        motionType: String,
+        time: Long,
+        route: String,
+        _members: List<String>
     ): Completable {
         return Completable.fromCallable {
             val authorId = authentication.getUserId()
+            val members = if (_members.isNullOrEmpty()) listOf(authorId) else _members
             eventRepository.sendEvent(
                 EventData(
-                    authorId = authorId,
-                    name = name,
-                    note = note,
-                    motionType = motionType,
-                    time = time,
-                    route = route,
-                    members = listOf(authorId)
+                    id,
+                    authorId,
+                    name,
+                    note,
+                    motionType,
+                    time,
+                    route,
+                    members
                 )
             )
         }
@@ -123,17 +131,13 @@ class EventInteractor @Inject constructor(
             val eventData = eventRepository.getEvent(eventId)
             val usersData = userRepository.getUsersData(eventData.members)
 
-            val calendar = Calendar.getInstance()
-            calendar.time = Date(eventData.time)
-            val dateFormat = SimpleDateFormat("HH:mm dd/MM/yyyy", Locale.ROOT)
-
             Event(
                 eventData.id,
                 eventData.authorId,
                 eventData.name,
                 eventData.note,
                 eventData.motionType,
-                dateFormat.format(calendar.time),
+                eventData.time,
                 eventData.route,
                 usersData
             )

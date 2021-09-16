@@ -1,14 +1,12 @@
 package ru.salazarev.roadsaround.models.domain
 
-import ru.salazarev.roadsaround.domain.event.EventInteractor
-
 data class Event(
     var id: String,
     var authorId: String,
     var name: String,
-    var note: String,
+    var description: String,
     var motionType: String,
-    var time: String,
+    var time: Long,
     var route: String,
     var members: List<User>
 )
