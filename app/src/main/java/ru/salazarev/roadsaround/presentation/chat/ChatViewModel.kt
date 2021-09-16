@@ -19,9 +19,9 @@ class ChatViewModel(
     val result = MutableLiveData<Boolean>()
     val messages = MutableLiveData<List<MessageChat>>()
 
-    fun sendMessage(text: String) {
+    fun sendMessage(eventId: String, text: String) {
         val completable = Completable.fromCallable {
-            return@fromCallable chatInteractor.sendMessage(text)
+            return@fromCallable chatInteractor.sendMessage(eventId,text)
         }
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
@@ -31,9 +31,9 @@ class ChatViewModel(
         completable.subscribe({ result.value = true }) { result.value = false }
     }
 
-    fun getMessages() {
+    fun getMessages(idEvent: String) {
         progress.value = true
-        chatInteractor.getChatMessages().subscribe(
+        chatInteractor.getChatMessages(idEvent).subscribe(
             {
                 progress.value = false
                 getMessagesInLiveData(it)

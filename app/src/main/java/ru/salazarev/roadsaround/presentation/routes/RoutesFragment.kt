@@ -63,10 +63,6 @@ class RoutesFragment : Fragment() {
             title = context.getString(R.string.routes)
             setOnMenuItemClickListener {
                 when (it.itemId) {
-                    R.id.btn_chat -> {
-                        (activity as MainActivity).navController.navigate(R.id.action_mainFragment_to_chatFragment)
-                        true
-                    }
                     R.id.btn_create_event -> {
                         (activity as MainActivity).navController.navigate(R.id.action_mainFragment_to_editEventFragment)
                         true

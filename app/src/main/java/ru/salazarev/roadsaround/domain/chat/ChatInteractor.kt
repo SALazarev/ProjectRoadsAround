@@ -19,13 +19,13 @@ class ChatInteractor @Inject constructor(
     private val userInteractor: UserInteractor,
     private val auth: Authentication
 ) {
-    fun sendMessage(textMessage: String) {
-        chatRepository.sendMessage(auth.getUserId(), textMessage)
+    fun sendMessage(idEvent: String, textMessage: String) {
+        chatRepository.sendMessage(idEvent,auth.getUserId(), textMessage)
     }
 
-    fun getChatMessages():PublishSubject<List<Message>> {
+    fun getChatMessages(idEvent: String):PublishSubject<List<Message>> {
         val localCallback = PublishSubject.create<List<MessageData>>()
-        chatRepository.subscribeOnChatMessages(localCallback)
+        chatRepository.subscribeOnChatMessages(idEvent,localCallback)
 
         val callback = PublishSubject.create<List<Message>>()
 

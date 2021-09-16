@@ -5,6 +5,6 @@ import io.reactivex.rxjava3.subjects.PublishSubject
 import ru.salazarev.roadsaround.models.data.MessageData
 
 interface ChatRepository {
-    fun sendMessage(authorId: String, textMessage: String)
-    fun subscribeOnChatMessages(callback: PublishSubject<List<MessageData>>)
+    fun sendMessage(eventId: String, authorId: String, textMessage: String)
+    fun subscribeOnChatMessages(eventId: String, callback: PublishSubject<List<MessageData>>)
 }

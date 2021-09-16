@@ -6,6 +6,6 @@
         android:id="@+id/btn_chat"
         app:showAsAction="always"
         android:icon="@drawable/outline_chat_24"
-        android:title="@string/chat"
-        android:contentDescription="@string/chat"/>
+        android:title="@string/par_chat"
+        android:contentDescription="@string/par_chat"/>
 </menu>

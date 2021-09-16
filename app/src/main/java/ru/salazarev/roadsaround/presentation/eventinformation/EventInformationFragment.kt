@@ -64,7 +64,12 @@ class EventInformationFragment : Fragment() {
             setOnMenuItemClickListener {
                 when (it.itemId) {
                     R.id.btn_chat -> {
-                        (activity as MainActivity).navController.navigate(R.id.action_eventInformationFragment_to_chatFragment)
+                        val bundle = Bundle()
+                        bundle.putString(EVENT_ID_KEY, arguments?.getString(EVENT_ID_KEY))
+                        (activity as MainActivity).navController.navigate(
+                            R.id.action_eventInformationFragment_to_chatFragment,
+                            bundle
+                        )
                         true
                     }
                     else -> super.onOptionsItemSelected(it)
@@ -107,12 +112,12 @@ class EventInformationFragment : Fragment() {
     private fun setAuthorMode() {
         binding.btnParticipate.apply {
             text = context.getString(R.string.edit_event)
-
             setOnClickListener {
                 val bundle = Bundle()
-                bundle.putString(EVENT_ID_KEY, bundle.getString(EVENT_ID_KEY)?:"")
+                bundle.putString(EVENT_ID_KEY, arguments?.getString(EVENT_ID_KEY))
                 (activity as MainActivity).navController.navigate(
-                R.id.action_eventInformationFragment_to_editEventFragment, bundle )
+                    R.id.action_eventInformationFragment_to_editEventFragment, bundle
+                )
             }
         }
     }

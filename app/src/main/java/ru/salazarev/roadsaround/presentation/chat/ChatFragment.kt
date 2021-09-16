@@ -13,8 +13,8 @@ import androidx.recyclerview.widget.RecyclerView
 import ru.salazarev.roadsaround.App
 import ru.salazarev.roadsaround.R
 import ru.salazarev.roadsaround.databinding.FragmentChatBinding
-import ru.salazarev.roadsaround.presentation.MainActivity
 import ru.salazarev.roadsaround.presentation.chat.messagelist.ChatAdapter
+import ru.salazarev.roadsaround.presentation.main.MainFragment.Companion.EVENT_ID_KEY
 import ru.salazarev.roadsaround.toast
 import javax.inject.Inject
 
@@ -54,7 +54,8 @@ class ChatFragment : Fragment() {
         setToolbar()
         setObserver()
         binding.btnSend.setOnClickListener { sendMessage() }
-        viewModel.getMessages()
+        val eventId = arguments?.getString(EVENT_ID_KEY) ?: ""
+        viewModel.getMessages(eventId)
     }
 
     private fun setRecyclerView() {
@@ -87,15 +88,18 @@ class ChatFragment : Fragment() {
             navigationContentDescription = context.getString(R.string.back)
             navigationIcon = ContextCompat.getDrawable(context, R.drawable.outline_arrow_back_24)
             setNavigationOnClickListener {
-                (activity as MainActivity).navController
-                    .navigate(R.id.action_chatFragment_to_mainFragment)
+                requireActivity().onBackPressed()
             }
         }
     }
 
     private fun sendMessage() {
         if (binding.etEnterText.text.toString().trim().isNotEmpty()) {
-            viewModel.sendMessage(binding.etEnterText.text.toString())
+            val eventId = arguments?.getString(EVENT_ID_KEY) ?: ""
+            viewModel.sendMessage(
+                eventId,
+                binding.etEnterText.text.toString()
+            )
             binding.etEnterText.setText("")
         } else requireActivity().toast(getString(R.string.incorrectly_entered_text))
     }
