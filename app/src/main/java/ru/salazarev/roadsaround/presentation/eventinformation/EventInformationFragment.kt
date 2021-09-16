@@ -34,12 +34,9 @@ class EventInformationFragment : Fragment() {
         App.appComponent.getMainComponentBuilder().fragmentManager(childFragmentManager).build()
             .inject(this)
 
-        viewModel =
-            ViewModelProvider(
-                this,
-                eventInformationViewModelFactory
-
-            ).get(EventInformationViewModel::class.java)
+        viewModel = ViewModelProvider(
+            this, eventInformationViewModelFactory
+        ).get(EventInformationViewModel::class.java)
 
         arguments?.getString(EVENT_ID_KEY)?.let { viewModel.getEventData(it) }
     }
@@ -54,15 +51,15 @@ class EventInformationFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        checkArguments()
-        setObservers()
         configureToolbar()
+        configureFragmentByTypeWork()
+        setObservers()
         binding.btnMembers.setOnClickListener {
             val bundle = Bundle()
             val idEvent = arguments?.getString(EVENT_ID_KEY)
             bundle.putString(EVENT_ID_KEY, idEvent)
             (activity as MainActivity).navController.navigate(
-                R.id.action_eventInformationFragment_to_membersFragment,bundle
+                R.id.action_eventInformationFragment_to_membersFragment, bundle
             )
         }
     }
@@ -91,7 +88,7 @@ class EventInformationFragment : Fragment() {
         }
     }
 
-    private fun checkArguments() {
+    private fun configureFragmentByTypeWork() {
         arguments?.let { bundle ->
             bundle.getString(TYPE_WORK_WITH_EVENT_KEY)?.let { it ->
                 val typeWork = when (it) {
@@ -114,6 +111,7 @@ class EventInformationFragment : Fragment() {
     }
 
     private fun setMemberMode() {
+        binding.includeToolbar.includeToolbar.menu.findItem(R.id.btn_chat).isVisible = true
         binding.btnParticipate.apply {
             text = context.getString(R.string.leave_from_event)
             val eventId = arguments?.getString(EVENT_ID_KEY) ?: ""
@@ -122,6 +120,7 @@ class EventInformationFragment : Fragment() {
     }
 
     private fun setAuthorMode() {
+        binding.includeToolbar.includeToolbar.menu.findItem(R.id.btn_chat).isVisible = true
         binding.btnParticipate.apply {
             text = context.getString(R.string.edit_event)
             setOnClickListener {
@@ -136,6 +135,7 @@ class EventInformationFragment : Fragment() {
 
 
     private fun setGuestMode() {
+        binding.includeToolbar.includeToolbar.menu.findItem(R.id.btn_chat).isVisible = false
         binding.btnParticipate.apply {
             text = context.getString(R.string.participate)
             val eventId = arguments?.getString(EVENT_ID_KEY) ?: ""
@@ -145,15 +145,14 @@ class EventInformationFragment : Fragment() {
 
     private fun setObservers() {
         viewModel.data.observe(viewLifecycleOwner, { event ->
-            if (event!=null){
+            if (event != null) {
                 val user = event.members.find { it.id == event.authorId }!!
                 binding.etNameAuthor.setText(user.name)
                 binding.etMotionType.setText(event.motionType)
                 binding.etTime.setText(event.time)
                 if (event.note.isNotEmpty()) binding.etDescription.setText(event.note)
                 else binding.tilDescription.visibility = View.GONE
-            }
-            else requireActivity().toast("Проблема с загрузкой")
+            } else requireActivity().toast("Проблема с загрузкой")
         })
 
         viewModel.progress.observe(viewLifecycleOwner, { loadStatus ->
