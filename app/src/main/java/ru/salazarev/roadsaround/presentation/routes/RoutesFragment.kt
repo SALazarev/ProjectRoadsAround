@@ -20,7 +20,6 @@ import ru.salazarev.roadsaround.presentation.main.MainFragment
 import ru.salazarev.roadsaround.presentation.main.MainFragment.Companion.EVENT_ID_KEY
 import ru.salazarev.roadsaround.presentation.main.MainFragment.Companion.EVENT_NAME_KEY
 import ru.salazarev.roadsaround.presentation.main.eventlist.ClickItemCallback
-import ru.salazarev.roadsaround.toast
 import javax.inject.Inject
 
 class RoutesFragment : Fragment() {
@@ -35,17 +34,20 @@ class RoutesFragment : Fragment() {
 
     private lateinit var adapter: EventListAdapter
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        _binding = FragmentRoutesBinding.inflate(inflater, container, false)
-
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
         App.appComponent.getMainComponentBuilder().fragmentManager(childFragmentManager).build()
             .inject(this)
 
         viewModel =
             ViewModelProvider(this, routesViewModelFactory).get(RoutesViewModel::class.java)
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        _binding = FragmentRoutesBinding.inflate(inflater, container, false)
 
         return binding.root
     }
@@ -55,6 +57,11 @@ class RoutesFragment : Fragment() {
         configureToolbar()
         setRecyclerView()
         setObserver()
+        binding.viewInformationNotLoad.btnParticipate.setOnClickListener {
+            binding.viewInformationNotLoad.viewInformationNotLoad.visibility = View.INVISIBLE
+            binding.rvEvent.visibility = View.VISIBLE
+            viewModel.loadQuotationList()
+        }
     }
 
     private fun configureToolbar() {
@@ -112,10 +119,15 @@ class RoutesFragment : Fragment() {
     }
 
     private fun setObserver() {
-
         viewModel.eventsLiveData.observe(viewLifecycleOwner, { listData ->
-            if (listData.isNullOrEmpty()) requireActivity().toast(getString(R.string.сould_not_load_data))
-            else adapter.setItems(listData)
+            if (listData.isNullOrEmpty()) {
+                binding.viewInformationNotLoad.viewInformationNotLoad.visibility = View.VISIBLE
+                binding.rvEvent.visibility = View.INVISIBLE
+            } else {
+                adapter.setItems(listData)
+                binding.viewInformationNotLoad.viewInformationNotLoad.visibility = View.INVISIBLE
+                binding.rvEvent.visibility = View.VISIBLE
+            }
         })
 
         viewModel.progress.observe(viewLifecycleOwner, { loadStatus ->

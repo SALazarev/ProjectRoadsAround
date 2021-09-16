@@ -21,7 +21,7 @@ class RoutesViewModel @Inject constructor(
         loadQuotationList()
     }
 
-    private fun loadQuotationList() {
+    fun loadQuotationList() {
         interactor.getUserEventsPreview().subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .doFinally { progress.value = false }
