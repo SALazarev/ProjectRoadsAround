@@ -7,4 +7,5 @@ interface EventRepository {
     fun getUserEvents(id: String): List<EventData>
     fun getAllEvents():List<EventData>
     fun getEvent(eventId: String): EventData
+    fun addUserInEvent(userId: String, eventId: String)
 }

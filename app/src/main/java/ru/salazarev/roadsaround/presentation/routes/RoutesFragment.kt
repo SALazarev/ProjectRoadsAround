@@ -118,7 +118,7 @@ class RoutesFragment : Fragment() {
     private fun setObserver() {
 
         viewModel.eventsLiveData.observe(viewLifecycleOwner, { listData ->
-            if (listData == null) requireActivity().toast(getString(R.string.сould_not_load_data))
+            if (listData.isNullOrEmpty()) requireActivity().toast(getString(R.string.сould_not_load_data))
             else adapter.setItems(listData)
         })
 

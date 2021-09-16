@@ -18,11 +18,12 @@ class EventInformationViewModel @Inject constructor(
 ) : BaseViewModel() {
 
     val data = MutableLiveData<EventPresentation>()
-
+    val resultUpdate = MutableLiveData<Boolean>()
     val progress = MutableLiveData<Boolean>()
 
     fun getEventData(eventId: String) {
-        interactor.getEvent(eventId).subscribeOn(Schedulers.io())
+        interactor.getEvent(eventId)
+            .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .doFinally { progress.value = false }
             .doOnSubscribe { progress.value = true }
@@ -48,6 +49,16 @@ class EventInformationViewModel @Inject constructor(
             event.route,
             users
         )
+    }
+
+    fun participateFromEvent(eventId: String) {
+        interactor.addUserInEvent(eventId).subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(
+                { resultUpdate.value = true },
+                { resultUpdate.value = false }
+            )
+            .addTo(compositeDisposable)
     }
 
 }

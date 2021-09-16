@@ -1,6 +1,7 @@
 package ru.salazarev.roadsaround.data.event
 
 import com.google.android.gms.tasks.Tasks
+import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreSettings
 import com.google.firebase.firestore.ktx.toObject
@@ -47,5 +48,10 @@ class EventRepositoryImpl @Inject constructor(
     override fun getEvent(eventId: String): EventData {
         val ref= database.collection(databaseModel.getEvent().collectionName).document(eventId)
         return Tasks.await(ref.get()).toObject<EventData>()!!
+    }
+
+    override fun addUserInEvent(userId: String, eventId: String) {
+        val ref= database.collection(databaseModel.getEvent().collectionName).document(eventId)
+        ref.update( databaseModel.getEvent().getColumns().members, FieldValue.arrayUnion(userId))
     }
 }

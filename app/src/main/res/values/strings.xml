@@ -69,6 +69,7 @@
     <string name="event">Событие</string>
     <string name="leave_from_event">Покинуть событие</string>
     <string name="edit_event">Изменить событие</string>
+    <string name="failed_load_data">Не удалось загрузить данные</string>
 
     <string-array name="motionType">
         <item>@string/foot</item>

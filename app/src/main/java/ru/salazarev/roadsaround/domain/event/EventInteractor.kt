@@ -48,18 +48,18 @@ class EventInteractor @Inject constructor(
     fun getUserEventsPreview(): Single<List<EventPreview>> {
         return Single.fromCallable {
             val userId = authentication.getUserId()
-            val user = userRepository.getUserData(userId)
             val calendar = Calendar.getInstance()
             val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.ROOT)
-            val nameAuthor =
-                if (user.lastName == "") user.firstName else "${user.firstName} ${user.lastName}"
             val listEventData = eventRepository.getUserEvents(userId)
 
             listEventData.map { event ->
+                val author = userRepository.getUserData(event.authorId)
+                val authorName =
+                    if (author.lastName == "") author.firstName else "${author.firstName} ${author.lastName}"
                 calendar.time = Date(event.time)
                 EventPreview(
                     event.id,
-                    nameAuthor,
+                    authorName,
                     event.motionType,
                     event.name,
                     dateFormat.format(calendar.time),
@@ -137,6 +137,13 @@ class EventInteractor @Inject constructor(
                 eventData.route,
                 usersData
             )
+        }
+    }
+
+    fun addUserInEvent(eventId: String): Completable {
+        return Completable.fromCallable{
+            val userId = authentication.getUserId()
+            eventRepository.addUserInEvent(userId,eventId)
         }
     }
 
