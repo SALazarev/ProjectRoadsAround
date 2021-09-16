@@ -32,10 +32,9 @@ class EditEventViewModel(
     fun getTime(): Long? = savedStateHandle.get(TIME_KEY)
     fun getRoute(): String? = savedStateHandle.get(ROUTE_KEY)
     fun createEvent(name: String, note: String, motionType: String, time: Long, route: String) {
-        interactor.createEvent(name,note,motionType,time,route).subscribeOn(
-            Schedulers.io())
+        interactor.createEvent(name,note,motionType,time,route)
+            .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-
             .subscribe(
                 { _result.value = true },
                 { _result.value = false }

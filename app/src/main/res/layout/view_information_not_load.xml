@@ -25,4 +25,16 @@
         android:text="@string/failed_load_data"
         android:textSize="16sp"/>
 
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_participate"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/try_load_again"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginStart="@dimen/margin_text_input_view"
+        android:layout_marginBottom="@dimen/margin_text_input_view"
+        android:layout_marginEnd="@dimen/margin_text_input_view"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -79,7 +79,8 @@ class EditEventFragment : Fragment() {
 
         viewModel.result.observe(viewLifecycleOwner,{
             result ->
-            if (result) requireActivity().toast("OK")
+            if (result) (activity as MainActivity).navController
+                .navigate(R.id.action_editEventFragment_to_mainFragment)
             else requireActivity().toast("PROBLEM")
         })
     }
@@ -165,8 +166,6 @@ class EditEventFragment : Fragment() {
                 when (it.itemId) {
                     R.id.btn_complete_edit_event -> {
                         completeEvent()
-//                        (activity as MainActivity).navController
-//                            .navigate(R.id.action_editEventFragment_to_mainFragment)
                         true
                     }
                     else -> super.onOptionsItemSelected(it)

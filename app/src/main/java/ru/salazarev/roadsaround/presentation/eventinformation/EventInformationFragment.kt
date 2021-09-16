@@ -11,6 +11,8 @@ import ru.salazarev.roadsaround.App
 import ru.salazarev.roadsaround.R
 import ru.salazarev.roadsaround.databinding.FragmentEventInformationBinding
 import ru.salazarev.roadsaround.domain.event.EventInteractor
+import ru.salazarev.roadsaround.presentation.MainActivity
+import ru.salazarev.roadsaround.presentation.main.MainFragment
 import ru.salazarev.roadsaround.presentation.main.MainFragment.Companion.EVENT_ID_KEY
 import ru.salazarev.roadsaround.presentation.main.MainFragment.Companion.NAME_EVENT_KEY
 import ru.salazarev.roadsaround.presentation.main.MainFragment.Companion.TYPE_WORK_WITH_EVENT_KEY
@@ -61,7 +63,8 @@ class EventInformationFragment : Fragment() {
             setNavigationOnClickListener { requireActivity().onBackPressed() }
             setOnMenuItemClickListener {
                 when (it.itemId) {
-                    R.id.btn_complete_edit_event -> {
+                    R.id.btn_chat -> {
+                        (activity as MainActivity).navController.navigate(R.id.action_eventInformationFragment_to_chatFragment)
                         true
                     }
                     else -> super.onOptionsItemSelected(it)
@@ -104,7 +107,13 @@ class EventInformationFragment : Fragment() {
     private fun setAuthorMode() {
         binding.btnParticipate.apply {
             text = context.getString(R.string.edit_event)
-            //setOnClickListener { viewModel.leaveFromEvent() }
+
+            setOnClickListener {
+                val bundle = Bundle()
+                bundle.putString(EVENT_ID_KEY, bundle.getString(EVENT_ID_KEY)?:"")
+                (activity as MainActivity).navController.navigate(
+                R.id.action_eventInformationFragment_to_editEventFragment, bundle )
+            }
         }
     }
 
@@ -125,8 +134,8 @@ class EventInformationFragment : Fragment() {
             binding.etNameAuthor.setText(nameAuthor)
             binding.etMotionType.setText(event.motionType)
             binding.etTime.setText(event.time)
-            if (event.note.isNotEmpty()) binding.etDescription.setText(event.note) else binding.tilDescription.visibility =
-                View.GONE
+            if (event.note.isNotEmpty()) binding.etDescription.setText(event.note)
+            else binding.tilDescription.visibility = View.GONE
         })
 
         viewModel.progress.observe(viewLifecycleOwner, { loadStatus ->

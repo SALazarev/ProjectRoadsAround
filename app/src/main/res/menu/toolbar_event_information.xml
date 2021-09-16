@@ -3,16 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/btn_route"
+        android:id="@+id/btn_chat"
         app:showAsAction="always"
-        android:icon="@drawable/outline_map_24"
-        android:title="@string/route"
-        android:contentDescription="@string/route"/>
-
-    <item
-        android:id="@+id/btn_members"
-        app:showAsAction="always"
-        android:icon="@drawable/outline_groups_24"
-        android:title="@string/members"
-        android:contentDescription="@string/members"/>
+        android:icon="@drawable/outline_chat_24"
+        android:title="@string/chat"
+        android:contentDescription="@string/chat"/>
 </menu>

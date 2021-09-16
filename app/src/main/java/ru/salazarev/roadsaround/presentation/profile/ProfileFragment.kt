@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import ru.salazarev.roadsaround.App
 import ru.salazarev.roadsaround.R
 import ru.salazarev.roadsaround.databinding.FragmentProfileBinding
@@ -79,8 +80,7 @@ class ProfileFragment : Fragment() {
     }
 
     private fun createAlertDialog(): AlertDialog {
-        val builder = AlertDialog.Builder(requireContext())
-        builder.setTitle(getString(R.string.warning))
+        val builder = MaterialAlertDialogBuilder(requireContext())
             .setMessage(getString(R.string.you_shure_log_out))
             .setCancelable(false)
             .setPositiveButton(getString(R.string.yes)) { _, _ -> logout() }
