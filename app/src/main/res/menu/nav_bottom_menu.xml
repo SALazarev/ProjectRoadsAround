@@ -10,8 +10,8 @@
         android:id="@id/routesFragment"
         android:enabled="true"
         android:icon="@drawable/outline_route_24"
-        android:title="@string/routes"
-        android:contentDescription="@string/routes"/>
+        android:title="@string/my_events"
+        android:contentDescription="@string/my_events"/>
     <item
         android:id="@id/searchEventFragment"
         android:enabled="true"

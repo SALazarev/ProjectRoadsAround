@@ -49,7 +49,7 @@ class EventInteractor @Inject constructor(
         return Single.fromCallable {
             val userId = authentication.getUserId()
             val calendar = Calendar.getInstance()
-            val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.ROOT)
+            val dateFormat = SimpleDateFormat("HH:mm dd/MM/yyyy", Locale.ROOT)
             val listEventData = eventRepository.getUserEvents(userId)
 
             listEventData.map { event ->
@@ -97,7 +97,7 @@ class EventInteractor @Inject constructor(
 
     private fun getEvents(data: List<EventData>, users: Map<String, User>): List<EventPreview> {
         val calendar = Calendar.getInstance()
-        val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.ROOT)
+        val dateFormat = SimpleDateFormat("HH:mm dd/MM/yyyy", Locale.ROOT)
 
         val userId = authentication.getUserId()
 
@@ -125,7 +125,7 @@ class EventInteractor @Inject constructor(
 
             val calendar = Calendar.getInstance()
             calendar.time = Date(eventData.time)
-            val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.ROOT)
+            val dateFormat = SimpleDateFormat("HH:mm dd/MM/yyyy", Locale.ROOT)
 
             Event(
                 eventData.id,
@@ -151,6 +151,13 @@ class EventInteractor @Inject constructor(
         return Completable.fromCallable {
             val userId = authentication.getUserId()
             eventRepository.leaveUserFromEvent(userId, eventId)
+        }
+    }
+
+    fun getMembersEvent(eventId: String): Single<List<User>> {
+        return Single.fromCallable {
+            val eventData = eventRepository.getEvent(eventId)
+            userRepository.getUsersData(eventData.members)
         }
     }
 

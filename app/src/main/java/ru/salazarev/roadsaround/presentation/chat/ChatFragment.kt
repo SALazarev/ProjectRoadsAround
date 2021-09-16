@@ -51,7 +51,7 @@ class ChatFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         setRecyclerView()
-        setToolbar()
+        configureToolbar()
         setObserver()
         binding.btnSend.setOnClickListener { sendMessage() }
         val eventId = arguments?.getString(EVENT_ID_KEY) ?: ""
@@ -81,7 +81,7 @@ class ChatFragment : Fragment() {
         )
     }
 
-    private fun setToolbar() {
+    private fun configureToolbar() {
         binding.includeToolbar.includeToolbar.apply {
             inflateMenu(R.menu.toolbar_chat_menu)
             title = context.getString(R.string.chat)

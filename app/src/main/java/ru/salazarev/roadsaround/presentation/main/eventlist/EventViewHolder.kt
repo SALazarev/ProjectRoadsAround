@@ -2,11 +2,11 @@ package ru.salazarev.roadsaround.presentation.main.eventlist
 
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
-import ru.salazarev.roadsaround.databinding.RvItemEventBinding
+import ru.salazarev.roadsaround.databinding.ListItemEventBinding
 import ru.salazarev.roadsaround.models.presentation.EventPreview
 
 class EventViewHolder(item: View) : RecyclerView.ViewHolder(item) {
-    private val binding: RvItemEventBinding = RvItemEventBinding.bind(item)
+    private val binding: ListItemEventBinding = ListItemEventBinding.bind(item)
 
     fun set(data: EventPreview) {
         binding.apply {

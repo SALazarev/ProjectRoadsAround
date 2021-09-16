@@ -2,11 +2,11 @@ package ru.salazarev.roadsaround.presentation.chat.messagelist
 
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
-import ru.salazarev.roadsaround.databinding.RvItemMessageBinding
+import ru.salazarev.roadsaround.databinding.ListItemMessageBinding
 import ru.salazarev.roadsaround.models.presentation.MessageChat
 
 class MessageViewHolder(item: View): RecyclerView.ViewHolder(item){
-    private val binding: RvItemMessageBinding = RvItemMessageBinding.bind(item)
+    private val binding: ListItemMessageBinding = ListItemMessageBinding.bind(item)
 
     fun set(data: MessageChat) {
         binding.apply {

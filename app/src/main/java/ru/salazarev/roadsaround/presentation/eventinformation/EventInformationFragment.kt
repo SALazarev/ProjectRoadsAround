@@ -12,7 +12,6 @@ import ru.salazarev.roadsaround.R
 import ru.salazarev.roadsaround.databinding.FragmentEventInformationBinding
 import ru.salazarev.roadsaround.domain.event.EventInteractor
 import ru.salazarev.roadsaround.presentation.MainActivity
-import ru.salazarev.roadsaround.presentation.main.MainFragment
 import ru.salazarev.roadsaround.presentation.main.MainFragment.Companion.EVENT_ID_KEY
 import ru.salazarev.roadsaround.presentation.main.MainFragment.Companion.NAME_EVENT_KEY
 import ru.salazarev.roadsaround.presentation.main.MainFragment.Companion.TYPE_WORK_WITH_EVENT_KEY
@@ -52,6 +51,14 @@ class EventInformationFragment : Fragment() {
         configureToolbar()
         checkArguments()
         setObservers()
+        binding.btnMembers.setOnClickListener {
+            val bundle = Bundle()
+            val idEvent = arguments?.getString(EVENT_ID_KEY)
+            bundle.putString(EVENT_ID_KEY, idEvent)
+            (activity as MainActivity).navController.navigate(
+                R.id.action_eventInformationFragment_to_membersFragment,bundle
+            )
+        }
     }
 
     private fun configureToolbar() {
@@ -134,9 +141,7 @@ class EventInformationFragment : Fragment() {
     private fun setObservers() {
         viewModel.data.observe(viewLifecycleOwner, { event ->
             val user = event.members.find { it.id == event.authorId }!!
-            val nameAuthor =
-                if (user.lastName == "") user.firstName else "${user.firstName} ${user.lastName}"
-            binding.etNameAuthor.setText(nameAuthor)
+            binding.etNameAuthor.setText(user.name)
             binding.etMotionType.setText(event.motionType)
             binding.etTime.setText(event.time)
             if (event.note.isNotEmpty()) binding.etDescription.setText(event.note)

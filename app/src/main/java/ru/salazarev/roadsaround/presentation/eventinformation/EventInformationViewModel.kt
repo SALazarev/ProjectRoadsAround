@@ -37,8 +37,10 @@ class EventInformationViewModel @Inject constructor(
 
     private fun getEventInfo(event: Event): EventPresentation {
         val users = event.members.map {
+            val memberName =
+                if (it.lastName == "") it.firstName else "${it.firstName} ${it.lastName}"
             val image = if (it.image != null) imageConverter.convert(it.image) else null
-            UserPresentation(it.id,it.firstName, it.lastName, image)
+            UserPresentation(it.id, memberName, image)
         }
         return EventPresentation(
             event.id,

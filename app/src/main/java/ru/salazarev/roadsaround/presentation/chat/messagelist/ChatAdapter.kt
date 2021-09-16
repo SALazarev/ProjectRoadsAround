@@ -12,7 +12,7 @@ class ChatAdapter(var data: List<MessageChat> = mutableListOf()) : RecyclerView.
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MessageViewHolder {
         return MessageViewHolder(
             LayoutInflater.from(parent.context).inflate(
-                R.layout.rv_item_message,
+                R.layout.list_item_message,
                 parent, false
             )
         )

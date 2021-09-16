@@ -60,7 +60,7 @@ class RoutesFragment : Fragment() {
     private fun configureToolbar() {
         binding.includeToolbar.includeToolbar.apply {
             inflateMenu(R.menu.toolbar_routes_menu)
-            title = context.getString(R.string.routes)
+            title = context.getString(R.string.my_events)
             setOnMenuItemClickListener {
                 when (it.itemId) {
                     R.id.btn_create_event -> {

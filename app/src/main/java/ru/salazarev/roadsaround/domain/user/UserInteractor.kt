@@ -22,7 +22,9 @@ class UserInteractor @Inject constructor(
         repository.setUserData(user)
     }
 
-    fun getUserData(id: String = auth.getUserId()) = repository.getUserData(id)
+    fun getUserData(id: String = auth.getUserId()): Single<User> = Single.fromCallable{
+        repository.getUserData(id)
+    }
 
     fun getUsersData(idList: List<String>): List<User> = repository.getUsersData(idList)
 

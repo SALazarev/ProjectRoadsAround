@@ -71,6 +71,7 @@
     <string name="edit_event">Изменить событие</string>
     <string name="failed_load_data">Не удалось загрузить данные</string>
     <string name="try_load_again">Повторить загрузку</string>
+    <string name="my_events">Мои события</string>
 
     <string-array name="motionType">
         <item>@string/foot</item>

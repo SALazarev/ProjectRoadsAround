@@ -52,7 +52,7 @@ class ProfileFragment : Fragment() {
 
     private fun setObserver() {
 
-        viewModel.userLiveData.observe(viewLifecycleOwner, { user ->
+        viewModel.user.observe(viewLifecycleOwner, { user ->
             if (user == null) requireActivity().toast(getString(R.string.сould_not_load_data))
             else setViewData(user)
         })
@@ -64,8 +64,7 @@ class ProfileFragment : Fragment() {
     }
 
     private fun setViewData(userPresentation: UserPresentation) {
-        binding.etFirstName.text = userPresentation.firstName
-        binding.etLastName.text = userPresentation.lastName
+        binding.etFirstName.text = userPresentation.name
         if (userPresentation.image != null) binding.btnUserPhoto.background = userPresentation.image
     }
 
