@@ -5,7 +5,7 @@ import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.schedulers.Schedulers
 import ru.salazarev.roadsaround.domain.event.EventInteractor
 import ru.salazarev.roadsaround.models.presentation.EventPreview
-import ru.salazarev.roadsaround.presentation.common.BaseViewModel
+import ru.salazarev.roadsaround.presentation.BaseViewModel
 import ru.salazarev.roadsaround.util.addTo
 import javax.inject.Inject
 

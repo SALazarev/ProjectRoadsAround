@@ -67,6 +67,8 @@
     <string name="members">Участники</string>
     <string name="route">Маршрут</string>
     <string name="event">Событие</string>
+    <string name="leave_from_event">Покинуть событие</string>
+    <string name="edit_event">Изменить событие</string>
 
     <string-array name="motionType">
         <item>@string/foot</item>

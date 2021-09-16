@@ -7,7 +7,7 @@ import ru.salazarev.roadsaround.domain.event.EventInteractor
 import ru.salazarev.roadsaround.models.domain.Event
 import ru.salazarev.roadsaround.models.presentation.EventPresentation
 import ru.salazarev.roadsaround.models.presentation.UserPresentation
-import ru.salazarev.roadsaround.presentation.common.BaseViewModel
+import ru.salazarev.roadsaround.presentation.BaseViewModel
 import ru.salazarev.roadsaround.util.ImageConverter
 import ru.salazarev.roadsaround.util.addTo
 import javax.inject.Inject

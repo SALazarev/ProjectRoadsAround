@@ -1,4 +1,4 @@
-package ru.salazarev.roadsaround.presentation.common
+package ru.salazarev.roadsaround.presentation
 
 import androidx.lifecycle.ViewModel
 import io.reactivex.rxjava3.disposables.CompositeDisposable

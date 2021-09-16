@@ -18,6 +18,14 @@ class EventInteractor @Inject constructor(
     private val authentication: Authentication
 ) {
 
+    companion object {
+        enum class TypeWorkWithEvent {
+            GUEST,
+            AUTHOR,
+            MEMBER
+        }
+    }
+
     fun createEvent(
         name: String, note: String, motionType: String, time: Long, route: String
     ): Completable {
@@ -46,16 +54,29 @@ class EventInteractor @Inject constructor(
             val nameAuthor =
                 if (user.lastName == "") user.firstName else "${user.firstName} ${user.lastName}"
             val listEventData = eventRepository.getUserEvents(userId)
-            listEventData.map {
-                calendar.time = Date(it.time)
+
+            listEventData.map { event ->
+                calendar.time = Date(event.time)
                 EventPreview(
-                    it.id,
+                    event.id,
                     nameAuthor,
-                    it.motionType,
-                    it.name,
-                    dateFormat.format(calendar.time)
+                    event.motionType,
+                    event.name,
+                    dateFormat.format(calendar.time),
+                    checkEventStatus(userId, event)
                 )
             }
+        }
+    }
+
+    private fun checkEventStatus(
+        userId: String,
+        event: EventData
+    ): TypeWorkWithEvent {
+        return when {
+            userId == event.authorId -> TypeWorkWithEvent.AUTHOR
+            event.members.contains(userId) -> TypeWorkWithEvent.MEMBER
+            else -> TypeWorkWithEvent.GUEST
         }
     }
 
@@ -78,37 +99,33 @@ class EventInteractor @Inject constructor(
         val calendar = Calendar.getInstance()
         val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.ROOT)
 
-        return data.map {
-            val user: User = users.getValue(it.authorId)
-            calendar.time = Date(it.time)
+        val userId = authentication.getUserId()
+
+        return data.map { event ->
+            val user: User = users.getValue(event.authorId)
+            calendar.time = Date(event.time)
             val authorName =
                 if (user.lastName == "") user.firstName else "${user.firstName} ${user.lastName}"
+
             EventPreview(
-                it.id,
+                event.id,
                 authorName,
-                it.motionType,
-                it.name,
-                dateFormat.format(calendar.time)
+                event.motionType,
+                event.name,
+                dateFormat.format(calendar.time),
+                checkEventStatus(userId, event)
             )
         }
     }
 
     fun getEvent(eventId: String): Single<Event> {
         return Single.fromCallable {
-            val userId = authentication.getUserId()
             val eventData = eventRepository.getEvent(eventId)
             val usersData = userRepository.getUsersData(eventData.members)
 
             val calendar = Calendar.getInstance()
             calendar.time = Date(eventData.time)
             val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.ROOT)
-
-            val typeWorkWithEvent =
-                when {
-                    userId == eventData.authorId -> Event.Companion.TypeWorkWithEvent.AUTHOR
-                    usersData.map { it.id }.contains(userId) -> Event.Companion.TypeWorkWithEvent.MEMBER
-                    else -> Event.Companion.TypeWorkWithEvent.GUEST
-                }
 
             Event(
                 eventData.id,
@@ -118,8 +135,7 @@ class EventInteractor @Inject constructor(
                 eventData.motionType,
                 dateFormat.format(calendar.time),
                 eventData.route,
-                usersData,
-                typeWorkWithEvent
+                usersData
             )
         }
     }

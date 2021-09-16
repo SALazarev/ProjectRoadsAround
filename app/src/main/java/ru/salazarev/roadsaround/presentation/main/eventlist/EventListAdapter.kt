@@ -26,7 +26,7 @@ class EventListAdapter(
     override fun onBindViewHolder(holder: EventViewHolder, position: Int) {
         val item = data[position]
         holder.set(item)
-        holder.setOnClick { callback.onClick(item.id, item.nameEvent) }
+        holder.setOnClick { callback.onClick(item.id, item.nameEvent, item.typeWorkWithEvent) }
     }
 
     override fun getItemCount(): Int = data.size

@@ -10,14 +10,5 @@ data class Event(
     var motionType: String,
     var time: String,
     var route: String,
-    var members: List<User>,
-    var typeWorkWithEvent: TypeWorkWithEvent
-){
-    companion object{
-        enum class TypeWorkWithEvent{
-            GUEST,
-            AUTHOR,
-            MEMBER
-        }
-    }
-}
+    var members: List<User>
+)
