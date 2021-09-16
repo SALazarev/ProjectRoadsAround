@@ -1,14 +1,11 @@
 package ru.salazarev.roadsaround.data.chat
 
-import android.util.Log
-import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import io.reactivex.rxjava3.subjects.PublishSubject
 import ru.salazarev.roadsaround.domain.chat.ChatRepository
 import ru.salazarev.roadsaround.models.data.MessageData
 import javax.inject.Inject
-import javax.inject.Named
 
 class ChatRepositoryImpl @Inject constructor(
     private val database: FirebaseFirestore,

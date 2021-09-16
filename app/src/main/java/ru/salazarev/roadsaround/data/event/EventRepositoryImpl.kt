@@ -4,6 +4,7 @@ import com.google.android.gms.tasks.Tasks
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreSettings
+import com.google.firebase.firestore.Source
 import com.google.firebase.firestore.ktx.toObject
 
 import ru.salazarev.roadsaround.domain.event.EventRepository
@@ -53,7 +54,7 @@ class EventRepositoryImpl @Inject constructor(
     override fun getUserEvents(id: String): List<EventData> {
         val ref = database.collection(databaseModel.getEvent().collectionName)
             .whereArrayContains(databaseModel.getEvent().getColumns().members, id)
-        return Tasks.await(ref.get()).toObjects(EventData::class.java)
+        return Tasks.await(ref.get(Source.SERVER)).toObjects(EventData::class.java)
     }
 
     override fun getAllEvents(): List<EventData> {

@@ -35,20 +35,22 @@ class SearchEventFragment : Fragment() {
 
     private lateinit var viewModel: SearchEventViewModel
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        App.appComponent.getMainComponentBuilder().fragmentManager(childFragmentManager).build()
+            .inject(this)
+
+        viewModel = ViewModelProvider(
+            this, searchEventViewModelFactory
+        ).get(SearchEventViewModel::class.java)
+    }
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         _binding = FragmentSearchEventBinding.inflate(inflater, container, false)
 
-        App.appComponent.getMainComponentBuilder().fragmentManager(childFragmentManager).build()
-            .inject(this)
-
-        viewModel =
-            ViewModelProvider(
-                this,
-                searchEventViewModelFactory
-            ).get(SearchEventViewModel::class.java)
         return binding.root
     }
 
@@ -57,6 +59,11 @@ class SearchEventFragment : Fragment() {
         configureToolbar()
         setRecyclerView()
         setObserver()
+        binding.viewInformationNotLoad.btnParticipate.setOnClickListener {
+            binding.viewInformationNotLoad.viewInformationNotLoad.visibility = View.INVISIBLE
+            binding.rvEvent.visibility = View.VISIBLE
+            viewModel.loadEventList()
+        }
     }
 
     private fun setRecyclerView() {
@@ -106,8 +113,14 @@ class SearchEventFragment : Fragment() {
     private fun setObserver() {
 
         viewModel.eventsLiveData.observe(viewLifecycleOwner, { listData ->
-            if (listData.isNullOrEmpty()) requireActivity().toast(getString(R.string.сould_not_load_data))
-            else adapter.setItems(listData)
+            if (listData == null) {
+                binding.viewInformationNotLoad.viewInformationNotLoad.visibility = View.VISIBLE
+                binding.rvEvent.visibility = View.INVISIBLE
+            } else {
+                adapter.setItems(listData)
+                binding.viewInformationNotLoad.viewInformationNotLoad.visibility = View.INVISIBLE
+                binding.rvEvent.visibility = View.VISIBLE
+            }
         })
 
         viewModel.progress.observe(viewLifecycleOwner, { loadStatus ->

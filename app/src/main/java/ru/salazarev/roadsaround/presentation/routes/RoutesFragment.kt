@@ -120,7 +120,7 @@ class RoutesFragment : Fragment() {
 
     private fun setObserver() {
         viewModel.eventsLiveData.observe(viewLifecycleOwner, { listData ->
-            if (listData.isNullOrEmpty()) {
+            if (listData == null) {
                 binding.viewInformationNotLoad.viewInformationNotLoad.visibility = View.VISIBLE
                 binding.rvEvent.visibility = View.INVISIBLE
             } else {

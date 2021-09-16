@@ -21,7 +21,7 @@ class SearchEventViewModel @Inject constructor(
         loadEventList()
     }
 
-    private fun loadEventList() {
+    fun loadEventList() {
         interactor.getUsersEventsPreview().subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .doFinally { progress.value = false }
