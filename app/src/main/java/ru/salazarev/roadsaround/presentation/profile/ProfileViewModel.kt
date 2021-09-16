@@ -24,7 +24,7 @@ class ProfileViewModel @Inject constructor(
         loadQuotationList()
     }
 
-    private fun loadQuotationList() {
+     fun loadQuotationList() {
         interactor.getUserData()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())

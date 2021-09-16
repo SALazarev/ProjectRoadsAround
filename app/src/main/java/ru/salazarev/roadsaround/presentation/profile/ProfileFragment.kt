@@ -30,17 +30,20 @@ class ProfileFragment : Fragment() {
 
     private lateinit var viewModel: ProfileViewModel
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        _binding = FragmentProfileBinding.inflate(inflater, container, false)
-
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
         App.appComponent.getMainComponentBuilder().fragmentManager(childFragmentManager).build()
             .inject(this)
 
         viewModel =
             ViewModelProvider(this, profileViewModelFactory).get(ProfileViewModel::class.java)
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        _binding = FragmentProfileBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -48,13 +51,24 @@ class ProfileFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         configureToolbar()
         setObserver()
+        binding.viewInformationNotLoad.btnParticipate.setOnClickListener {
+            binding.viewInformationNotLoad.viewInformationNotLoad.visibility = View.INVISIBLE
+            binding.mainLayout.visibility = View.VISIBLE
+            viewModel.loadQuotationList()
+        }
     }
 
     private fun setObserver() {
 
         viewModel.user.observe(viewLifecycleOwner, { user ->
-            if (user == null) requireActivity().toast(getString(R.string.сould_not_load_data))
-            else setViewData(user)
+            if (user == null) {
+                binding.viewInformationNotLoad.viewInformationNotLoad.visibility = View.VISIBLE
+                binding.mainLayout.visibility = View.INVISIBLE
+            } else {
+                setViewData(user)
+                binding.viewInformationNotLoad.viewInformationNotLoad.visibility = View.INVISIBLE
+                binding.mainLayout.visibility = View.VISIBLE
+            }
         })
 
         viewModel.progress.observe(viewLifecycleOwner, { loadStatus ->
@@ -64,8 +78,8 @@ class ProfileFragment : Fragment() {
     }
 
     private fun setViewData(userPresentation: UserPresentation) {
-        binding.etFirstName.text = userPresentation.name
-        if (userPresentation.image != null) binding.btnUserPhoto.background = userPresentation.image
+        binding.etName.text = userPresentation.name
+        userPresentation.image?.let { binding.ivUserPhoto.setImageDrawable(it) }
     }
 
     private fun configureToolbar() {
