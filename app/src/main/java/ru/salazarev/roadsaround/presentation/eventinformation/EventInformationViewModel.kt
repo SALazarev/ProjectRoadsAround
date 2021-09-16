@@ -17,7 +17,7 @@ class EventInformationViewModel @Inject constructor(
     private val imageConverter: ImageConverter
 ) : BaseViewModel() {
 
-    val data = MutableLiveData<EventPresentation>()
+    val data = MutableLiveData<EventPresentation?>()
     val resultParticipate = MutableLiveData<Boolean>()
     val resultLeave = MutableLiveData<Boolean>()
     val progress = MutableLiveData<Boolean>()
@@ -29,8 +29,12 @@ class EventInformationViewModel @Inject constructor(
             .doFinally { progress.value = false }
             .doOnSubscribe { progress.value = true }
             .subscribe(
-                { data.value = getEventInfo(it) },
-                { data.value = null }
+                {
+                    data.value = getEventInfo(it)
+                },
+                {
+                    data.value = null
+                }
             )
             .addTo(compositeDisposable)
     }

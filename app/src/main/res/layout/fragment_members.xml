@@ -10,6 +10,10 @@
         android:id="@id/include_toolbar"
         layout="@layout/view_toolbar" />
 
+    <include
+        android:id="@id/view_information_not_load"
+        layout="@layout/view_information_not_load" />
+
     <ProgressBar
         android:id="@+id/progress_bar"
         android:visibility="invisible"

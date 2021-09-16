@@ -28,11 +28,8 @@ class EventInformationFragment : Fragment() {
 
     private lateinit var viewModel: EventInformationViewModel
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        _binding = FragmentEventInformationBinding.inflate(inflater, container, false)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
 
         App.appComponent.getMainComponentBuilder().fragmentManager(childFragmentManager).build()
             .inject(this)
@@ -41,16 +38,25 @@ class EventInformationFragment : Fragment() {
             ViewModelProvider(
                 this,
                 eventInformationViewModelFactory
+
             ).get(EventInformationViewModel::class.java)
 
+        arguments?.getString(EVENT_ID_KEY)?.let { viewModel.getEventData(it) }
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        _binding = FragmentEventInformationBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        configureToolbar()
         checkArguments()
         setObservers()
+        configureToolbar()
         binding.btnMembers.setOnClickListener {
             val bundle = Bundle()
             val idEvent = arguments?.getString(EVENT_ID_KEY)
@@ -87,7 +93,6 @@ class EventInformationFragment : Fragment() {
 
     private fun checkArguments() {
         arguments?.let { bundle ->
-            bundle.getString(EVENT_ID_KEY)?.let { viewModel.getEventData(it) }
             bundle.getString(TYPE_WORK_WITH_EVENT_KEY)?.let { it ->
                 val typeWork = when (it) {
                     EventInteractor.Companion.TypeWorkWithEvent.AUTHOR.name -> EventInteractor.Companion.TypeWorkWithEvent.AUTHOR
@@ -140,12 +145,15 @@ class EventInformationFragment : Fragment() {
 
     private fun setObservers() {
         viewModel.data.observe(viewLifecycleOwner, { event ->
-            val user = event.members.find { it.id == event.authorId }!!
-            binding.etNameAuthor.setText(user.name)
-            binding.etMotionType.setText(event.motionType)
-            binding.etTime.setText(event.time)
-            if (event.note.isNotEmpty()) binding.etDescription.setText(event.note)
-            else binding.tilDescription.visibility = View.GONE
+            if (event!=null){
+                val user = event.members.find { it.id == event.authorId }!!
+                binding.etNameAuthor.setText(user.name)
+                binding.etMotionType.setText(event.motionType)
+                binding.etTime.setText(event.time)
+                if (event.note.isNotEmpty()) binding.etDescription.setText(event.note)
+                else binding.tilDescription.visibility = View.GONE
+            }
+            else requireActivity().toast("Проблема с загрузкой")
         })
 
         viewModel.progress.observe(viewLifecycleOwner, { loadStatus ->

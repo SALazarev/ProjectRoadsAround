@@ -10,6 +10,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.android.synthetic.main.view_information_not_load.view.*
 import ru.salazarev.roadsaround.App
 import ru.salazarev.roadsaround.R
 import ru.salazarev.roadsaround.databinding.FragmentMembersBinding
@@ -50,6 +51,11 @@ class MembersFragment : Fragment() {
         setObserver()
         val eventId =arguments?.getString(MainFragment.EVENT_ID_KEY) ?: ""
         viewModel.getMembers(eventId)
+        binding.viewInformationNotLoad.btnParticipate.setOnClickListener {
+            binding.viewInformationNotLoad.viewInformationNotLoad.visibility = View.INVISIBLE
+            binding.rvMembers.visibility = View.VISIBLE
+            viewModel.getMembers(eventId)
+        }
     }
 
     private fun configureToolbar() {
@@ -75,12 +81,6 @@ class MembersFragment : Fragment() {
             context,
             DividerItemDecoration.VERTICAL
         )
-//        itemDecoration.setDrawable(
-//            ContextCompat.getDrawable(
-//                requireContext(),
-//                R.drawable.rv_divider
-//            )!!
-//        )
         binding.rvMembers.addItemDecoration(
             itemDecoration
         )
@@ -89,7 +89,10 @@ class MembersFragment : Fragment() {
     private fun setObserver() {
 
         viewModel.members.observe(viewLifecycleOwner, { members ->
-            if (members == null) requireActivity().toast(getString(R.string.сould_not_load_data))
+            if (members == null){
+                binding.rvMembers.visibility = View.INVISIBLE
+                binding.viewInformationNotLoad.viewInformationNotLoad.visibility = View.VISIBLE
+            }
             else adapter.setItems(members)
         })
 
