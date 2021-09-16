@@ -50,7 +50,7 @@ class SearchEventFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         _binding = FragmentSearchEventBinding.inflate(inflater, container, false)
-
+        binding.rvEvent.visibility = View.INVISIBLE
         return binding.root
     }
 
@@ -59,7 +59,7 @@ class SearchEventFragment : Fragment() {
         configureToolbar()
         setRecyclerView()
         setObserver()
-        binding.viewInformationNotLoad.btnParticipate.setOnClickListener {
+        binding.viewInformationNotLoad.btnTryAgain.setOnClickListener {
             binding.viewInformationNotLoad.viewInformationNotLoad.visibility = View.INVISIBLE
             binding.rvEvent.visibility = View.VISIBLE
             viewModel.loadEventList()

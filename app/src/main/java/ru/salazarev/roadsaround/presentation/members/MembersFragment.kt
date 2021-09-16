@@ -41,6 +41,7 @@ class MembersFragment : Fragment() {
 
         viewModel =
             ViewModelProvider(this, membersViewModelFactory).get(MembersViewModel::class.java)
+        binding.rvMembers.visibility = View.INVISIBLE
         return binding.root
     }
 
@@ -49,9 +50,9 @@ class MembersFragment : Fragment() {
         configureToolbar()
         setRecyclerView()
         setObserver()
-        val eventId =arguments?.getString(MainFragment.EVENT_ID_KEY) ?: ""
+        val eventId = arguments?.getString(MainFragment.EVENT_ID_KEY) ?: ""
         viewModel.getMembers(eventId)
-        binding.viewInformationNotLoad.btnParticipate.setOnClickListener {
+        binding.viewInformationNotLoad.btnTryAgain.setOnClickListener {
             binding.viewInformationNotLoad.viewInformationNotLoad.visibility = View.INVISIBLE
             binding.rvMembers.visibility = View.VISIBLE
             viewModel.getMembers(eventId)
@@ -89,11 +90,14 @@ class MembersFragment : Fragment() {
     private fun setObserver() {
 
         viewModel.members.observe(viewLifecycleOwner, { members ->
-            if (members == null){
+            if (members == null) {
                 binding.rvMembers.visibility = View.INVISIBLE
                 binding.viewInformationNotLoad.viewInformationNotLoad.visibility = View.VISIBLE
+            } else{
+                adapter.setItems(members)
+                binding.rvMembers.visibility = View.VISIBLE
+                binding.viewInformationNotLoad.viewInformationNotLoad.visibility = View.INVISIBLE
             }
-            else adapter.setItems(members)
         })
 
         viewModel.progress.observe(viewLifecycleOwner, { loadStatus ->

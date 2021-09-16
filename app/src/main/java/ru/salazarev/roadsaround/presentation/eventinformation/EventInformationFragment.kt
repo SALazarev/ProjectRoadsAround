@@ -49,6 +49,7 @@ class EventInformationFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentEventInformationBinding.inflate(inflater, container, false)
+        binding.layoutMain.visibility = View.INVISIBLE
         return binding.root
     }
 
@@ -58,7 +59,7 @@ class EventInformationFragment : Fragment() {
         configureFragmentByTypeWork()
         setObservers()
 
-        binding.viewInformationNotLoad.btnParticipate.setOnClickListener {
+        binding.viewInformationNotLoad.btnTryAgain.setOnClickListener {
             binding.viewInformationNotLoad.viewInformationNotLoad.visibility = View.INVISIBLE
             arguments?.getString(EVENT_ID_KEY)?.let { viewModel.getEventData(it) }
         }
@@ -134,7 +135,9 @@ class EventInformationFragment : Fragment() {
         binding.btnParticipate.apply {
             text = context.getString(R.string.leave_from_event)
             val eventId = arguments?.getString(EVENT_ID_KEY) ?: ""
-            setOnClickListener { viewModel.leaveFromEvent(eventId) }
+            setOnClickListener {
+                viewModel.leaveFromEvent(eventId)
+            }
         }
     }
 
@@ -158,7 +161,9 @@ class EventInformationFragment : Fragment() {
         binding.btnParticipate.apply {
             text = context.getString(R.string.participate)
             val eventId = arguments?.getString(EVENT_ID_KEY) ?: ""
-            setOnClickListener { viewModel.participateFromEvent(eventId) }
+            setOnClickListener {
+                viewModel.participateFromEvent(eventId)
+            }
         }
     }
 

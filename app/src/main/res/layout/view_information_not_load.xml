@@ -31,7 +31,7 @@
             app:layout_constraintTop_toBottomOf="@id/iv_error_icon" />
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/btn_participate"
+            android:id="@+id/btn_try_again"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/margin_text_input_view"

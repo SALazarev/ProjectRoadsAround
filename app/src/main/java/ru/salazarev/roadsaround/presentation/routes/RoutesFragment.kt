@@ -48,7 +48,7 @@ class RoutesFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentRoutesBinding.inflate(inflater, container, false)
-
+        binding.rvEvent.visibility = View.INVISIBLE
         return binding.root
     }
 
@@ -57,7 +57,7 @@ class RoutesFragment : Fragment() {
         configureToolbar()
         setRecyclerView()
         setObserver()
-        binding.viewInformationNotLoad.btnParticipate.setOnClickListener {
+        binding.viewInformationNotLoad.btnTryAgain.setOnClickListener {
             binding.viewInformationNotLoad.viewInformationNotLoad.visibility = View.INVISIBLE
             binding.rvEvent.visibility = View.VISIBLE
             viewModel.loadQuotationList()

@@ -54,7 +54,8 @@ class EditEventFragment : Fragment() {
             .inject(this)
         viewModel =
             ViewModelProvider(this, editEventViewModelFactory).get(EditEventViewModel::class.java)
-        setData()
+
+        arguments?.getString(MainFragment.EVENT_ID_KEY)?.let { viewModel.getEventData(it) }
     }
 
     private fun updateViewStatus() {
@@ -68,15 +69,14 @@ class EditEventFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentEditEventBinding.inflate(inflater, container, false)
-
+        binding.layoutMain.visibility = View.INVISIBLE
+        binding.viewInformationNotLoad.btnTryAgain.setOnClickListener {
+            binding.viewInformationNotLoad.viewInformationNotLoad.visibility = View.INVISIBLE
+            binding.layoutMain.visibility = View.VISIBLE
+            arguments?.getString(MainFragment.EVENT_ID_KEY)?.let { viewModel.getEventData(it) }
+        }
         return binding.root
 
-    }
-
-    private fun setData() {
-        arguments?.getString(MainFragment.EVENT_ID_KEY)?.let {
-            viewModel.getEventData(it)
-        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -109,6 +109,30 @@ class EditEventFragment : Fragment() {
                 .navigate(R.id.action_editEventFragment_to_mainFragment)
             else requireActivity().toast("PROBLEM")
         })
+
+        viewModel.data.observe(viewLifecycleOwner, { event ->
+            if (event == null) {
+                binding.viewInformationNotLoad.viewInformationNotLoad.visibility = View.VISIBLE
+                binding.layoutMain.visibility = View.INVISIBLE
+            } else {
+                if (!viewModel.getLoadStatus()) {
+                    viewModel.setRoute(event.route)
+                    viewModel.setTime(event.time)
+                    binding.etDescription.setText(event.description)
+                    binding.etNameEvent.setText(event.name)
+                    binding.actvMotionType.setText(event.motionType, false)
+
+                    viewModel.setMembers(event.members.map { it.id })
+                    viewModel.setIdEvent(event.id)
+                    viewModel.setLoadStatus(true)
+                    updateViewStatus()
+                }
+                binding.viewInformationNotLoad.viewInformationNotLoad.visibility =
+                    View.INVISIBLE
+                binding.layoutMain.visibility = View.VISIBLE
+            }
+        })
+
         viewModel.data.observe(viewLifecycleOwner, { event ->
             if (!viewModel.getLoadStatus()) {
                 viewModel.setRoute(event.route)

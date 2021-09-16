@@ -33,8 +33,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/include_toolbar"
-        android:visibility="invisible">
+        app:layout_constraintTop_toBottomOf="@id/include_toolbar">
 
 
         <com.google.android.material.textfield.TextInputLayout

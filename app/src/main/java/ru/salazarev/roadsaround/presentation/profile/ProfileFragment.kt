@@ -44,6 +44,7 @@ class ProfileFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentProfileBinding.inflate(inflater, container, false)
+        binding.mainLayout.visibility = View.VISIBLE
         return binding.root
     }
 
@@ -51,7 +52,7 @@ class ProfileFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         configureToolbar()
         setObserver()
-        binding.viewInformationNotLoad.btnParticipate.setOnClickListener {
+        binding.viewInformationNotLoad.btnTryAgain.setOnClickListener {
             binding.viewInformationNotLoad.viewInformationNotLoad.visibility = View.INVISIBLE
             binding.mainLayout.visibility = View.VISIBLE
             viewModel.loadQuotationList()
