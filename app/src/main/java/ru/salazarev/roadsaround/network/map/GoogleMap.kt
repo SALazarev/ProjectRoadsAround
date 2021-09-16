@@ -10,11 +10,16 @@ import io.reactivex.rxjava3.schedulers.Schedulers
 class GoogleMap(
     val map: GoogleMap,
     private val key: String,
+    private val typeWork: TypeWork,
     private val failCallback: FailCallback
 ) {
 
     companion object {
         private const val DEFAULT_ZOOM = 15
+        enum class TypeWork{
+            VIEW,
+            EDIT
+        }
     }
 
     private var currentPolyline: Polyline? = null
@@ -30,7 +35,11 @@ class GoogleMap(
             true
         }
         map.setOnMapClickListener {
-            pickPoint(it, key)
+            when (typeWork){
+                TypeWork.EDIT ->pickPoint(it, key)
+                TypeWork.VIEW ->updateTitle()
+            }
+
         }
     }
 

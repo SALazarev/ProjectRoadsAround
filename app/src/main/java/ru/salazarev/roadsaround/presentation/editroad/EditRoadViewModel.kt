@@ -10,8 +10,8 @@ class EditRoadViewModel : ViewModel() {
 
     val resultCreateRoute = MutableLiveData<Boolean>()
 
-    fun setMap(googleMap: com.google.android.gms.maps.GoogleMap, key: String){
-        map = GoogleMap(googleMap, key, object : GoogleMap.FailCallback{
+    fun setMap(googleMap: com.google.android.gms.maps.GoogleMap, key: String, typeWork: GoogleMap.Companion.TypeWork){
+        map = GoogleMap(googleMap, key, typeWork, object : GoogleMap.FailCallback{
             override fun onComplete(status: Boolean) {
                 resultCreateRoute.value = status
             }

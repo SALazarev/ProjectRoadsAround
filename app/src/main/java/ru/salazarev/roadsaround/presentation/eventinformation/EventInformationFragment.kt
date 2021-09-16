@@ -12,9 +12,12 @@ import ru.salazarev.roadsaround.R
 import ru.salazarev.roadsaround.databinding.FragmentEventInformationBinding
 import ru.salazarev.roadsaround.domain.event.EventInteractor
 import ru.salazarev.roadsaround.presentation.MainActivity
+import ru.salazarev.roadsaround.presentation.editevent.EditEventFragment.Companion.ROUTE_KEY
+import ru.salazarev.roadsaround.presentation.editroad.EditRoadFragment
+import ru.salazarev.roadsaround.presentation.editroad.EditRoadFragment.Companion.EDIT_ROAD_TYPE_WORK
 import ru.salazarev.roadsaround.presentation.main.MainFragment.Companion.EVENT_ID_KEY
-import ru.salazarev.roadsaround.presentation.main.MainFragment.Companion.NAME_EVENT_KEY
-import ru.salazarev.roadsaround.presentation.main.MainFragment.Companion.TYPE_WORK_WITH_EVENT_KEY
+import ru.salazarev.roadsaround.presentation.main.MainFragment.Companion.EVENT_NAME_KEY
+import ru.salazarev.roadsaround.presentation.main.MainFragment.Companion.EVENT_TYPE_WORK_KEY
 import ru.salazarev.roadsaround.toast
 import javax.inject.Inject
 
@@ -62,12 +65,20 @@ class EventInformationFragment : Fragment() {
                 R.id.action_eventInformationFragment_to_membersFragment, bundle
             )
         }
+        binding.btnRoad.setOnClickListener {
+            val bundle = Bundle()
+            viewModel.data.value?.let {  bundle.putString(ROUTE_KEY, it.route) }
+            bundle.putString(EDIT_ROAD_TYPE_WORK, EditRoadFragment.Companion.EditRoadTypeWork.VIEW.name)
+            (activity as MainActivity).navController.navigate(
+                R.id.action_eventInformationFragment_to_editRoadFragment, bundle
+            )
+        }
     }
 
     private fun configureToolbar() {
         binding.includeToolbar.includeToolbar.apply {
             inflateMenu(R.menu.toolbar_event_information)
-            title = arguments?.getString(NAME_EVENT_KEY) ?: context.getString(R.string.event)
+            title = arguments?.getString(EVENT_NAME_KEY) ?: context.getString(R.string.event)
             navigationContentDescription = context.getString(R.string.back)
             navigationIcon = ContextCompat.getDrawable(context, R.drawable.outline_arrow_back_24)
             setNavigationOnClickListener { requireActivity().onBackPressed() }
@@ -90,7 +101,7 @@ class EventInformationFragment : Fragment() {
 
     private fun configureFragmentByTypeWork() {
         arguments?.let { bundle ->
-            bundle.getString(TYPE_WORK_WITH_EVENT_KEY)?.let { it ->
+            bundle.getString(EVENT_TYPE_WORK_KEY)?.let { it ->
                 val typeWork = when (it) {
                     EventInteractor.Companion.TypeWorkWithEvent.AUTHOR.name -> EventInteractor.Companion.TypeWorkWithEvent.AUTHOR
                     EventInteractor.Companion.TypeWorkWithEvent.MEMBER.name -> EventInteractor.Companion.TypeWorkWithEvent.MEMBER
@@ -142,6 +153,7 @@ class EventInformationFragment : Fragment() {
             setOnClickListener { viewModel.participateFromEvent(eventId) }
         }
     }
+
 
     private fun setObservers() {
         viewModel.data.observe(viewLifecycleOwner, { event ->

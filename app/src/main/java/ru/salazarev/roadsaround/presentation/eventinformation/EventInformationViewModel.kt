@@ -22,6 +22,8 @@ class EventInformationViewModel @Inject constructor(
     val resultLeave = MutableLiveData<Boolean>()
     val progress = MutableLiveData<Boolean>()
 
+
+
     fun getEventData(eventId: String) {
         interactor.getEvent(eventId)
             .subscribeOn(Schedulers.io())

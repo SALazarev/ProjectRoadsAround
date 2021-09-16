@@ -17,8 +17,8 @@ class MainFragment : Fragment() {
 
     companion object{
         const val EVENT_ID_KEY = "EVENT_KEY"
-        const val NAME_EVENT_KEY = "NAME_EVENT_KEY"
-        const val TYPE_WORK_WITH_EVENT_KEY = "TYPE_WORK_WITH_EVENT_KEY"
+        const val EVENT_NAME_KEY = "EVENT_NAME_KEY"
+        const val EVENT_TYPE_WORK_KEY = "EVENT_TYPE_WORK_KEY"
     }
 
     @Inject

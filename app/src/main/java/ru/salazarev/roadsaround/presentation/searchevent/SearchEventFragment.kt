@@ -17,8 +17,8 @@ import ru.salazarev.roadsaround.domain.event.EventInteractor
 import ru.salazarev.roadsaround.presentation.MainActivity
 import ru.salazarev.roadsaround.presentation.chat.messagelist.EventListAdapter
 import ru.salazarev.roadsaround.presentation.main.MainFragment.Companion.EVENT_ID_KEY
-import ru.salazarev.roadsaround.presentation.main.MainFragment.Companion.NAME_EVENT_KEY
-import ru.salazarev.roadsaround.presentation.main.MainFragment.Companion.TYPE_WORK_WITH_EVENT_KEY
+import ru.salazarev.roadsaround.presentation.main.MainFragment.Companion.EVENT_NAME_KEY
+import ru.salazarev.roadsaround.presentation.main.MainFragment.Companion.EVENT_TYPE_WORK_KEY
 import ru.salazarev.roadsaround.presentation.main.eventlist.ClickItemCallback
 import ru.salazarev.roadsaround.toast
 import javax.inject.Inject
@@ -71,8 +71,8 @@ class SearchEventFragment : Fragment() {
             ) {
                 val bundle = Bundle()
                 bundle.putString(EVENT_ID_KEY, id)
-                bundle.putString(NAME_EVENT_KEY, name)
-                bundle.putString(TYPE_WORK_WITH_EVENT_KEY, typeWorkWithEvent.name)
+                bundle.putString(EVENT_NAME_KEY, name)
+                bundle.putString(EVENT_TYPE_WORK_KEY, typeWorkWithEvent.name)
                 (activity as MainActivity).navController.navigate(
                     R.id.action_mainFragment_to_eventInformationFragment,
                     bundle

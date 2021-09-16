@@ -22,10 +22,20 @@ import ru.salazarev.roadsaround.presentation.MainActivity
 import ru.salazarev.roadsaround.presentation.editevent.EditEventFragment.Companion.MOTION_TYPE_KEY
 import ru.salazarev.roadsaround.presentation.editevent.EditEventFragment.Companion.ROUTE_KEY
 import ru.salazarev.roadsaround.presentation.editevent.EditEventFragment.Companion.TIME_KEY
+import ru.salazarev.roadsaround.presentation.main.MainFragment
 import ru.salazarev.roadsaround.toast
 import javax.inject.Inject
 
 class EditRoadFragment : Fragment(), OnMapReadyCallback {
+
+    companion object {
+        const val EDIT_ROAD_TYPE_WORK = "EDIT_ROAD_TYPE_WORK"
+
+        enum class EditRoadTypeWork {
+            EDIT,
+            VIEW
+        }
+    }
 
     @Inject
     lateinit var editRoadViewModelFactory: EditRoadViewModelFactory
@@ -98,11 +108,13 @@ class EditRoadFragment : Fragment(), OnMapReadyCallback {
     private fun configureToolbar() {
         binding.includeToolbar.includeToolbar.apply {
             inflateMenu(R.menu.toolbar_edit_road_menu)
-            title = context.getString(R.string.settings_route)
+            title = if (arguments?.getString(EDIT_ROAD_TYPE_WORK) == EditRoadTypeWork.VIEW.name)
+                resources.getString(R.string.route) else context.getString(R.string.settings_route)
             navigationContentDescription = context.getString(R.string.back)
-            navigationIcon = ContextCompat.getDrawable(context, R.drawable.outline_arrow_back_24)
+            navigationIcon =
+                ContextCompat.getDrawable(context, R.drawable.outline_arrow_back_24)
             setNavigationOnClickListener {
-                completeWork()
+                requireActivity().onBackPressed()
             }
             setOnMenuItemClickListener {
                 when (it.itemId) {
@@ -117,7 +129,17 @@ class EditRoadFragment : Fragment(), OnMapReadyCallback {
     }
 
     override fun onMapReady(googleMap: GoogleMap) {
-        viewModel.setMap(googleMap, getString(R.string.google_maps_key))
+        var typeWork = ru.salazarev.roadsaround.network.map.GoogleMap.Companion.TypeWork.EDIT
+        arguments?.getString(EDIT_ROAD_TYPE_WORK)?.let {
+            if (it == EditRoadTypeWork.VIEW.name) {
+                typeWork =
+                    ru.salazarev.roadsaround.network.map.GoogleMap.Companion.TypeWork.VIEW
+                binding.includeToolbar.includeToolbar.menu.findItem(R.id.btn_complete_edit_road).isVisible =
+                    false
+                binding.includeToolbar.includeToolbar.title = "Маршрут"
+            }
+        }
+        viewModel.setMap(googleMap, getString(R.string.google_maps_key), typeWork)
         configureMap()
     }
 
@@ -151,7 +173,10 @@ class EditRoadFragment : Fragment(), OnMapReadyCallback {
             locationResult.addOnCompleteListener(requireActivity()) { task ->
                 if (task.isSuccessful) {
                     if (task.result != null) {
-                        viewModel.setCurrentLocation(task.result.latitude, task.result.longitude)
+                        viewModel.setCurrentLocation(
+                            task.result.latitude,
+                            task.result.longitude
+                        )
                     }
                 }
             }
