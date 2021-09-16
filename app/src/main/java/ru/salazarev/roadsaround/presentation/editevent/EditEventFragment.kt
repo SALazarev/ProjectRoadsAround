@@ -27,8 +27,7 @@ class EditEventFragment : Fragment() {
     companion object {
         const val PICKERS_TAG = "TAG"
         const val ROUTE_KEY = "ROUTE_KEY"
-        const val TIME_KEY = "TIME_KEY"
-        const val MOTION_TYPE_KEY = "MOTION_TYPE_KEY"
+        const val ROUTE_REQUEST = "ROUTE_REQUEST"
     }
 
     private var _binding: FragmentEditEventBinding? = null
@@ -38,6 +37,15 @@ class EditEventFragment : Fragment() {
 
     @Inject
     lateinit var editEventViewModelFactory: EditEventViewModelFactory
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        requireActivity().supportFragmentManager.setFragmentResultListener(ROUTE_REQUEST,this){key, bundle ->
+            val route = bundle.getString(ROUTE_KEY)
+           viewModel.setRoute(route)
+            if(viewModel.getRoute()!=null) binding.btnRoad.setIconResource(R.drawable.outline_done_24)
+        }
+    }
 
 
     override fun onCreateView(
@@ -51,7 +59,6 @@ class EditEventFragment : Fragment() {
         viewModel =
             ViewModelProvider(this, editEventViewModelFactory).get(EditEventViewModel::class.java)
 
-
         return binding.root
 
     }
@@ -59,19 +66,15 @@ class EditEventFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         configureToolbar()
-        checkArguments()
         setDropDownListMotionTypes()
+        if(viewModel.getRoute()!=null) binding.btnRoad.setIconResource(R.drawable.outline_done_24)
+       if(viewModel.getTime()!=null) binding.btnTime.setIconResource(R.drawable.outline_done_24)
+
+
         binding.btnRoad.setOnClickListener {
             val bundle = Bundle()
-
             val route = viewModel.getRoute()
             if (route != null) bundle.putString(ROUTE_KEY, route)
-
-            val time = viewModel.getTime()
-            if (time != null) bundle.putLong(TIME_KEY, time)
-
-            val motionType = binding.actvMotionType.text.toString()
-            if (motionType.isNotEmpty()) bundle.putString(MOTION_TYPE_KEY, motionType)
             (activity as MainActivity).navController
                 .navigate(R.id.action_editEventFragment_to_editRoadFragment, bundle)
         }
@@ -83,27 +86,6 @@ class EditEventFragment : Fragment() {
                 .navigate(R.id.action_editEventFragment_to_mainFragment)
             else requireActivity().toast("PROBLEM")
         })
-    }
-
-    private fun checkArguments() {
-        val bundle = arguments
-        if (bundle != null) {
-            val route = bundle.getString(ROUTE_KEY)
-            if (route != null) {
-                viewModel.setRoute(route)
-                binding.btnRoad.setIconResource(R.drawable.outline_done_24)
-            }
-
-            val time = bundle.getLong(TIME_KEY)
-            if (time != 0L) {
-                viewModel.setTime(time)
-                binding.btnTime.setIconResource(R.drawable.outline_done_24)
-            }
-            val motionType = bundle.getString(MOTION_TYPE_KEY)
-            if (!motionType.isNullOrEmpty()) {
-                binding.actvMotionType.setText(motionType, false)
-            }
-        }
     }
 
     private fun startDatePicker() {

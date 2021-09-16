@@ -19,10 +19,8 @@ import ru.salazarev.roadsaround.App
 import ru.salazarev.roadsaround.R
 import ru.salazarev.roadsaround.databinding.FragmentEditRoadBinding
 import ru.salazarev.roadsaround.presentation.MainActivity
-import ru.salazarev.roadsaround.presentation.editevent.EditEventFragment.Companion.MOTION_TYPE_KEY
 import ru.salazarev.roadsaround.presentation.editevent.EditEventFragment.Companion.ROUTE_KEY
-import ru.salazarev.roadsaround.presentation.editevent.EditEventFragment.Companion.TIME_KEY
-import ru.salazarev.roadsaround.presentation.main.MainFragment
+import ru.salazarev.roadsaround.presentation.editevent.EditEventFragment.Companion.ROUTE_REQUEST
 import ru.salazarev.roadsaround.toast
 import javax.inject.Inject
 
@@ -84,25 +82,13 @@ class EditRoadFragment : Fragment(), OnMapReadyCallback {
         })
     }
 
-    private fun completeWork(withReturnResult: Boolean = false) {
+    private fun completeWork() {
         val route = viewModel.getRoute()
-        val bundle = Bundle().apply {
-            if (withReturnResult) {
-                if (route == null) {
-                    requireActivity().toast(getString(R.string.route_not_complete))
-                    return
-                } else putString(ROUTE_KEY, route)
-            }
-            val bundle = arguments
-            if (bundle != null) {
-                val time = bundle.getLong(TIME_KEY)
-                putLong(TIME_KEY, time)
-                val motionType = bundle.getString(MOTION_TYPE_KEY)
-                putString(MOTION_TYPE_KEY, motionType)
-            }
-        }
-        (activity as MainActivity).navController
-            .navigate(R.id.action_editRoadFragment_to_editEventFragment, bundle)
+        val bundle = Bundle()
+        bundle.putString(ROUTE_KEY,route)
+        requireActivity().supportFragmentManager.setFragmentResult(ROUTE_REQUEST,bundle)
+        if (route == null) requireActivity().toast(getString(R.string.route_not_complete))
+        else requireActivity().onBackPressed()
     }
 
     private fun configureToolbar() {
@@ -113,18 +99,19 @@ class EditRoadFragment : Fragment(), OnMapReadyCallback {
             navigationContentDescription = context.getString(R.string.back)
             navigationIcon =
                 ContextCompat.getDrawable(context, R.drawable.outline_arrow_back_24)
-            setNavigationOnClickListener {
-                requireActivity().onBackPressed()
-            }
+
             setOnMenuItemClickListener {
                 when (it.itemId) {
                     R.id.btn_complete_edit_road -> {
-                        completeWork(true)
+                        completeWork()
                         true
                     }
                     else -> super.onOptionsItemSelected(it)
                 }
             }
+        }
+        binding.includeToolbar.includeToolbar.setNavigationOnClickListener {
+            requireActivity().onBackPressed()
         }
     }
 
