@@ -75,6 +75,8 @@
     <string name="create_event_unsuccessful">Не удалось создать событие</string>
     <string name="star_symbol">*</string>
     <string name="add_user_photo">Добавить фото пользователя</string>
+    <string name="type_particpate">Тип участия</string>
+    <string name="member">Участник</string>
 
     <string-array name="motionType">
         <item>@string/foot</item>
