@@ -9,7 +9,6 @@ import ru.salazarev.roadsaround.domain.user.UserInteractor
 import ru.salazarev.roadsaround.models.data.MessageData
 import ru.salazarev.roadsaround.models.domain.Message
 import ru.salazarev.roadsaround.models.domain.User
-import java.lang.NullPointerException
 import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject
@@ -20,12 +19,12 @@ class ChatInteractor @Inject constructor(
     private val auth: Authentication
 ) {
     fun sendMessage(idEvent: String, textMessage: String) {
-        chatRepository.sendMessage(idEvent,auth.getUserId(), textMessage)
+        chatRepository.sendMessage(idEvent, auth.getUserId(), textMessage)
     }
 
-    fun getChatMessages(idEvent: String):PublishSubject<List<Message>> {
+    fun getChatMessages(idEvent: String): PublishSubject<List<Message>> {
         val localCallback = PublishSubject.create<List<MessageData>>()
-        chatRepository.subscribeOnChatMessages(idEvent,localCallback)
+        chatRepository.subscribeOnChatMessages(idEvent, localCallback)
 
         val callback = PublishSubject.create<List<Message>>()
 
@@ -60,7 +59,7 @@ class ChatInteractor @Inject constructor(
             val user: User = users.getValue(it.authorId)
             calendar.time = it.time!!.toDate()
             val name =
-                if (user.lastName == "") user.firstName else "${user.firstName} ${user.lastName}"
+                if (user.lastName.isEmpty()) user.firstName else "${user.firstName} ${user.lastName}"
             Message(
                 it.id,
                 it.authorId,

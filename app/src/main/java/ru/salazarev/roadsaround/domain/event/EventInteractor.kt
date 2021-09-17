@@ -63,7 +63,7 @@ class EventInteractor @Inject constructor(
             listEventData.map { event ->
                 val author = userRepository.getUserData(event.authorId)
                 val authorName =
-                    if (author.lastName == "") author.firstName else "${author.firstName} ${author.lastName}"
+                    if (author.lastName.isEmpty()) author.firstName else "${author.firstName} ${author.lastName}"
                 calendar.time = Date(event.time)
                 EventPreview(
                     event.id,
@@ -113,7 +113,7 @@ class EventInteractor @Inject constructor(
             val user: User = users.getValue(event.authorId)
             calendar.time = Date(event.time)
             val authorName =
-                if (user.lastName == "") user.firstName else "${user.firstName} ${user.lastName}"
+                if (user.lastName.isEmpty()) user.firstName else "${user.firstName} ${user.lastName}"
 
             EventPreview(
                 event.id,

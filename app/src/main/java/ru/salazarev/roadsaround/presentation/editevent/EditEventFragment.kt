@@ -69,7 +69,9 @@ class EditEventFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentEditEventBinding.inflate(inflater, container, false)
-        binding.layoutMain.visibility = View.INVISIBLE
+
+//        binding.layoutMain.visibility = View.INVISIBLE
+
         binding.viewInformationNotLoad.btnTryAgain.setOnClickListener {
             binding.viewInformationNotLoad.viewInformationNotLoad.visibility = View.INVISIBLE
             binding.layoutMain.visibility = View.VISIBLE
@@ -107,7 +109,7 @@ class EditEventFragment : Fragment() {
         viewModel.result.observe(viewLifecycleOwner, { result ->
             if (result) (activity as MainActivity).navController
                 .navigate(R.id.action_editEventFragment_to_mainFragment)
-            else requireActivity().toast("PROBLEM")
+            else requireActivity().toast(getString(R.string.create_event_unsuccessful))
         })
 
         viewModel.data.observe(viewLifecycleOwner, { event ->

@@ -20,6 +20,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:indeterminate="true"
+        android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -117,7 +118,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textMultiLine|textNoSuggestions"
-                android:maxLines="4"/>
+                android:maxLines="4" />
         </com.google.android.material.textfield.TextInputLayout>
 
 
@@ -125,20 +126,20 @@
             android:id="@+id/btn_members"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:icon="@drawable/outline_groups_24"
-            android:text="@string/members"
             android:layout_marginTop="@dimen/margin_text_input_view"
+            android:text="@string/members"
+            app:icon="@drawable/outline_groups_24"
             app:layout_constraintEnd_toStartOf="@id/btn_road"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/til_description" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_road"
-            android:text="@string/road"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:icon="@drawable/outline_map_24"
             android:layout_marginTop="@dimen/margin_text_input_view"
+            android:text="@string/road"
+            app:icon="@drawable/outline_map_24"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/btn_members"
             app:layout_constraintTop_toBottomOf="@+id/til_description" />
@@ -148,16 +149,15 @@
             android:id="@+id/btn_participate"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="@string/participate"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
             android:layout_marginStart="@dimen/margin_text_input_view"
+            android:layout_marginEnd="@dimen/margin_text_input_view"
             android:layout_marginBottom="@dimen/margin_text_input_view"
-            android:layout_marginEnd="@dimen/margin_text_input_view"/>
+            android:text="@string/participate"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -14,7 +14,7 @@ class EditEventViewModel(
     private val interactor: EventInteractor,
     private val savedStateHandle: SavedStateHandle
 ) : BaseViewModel() {
-    companion object{
+    companion object {
         const val ROUTE_KEY = "ROUTE_KEY"
         const val TIME_KEY = "TIME_KEY"
         const val LOAD_STATUS_KEY = "LOAD_STATUS_KEY"
@@ -49,13 +49,13 @@ class EditEventViewModel(
         savedStateHandle[MEMBERS_KEY] = members
     }
 
-    fun getMembers(): List<String> = savedStateHandle.get(MEMBERS_KEY)?: listOf()
-    fun getIdEvent(): String = savedStateHandle.get(ID_EVENT_KEY)?:""
+    fun getMembers(): List<String> = savedStateHandle.get(MEMBERS_KEY) ?: listOf()
+    fun getIdEvent(): String = savedStateHandle.get(ID_EVENT_KEY) ?: ""
     fun getTime(): Long? = savedStateHandle.get(TIME_KEY)
     fun getRoute(): String? = savedStateHandle.get(ROUTE_KEY)
-    fun getLoadStatus(): Boolean = savedStateHandle.get(LOAD_STATUS_KEY)?:false
+    fun getLoadStatus(): Boolean = savedStateHandle.get(LOAD_STATUS_KEY) ?: false
     fun createEvent(name: String, note: String, motionType: String, time: Long, route: String) {
-        interactor.createEvent(getIdEvent(),name,note,motionType,time,route,getMembers())
+        interactor.createEvent(getIdEvent(), name, note, motionType, time, route, getMembers())
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(

@@ -6,12 +6,16 @@ import ru.salazarev.roadsaround.network.map.GoogleMap
 
 class EditRoadViewModel : ViewModel() {
     lateinit var map: GoogleMap
-    private set
+        private set
 
     val resultCreateRoute = MutableLiveData<Boolean>()
 
-    fun setMap(googleMap: com.google.android.gms.maps.GoogleMap, key: String, typeWork: GoogleMap.Companion.TypeWork){
-        map = GoogleMap(googleMap, key, typeWork, object : GoogleMap.FailCallback{
+    fun setMap(
+        googleMap: com.google.android.gms.maps.GoogleMap,
+        key: String,
+        typeWork: GoogleMap.Companion.TypeWork
+    ) {
+        map = GoogleMap(googleMap, key, typeWork, object : GoogleMap.FailCallback {
             override fun onComplete(status: Boolean) {
                 resultCreateRoute.value = status
             }
@@ -19,7 +23,7 @@ class EditRoadViewModel : ViewModel() {
     }
 
     fun setCurrentLocation(latitude: Double, longitude: Double) {
-        map.setCurrentLocation(latitude,longitude)
+        map.setCurrentLocation(latitude, longitude)
     }
 
     fun getRoute(): String? = map.getRouteJsonUrl()

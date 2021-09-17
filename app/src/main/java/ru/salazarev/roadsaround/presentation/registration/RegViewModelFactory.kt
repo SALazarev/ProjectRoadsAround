@@ -7,12 +7,12 @@ import ru.salazarev.roadsaround.util.ImageConverter
 import javax.inject.Inject
 
 class RegViewModelFactory @Inject constructor(
-private val interactor: UserInteractor,
-private val imageConverter: ImageConverter
+    private val interactor: UserInteractor,
+    private val imageConverter: ImageConverter
 ) : ViewModelProvider.Factory {
 
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel?> create(aClass: Class<T>): T {
-        return RegViewModel(interactor,imageConverter) as T
+        return RegViewModel(interactor, imageConverter) as T
     }
 }

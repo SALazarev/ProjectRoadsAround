@@ -16,7 +16,8 @@ class GoogleMap(
 
     companion object {
         private const val DEFAULT_ZOOM = 15
-        enum class TypeWork{
+
+        enum class TypeWork {
             VIEW,
             EDIT
         }
@@ -35,9 +36,9 @@ class GoogleMap(
             true
         }
         map.setOnMapClickListener {
-            when (typeWork){
-                TypeWork.EDIT ->pickPoint(it, key)
-                TypeWork.VIEW ->updateTitle()
+            when (typeWork) {
+                TypeWork.EDIT -> pickPoint(it, key)
+                TypeWork.VIEW -> updateTitle()
             }
 
         }

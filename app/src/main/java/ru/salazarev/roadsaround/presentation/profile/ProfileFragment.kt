@@ -14,7 +14,6 @@ import ru.salazarev.roadsaround.R
 import ru.salazarev.roadsaround.databinding.FragmentProfileBinding
 import ru.salazarev.roadsaround.models.presentation.UserPresentation
 import ru.salazarev.roadsaround.presentation.MainActivity
-import ru.salazarev.roadsaround.toast
 import javax.inject.Inject
 
 class ProfileFragment : Fragment() {
@@ -78,9 +77,11 @@ class ProfileFragment : Fragment() {
         })
     }
 
-    private fun setViewData(userPresentation: UserPresentation) {
-        binding.etName.text = userPresentation.name
-        userPresentation.image?.let { binding.ivUserPhoto.setImageDrawable(it) }
+    private fun setViewData(user: UserPresentation) {
+        val userName = "${resources.getString(R.string.name)}: ${user.name}"
+        binding.etName.text = userName
+        if (user.image == null) binding.ivUserPhoto.visibility = View.GONE else
+            binding.ivUserPhoto.setImageDrawable(user.image)
     }
 
     private fun configureToolbar() {

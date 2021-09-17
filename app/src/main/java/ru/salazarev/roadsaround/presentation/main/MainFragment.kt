@@ -15,7 +15,7 @@ import javax.inject.Named
 
 class MainFragment : Fragment() {
 
-    companion object{
+    companion object {
         const val EVENT_ID_KEY = "EVENT_KEY"
         const val EVENT_NAME_KEY = "EVENT_NAME_KEY"
         const val EVENT_TYPE_WORK_KEY = "EVENT_TYPE_WORK_KEY"
@@ -33,7 +33,8 @@ class MainFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentMainBinding.inflate(inflater, container, false)
-        App.appComponent.getMainComponentBuilder().fragmentManager(childFragmentManager).build().inject(this)
+        App.appComponent.getMainComponentBuilder().fragmentManager(childFragmentManager).build()
+            .inject(this)
         return binding.root
     }
 

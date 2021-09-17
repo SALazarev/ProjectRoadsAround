@@ -46,6 +46,6 @@ interface MainModule {
         }
 
         @Provides
-        fun provideSavedStateHandle():SavedStateHandle = SavedStateHandle()
+        fun provideSavedStateHandle(): SavedStateHandle = SavedStateHandle()
     }
 }

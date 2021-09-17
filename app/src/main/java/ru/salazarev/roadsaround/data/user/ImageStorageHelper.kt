@@ -4,5 +4,5 @@ object ImageStorageHelper {
     const val folder = "UsersAvatar"
     fun getFileName(id: String): String = "avatar_$id"
     const val jpegFileFormat = "jpg"
-    const val imageBuffer: Long = 15 * 1024*1024
+    const val imageBuffer: Long = 15 * 1024 * 1024
 }

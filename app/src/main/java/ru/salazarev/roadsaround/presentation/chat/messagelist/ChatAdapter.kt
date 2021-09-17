@@ -7,7 +7,8 @@ import androidx.recyclerview.widget.RecyclerView
 import ru.salazarev.roadsaround.R
 import ru.salazarev.roadsaround.models.presentation.MessageChat
 
-class ChatAdapter(var data: List<MessageChat> = mutableListOf()) : RecyclerView.Adapter<MessageViewHolder>() {
+class ChatAdapter(var data: List<MessageChat> = mutableListOf()) :
+    RecyclerView.Adapter<MessageViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MessageViewHolder {
         return MessageViewHolder(

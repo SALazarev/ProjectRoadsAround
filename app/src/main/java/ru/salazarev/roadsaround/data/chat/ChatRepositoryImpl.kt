@@ -29,7 +29,7 @@ class ChatRepositoryImpl @Inject constructor(
     ) {
         val ref = database.collection("chats").document("chat_$eventId").collection("messages")
 
-        ref.addSnapshotListener { snapshot, error ->
+        ref.addSnapshotListener { snapshot, _ ->
             if (snapshot != null && !snapshot.metadata.hasPendingWrites()) {
                 val data: List<MessageData> = snapshot.toObjects(MessageData::class.java)
                 callback.onNext(data)

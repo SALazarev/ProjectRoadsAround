@@ -21,7 +21,7 @@ class ChatViewModel(
 
     fun sendMessage(eventId: String, text: String) {
         val completable = Completable.fromCallable {
-            return@fromCallable chatInteractor.sendMessage(eventId,text)
+            return@fromCallable chatInteractor.sendMessage(eventId, text)
         }
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())

@@ -28,6 +28,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun hasPermission(permission: String): Boolean =
-            ActivityCompat.checkSelfPermission(this, permission) == PackageManager.PERMISSION_GRANTED
+        ActivityCompat.checkSelfPermission(this, permission) == PackageManager.PERMISSION_GRANTED
 
 }

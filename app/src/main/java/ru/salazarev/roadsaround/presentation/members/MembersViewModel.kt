@@ -35,9 +35,9 @@ class MembersViewModel @Inject constructor(
     }
 
     private fun getMembersInfo(members: List<User>): List<UserPresentation> {
-        return  members.map {
+        return members.map {
             val memberName =
-                if (it.lastName == "") it.firstName else "${it.firstName} ${it.lastName}"
+                if (it.lastName.isEmpty()) it.firstName else "${it.firstName} ${it.lastName}"
             val image = if (it.image != null) imageConverter.convert(it.image) else null
             UserPresentation(it.id, memberName, image)
         }

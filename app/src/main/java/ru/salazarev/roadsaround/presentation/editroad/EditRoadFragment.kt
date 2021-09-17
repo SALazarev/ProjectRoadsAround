@@ -85,8 +85,8 @@ class EditRoadFragment : Fragment(), OnMapReadyCallback {
     private fun completeWork() {
         val route = viewModel.getRoute()
         val bundle = Bundle()
-        bundle.putString(ROUTE_KEY,route)
-        requireActivity().supportFragmentManager.setFragmentResult(ROUTE_REQUEST,bundle)
+        bundle.putString(ROUTE_KEY, route)
+        requireActivity().supportFragmentManager.setFragmentResult(ROUTE_REQUEST, bundle)
         if (route == null) requireActivity().toast(getString(R.string.route_not_complete))
         else requireActivity().onBackPressed()
     }

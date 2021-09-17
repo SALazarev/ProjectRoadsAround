@@ -20,7 +20,7 @@ class UserRepositoryImpl @Inject constructor(
 
     override fun setUserData(user: User) {
         val path = if (user.image != null) {
-            val snapshot = Tasks.await(saveImage(user.id,user.image))
+            val snapshot = Tasks.await(saveImage(user.id, user.image))
             val uri = snapshot.metadata!!.reference!!.downloadUrl
             uri.toString()
         } else ""
@@ -35,13 +35,15 @@ class UserRepositoryImpl @Inject constructor(
         val snapshot = Tasks.await(docRef.get())
         val userData: UserData = snapshot.toObject<UserData>()!!
 
-        val image = if (userData.image != "") {
+        val image = if (userData.image.isNotEmpty()) {
             val path: String =
                 imageHelper.let { "${it.folder}/${it.getFileName(id)}.${it.jpegFileFormat}" }
             val islandRef = storage.child(path)
-            val arrayBytes = try{
+            val arrayBytes = try {
                 Tasks.await(islandRef.getBytes(imageHelper.imageBuffer))
-            } catch (e: ExecutionException){null}
+            } catch (e: ExecutionException) {
+                null
+            }
             arrayBytes
         } else null
 

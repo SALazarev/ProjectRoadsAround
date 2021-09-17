@@ -1,15 +1,10 @@
-package ru.salazarev.roadsaround.presentation.chat.messagelist
+package ru.salazarev.roadsaround.presentation.members.memberslist
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import ru.salazarev.roadsaround.R
-import ru.salazarev.roadsaround.models.presentation.EventPreview
 import ru.salazarev.roadsaround.models.presentation.UserPresentation
-import ru.salazarev.roadsaround.presentation.main.eventlist.ClickItemCallback
-import ru.salazarev.roadsaround.presentation.main.eventlist.EventViewHolder
-import ru.salazarev.roadsaround.presentation.members.memberslist.MemberViewHolder
 
 class MembersListAdapter(
     var data: List<UserPresentation> = mutableListOf()

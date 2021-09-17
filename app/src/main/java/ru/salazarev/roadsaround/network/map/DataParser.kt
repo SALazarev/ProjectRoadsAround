@@ -23,15 +23,14 @@ class DataParser {
                     jSteps = (jLegs[j] as JSONObject).getJSONArray("steps")
                     /** Traversing all steps  */
                     for (k in 0 until jSteps.length()) {
-                        var polyline = ""
-                        polyline =
+                        val polyline: String =
                             ((jSteps[k] as JSONObject)["polyline"] as JSONObject)["points"] as String
                         val list = decodePoly(polyline)
                         /** Traversing all points  */
                         for (l in list.indices) {
                             val hm: HashMap<String, String> = HashMap()
-                            hm["lat"] = java.lang.Double.toString(list[l].latitude)
-                            hm["lng"] = java.lang.Double.toString(list[l].longitude)
+                            hm["lat"] = list[l].latitude.toString()
+                            hm["lng"] = list[l].longitude.toString()
                             path.add(hm)
                         }
                     }

@@ -3,8 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/btn_create_event"
-        app:showAsAction="ifRoom"
+        android:contentDescription="@string/add_event"
         android:icon="@drawable/outline_add_24"
         android:title="@string/add_event"
-        android:contentDescription="@string/add_event"/>
+        app:showAsAction="ifRoom" />
 </menu>

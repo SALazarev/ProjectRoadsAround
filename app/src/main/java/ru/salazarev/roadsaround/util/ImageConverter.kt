@@ -15,7 +15,7 @@ class ImageConverter @Inject constructor(private val resources: Resources) {
         BitmapFactory.decodeByteArray(byteArray, 0, byteArray.size)
     )
 
-    fun convert(image: Bitmap): ByteArray{
+    fun convert(image: Bitmap): ByteArray {
         val stream = ByteArrayOutputStream()
         image.compress(Bitmap.CompressFormat.PNG, 100, stream)
         val byteArray = stream.toByteArray()

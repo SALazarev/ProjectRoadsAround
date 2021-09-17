@@ -15,12 +15,11 @@ import ru.salazarev.roadsaround.R
 import ru.salazarev.roadsaround.databinding.FragmentSearchEventBinding
 import ru.salazarev.roadsaround.domain.event.EventInteractor
 import ru.salazarev.roadsaround.presentation.MainActivity
-import ru.salazarev.roadsaround.presentation.chat.messagelist.EventListAdapter
+import ru.salazarev.roadsaround.presentation.main.eventlist.EventListAdapter
 import ru.salazarev.roadsaround.presentation.main.MainFragment.Companion.EVENT_ID_KEY
 import ru.salazarev.roadsaround.presentation.main.MainFragment.Companion.EVENT_NAME_KEY
 import ru.salazarev.roadsaround.presentation.main.MainFragment.Companion.EVENT_TYPE_WORK_KEY
 import ru.salazarev.roadsaround.presentation.main.eventlist.ClickItemCallback
-import ru.salazarev.roadsaround.toast
 import javax.inject.Inject
 
 class SearchEventFragment : Fragment() {

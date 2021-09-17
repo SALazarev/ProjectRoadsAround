@@ -35,4 +35,12 @@
         <item name="android:gravity">center</item>
     </style>
 
+    <style name="WarningStarStyle">
+        <item name="android:textColor">@android:color/holo_red_dark</item>
+        <item name="android:textSize">36sp</item>
+        <item name="layout_constraintVertical_bias">1</item>
+        <item name="android:layout_marginStart">18dp</item>
+        <item name="android:text">@string/star_symbol</item>
+    </style>
+
 </resources>

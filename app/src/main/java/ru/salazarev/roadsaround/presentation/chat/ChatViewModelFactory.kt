@@ -13,6 +13,6 @@ class ChatViewModelFactory @Inject constructor(
 
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel?> create(aClass: Class<T>): T {
-        return ChatViewModel(chatInteractor,imageConverter) as T
+        return ChatViewModel(chatInteractor, imageConverter) as T
     }
 }

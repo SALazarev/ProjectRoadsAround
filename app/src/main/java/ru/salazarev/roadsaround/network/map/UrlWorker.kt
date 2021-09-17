@@ -6,7 +6,6 @@ import com.google.android.gms.maps.model.PolylineOptions
 import org.json.JSONObject
 import java.io.BufferedReader
 import java.io.IOException
-import java.io.InputStream
 import java.io.InputStreamReader
 import java.net.HttpURLConnection
 import java.net.URL
@@ -19,20 +18,13 @@ class UrlWorker {
 
     @Throws(IOException::class)
     private fun downloadUrl(strUrl: String): String {
-
-        var iStream: InputStream? = null
-        var urlConnection: HttpURLConnection? = null
-
         val url = URL(strUrl)
-        // Creating an http connection to communicate with url
-        urlConnection = url.openConnection() as HttpURLConnection
-        // Connecting to url
+        val urlConnection = url.openConnection() as HttpURLConnection
         urlConnection.connect()
-        // Reading data from url
-        iStream = urlConnection.inputStream
+        val iStream = urlConnection.inputStream
         val br = BufferedReader(InputStreamReader(iStream))
         val sb = StringBuffer()
-        var line: String? = ""
+        var line: String?
         while (br.readLine().also { line = it } != null) {
             sb.append(line)
         }
@@ -45,11 +37,11 @@ class UrlWorker {
     }
 
     private fun creatorLine(jsonData: String): PolylineOptions {
-        var routes: List<List<HashMap<String, String>>>? = null
         val jObject = JSONObject(jsonData)
         val parser = DataParser()
 
-        routes = parser.parse(jObject)
+        val routes: List<List<HashMap<String, String>>> = parser.parse(jObject)
+
 
         var points: ArrayList<LatLng?>
         var lineOptions: PolylineOptions? = null
@@ -65,7 +57,7 @@ class UrlWorker {
                 points.add(position)
             }
 
-            lineOptions.apply{
+            lineOptions.apply {
                 addAll(points)
                 width(20f)
                 color(Color.RED)

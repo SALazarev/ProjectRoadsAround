@@ -15,7 +15,7 @@ import ru.salazarev.roadsaround.R
 import ru.salazarev.roadsaround.databinding.FragmentRoutesBinding
 import ru.salazarev.roadsaround.domain.event.EventInteractor
 import ru.salazarev.roadsaround.presentation.MainActivity
-import ru.salazarev.roadsaround.presentation.chat.messagelist.EventListAdapter
+import ru.salazarev.roadsaround.presentation.main.eventlist.EventListAdapter
 import ru.salazarev.roadsaround.presentation.main.MainFragment
 import ru.salazarev.roadsaround.presentation.main.MainFragment.Companion.EVENT_ID_KEY
 import ru.salazarev.roadsaround.presentation.main.MainFragment.Companion.EVENT_NAME_KEY

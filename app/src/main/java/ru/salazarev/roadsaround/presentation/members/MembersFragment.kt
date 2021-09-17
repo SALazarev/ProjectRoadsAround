@@ -10,13 +10,11 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.view_information_not_load.view.*
 import ru.salazarev.roadsaround.App
 import ru.salazarev.roadsaround.R
 import ru.salazarev.roadsaround.databinding.FragmentMembersBinding
-import ru.salazarev.roadsaround.presentation.chat.messagelist.MembersListAdapter
+import ru.salazarev.roadsaround.presentation.members.memberslist.MembersListAdapter
 import ru.salazarev.roadsaround.presentation.main.MainFragment
-import ru.salazarev.roadsaround.toast
 import javax.inject.Inject
 
 class MembersFragment : Fragment() {
@@ -93,7 +91,7 @@ class MembersFragment : Fragment() {
             if (members == null) {
                 binding.rvMembers.visibility = View.INVISIBLE
                 binding.viewInformationNotLoad.viewInformationNotLoad.visibility = View.VISIBLE
-            } else{
+            } else {
                 adapter.setItems(members)
                 binding.rvMembers.visibility = View.VISIBLE
                 binding.viewInformationNotLoad.viewInformationNotLoad.visibility = View.INVISIBLE

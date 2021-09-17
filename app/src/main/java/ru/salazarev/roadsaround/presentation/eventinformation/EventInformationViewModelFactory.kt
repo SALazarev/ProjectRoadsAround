@@ -13,6 +13,6 @@ class EventInformationViewModelFactory @Inject constructor(
 
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel?> create(aClass: Class<T>): T {
-        return EventInformationViewModel(interactor,imageConverter) as T
+        return EventInformationViewModel(interactor, imageConverter) as T
     }
 }

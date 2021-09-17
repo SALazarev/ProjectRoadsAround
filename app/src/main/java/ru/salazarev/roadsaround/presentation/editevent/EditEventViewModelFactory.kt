@@ -12,6 +12,6 @@ class EditEventViewModelFactory @Inject constructor(
 
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel?> create(aClass: Class<T>): T {
-        return EditEventViewModel(interactor,savedStateHandle) as T
+        return EditEventViewModel(interactor, savedStateHandle) as T
     }
 }

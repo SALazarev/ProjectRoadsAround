@@ -3,10 +3,8 @@ package ru.salazarev.roadsaround.data.event
 import com.google.android.gms.tasks.Tasks
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.FirebaseFirestoreSettings
 import com.google.firebase.firestore.Source
 import com.google.firebase.firestore.ktx.toObject
-
 import ru.salazarev.roadsaround.domain.event.EventRepository
 import ru.salazarev.roadsaround.models.data.EventData
 import javax.inject.Inject
@@ -15,9 +13,9 @@ class EventRepositoryImpl @Inject constructor(
     private val database: FirebaseFirestore,
     private val databaseModel: EventsCollectionModel
 ) : EventRepository {
-    override fun sendEvent(eventData: EventData) {
-        if (eventData.id == "") createEvent(eventData)
-        else updateEvent(eventData)
+    override fun sendEvent(event: EventData) {
+        if (event.id.isEmpty()) createEvent(event)
+        else updateEvent(event)
     }
 
     private fun createEvent(eventData: EventData) {

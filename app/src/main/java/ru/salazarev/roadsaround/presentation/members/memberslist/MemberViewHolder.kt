@@ -2,9 +2,7 @@ package ru.salazarev.roadsaround.presentation.members.memberslist
 
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
-import ru.salazarev.roadsaround.databinding.ListItemEventBinding
 import ru.salazarev.roadsaround.databinding.ListItemMemberBinding
-import ru.salazarev.roadsaround.models.presentation.EventPreview
 import ru.salazarev.roadsaround.models.presentation.UserPresentation
 
 class MemberViewHolder(item: View) : RecyclerView.ViewHolder(item) {
@@ -13,7 +11,7 @@ class MemberViewHolder(item: View) : RecyclerView.ViewHolder(item) {
     fun set(data: UserPresentation) {
         binding.apply {
             tvName.text = data.name
-            data.image?.let{ivUserPhoto.setImageDrawable(it)}
+            data.image?.let { ivUserPhoto.setImageDrawable(it) }
         }
     }
 

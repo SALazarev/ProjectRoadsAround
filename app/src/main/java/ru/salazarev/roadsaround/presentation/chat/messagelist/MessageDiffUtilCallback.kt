@@ -3,8 +3,10 @@ package ru.salazarev.roadsaround.presentation.chat.messagelist
 import androidx.recyclerview.widget.DiffUtil
 import ru.salazarev.roadsaround.models.presentation.MessageChat
 
-class MessageDiffUtilCallback(private val oldList: List<MessageChat>,
-                              private val newList: List<MessageChat>) : DiffUtil.Callback() {
+class MessageDiffUtilCallback(
+    private val oldList: List<MessageChat>,
+    private val newList: List<MessageChat>
+) : DiffUtil.Callback() {
 
     override fun getOldListSize(): Int {
         return oldList.size

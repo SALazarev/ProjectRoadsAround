@@ -17,6 +17,7 @@
         android:layout_height="96dp"
         android:layout_marginTop="@dimen/margin_text_input_view"
         android:background="@drawable/outline_add_a_photo_24"
+        android:contentDescription="@string/add_user_photo"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/include_toolbar" />
@@ -26,11 +27,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:indeterminate="true"
+        android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:visibility="invisible"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/et_email"
@@ -50,11 +51,9 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <TextView
+        style="@style/WarningStarStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="*"
-        android:textColor="@android:color/holo_red_dark"
-        android:textSize="36dp"
         app:layout_constraintBottom_toBottomOf="@+id/et_email"
         app:layout_constraintStart_toEndOf="@+id/et_email"
         app:layout_constraintTop_toTopOf="@+id/et_email" />
@@ -77,11 +76,9 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <TextView
+        style="@style/WarningStarStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="*"
-        android:textColor="@android:color/holo_red_dark"
-        android:textSize="36dp"
         app:layout_constraintBottom_toBottomOf="@+id/et_pass"
         app:layout_constraintStart_toEndOf="@+id/et_pass"
         app:layout_constraintTop_toTopOf="@+id/et_pass" />
@@ -104,11 +101,9 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <TextView
+        style="@style/WarningStarStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="*"
-        android:textColor="@android:color/holo_red_dark"
-        android:textSize="36dp"
         app:layout_constraintBottom_toBottomOf="@+id/et_name"
         app:layout_constraintStart_toEndOf="@+id/et_name"
         app:layout_constraintTop_toTopOf="@+id/et_name" />

@@ -4,8 +4,8 @@
 
     <item
         android:id="@+id/btn_chat"
-        app:showAsAction="always"
+        android:contentDescription="@string/par_chat"
         android:icon="@drawable/outline_chat_24"
         android:title="@string/par_chat"
-        android:contentDescription="@string/par_chat"/>
+        app:showAsAction="always" />
 </menu>

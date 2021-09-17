@@ -4,8 +4,8 @@
 
     <item
         android:id="@+id/btn_login"
-        app:showAsAction="always"
+        android:contentDescription="@string/register"
         android:icon="@drawable/outline_how_to_reg_24"
         android:title="@string/register"
-        android:contentDescription="@string/register"/>
+        app:showAsAction="always" />
 </menu>

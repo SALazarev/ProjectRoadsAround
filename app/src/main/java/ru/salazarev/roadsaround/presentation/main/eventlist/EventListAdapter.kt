@@ -1,4 +1,4 @@
-package ru.salazarev.roadsaround.presentation.chat.messagelist
+package ru.salazarev.roadsaround.presentation.main.eventlist
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -6,11 +6,10 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import ru.salazarev.roadsaround.R
 import ru.salazarev.roadsaround.models.presentation.EventPreview
-import ru.salazarev.roadsaround.presentation.main.eventlist.ClickItemCallback
-import ru.salazarev.roadsaround.presentation.main.eventlist.EventViewHolder
+import ru.salazarev.roadsaround.presentation.chat.messagelist.EventDiffUtilCallback
 
 class EventListAdapter(
-    val callback: ClickItemCallback,
+    private val callback: ClickItemCallback,
     var data: List<EventPreview> = mutableListOf()
 ) : RecyclerView.Adapter<EventViewHolder>() {
 

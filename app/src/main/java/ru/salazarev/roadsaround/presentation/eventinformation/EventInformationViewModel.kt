@@ -25,7 +25,6 @@ class EventInformationViewModel @Inject constructor(
     val progress = MutableLiveData<Boolean>()
 
 
-
     fun getEventData(eventId: String) {
         interactor.getEvent(eventId)
             .subscribeOn(Schedulers.io())
@@ -46,7 +45,7 @@ class EventInformationViewModel @Inject constructor(
     private fun getEventInfo(event: Event): EventPresentation {
         val users = event.members.map {
             val memberName =
-                if (it.lastName == "") it.firstName else "${it.firstName} ${it.lastName}"
+                if (it.lastName.isEmpty()) it.firstName else "${it.firstName} ${it.lastName}"
             val image = if (it.image != null) imageConverter.convert(it.image) else null
             UserPresentation(it.id, memberName, image)
         }
