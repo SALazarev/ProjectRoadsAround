@@ -19,3 +19,20 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+
+    -keepattributes Signature
+-keep class ru.salazarev.roadsaround.models.*
+-keepnames class androidx.navigation.fragment.NavHostFragment
+-dontwarn okio.**
+
+-keepattributes EnclosingMethod
+-keepattributes InnerClasses
+
+-dontwarn ru.salazarev.v1.**
+-dontnote ru.salazarev.v1.**
+-keep class ru.salazarev.** { *; }
+-keepclassmembers class ru.salazarev.** { *; }
+
+
+
+
