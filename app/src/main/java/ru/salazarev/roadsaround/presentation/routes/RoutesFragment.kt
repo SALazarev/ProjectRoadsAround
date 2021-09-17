@@ -20,6 +20,7 @@ import ru.salazarev.roadsaround.presentation.main.MainFragment
 import ru.salazarev.roadsaround.presentation.main.MainFragment.Companion.EVENT_ID_KEY
 import ru.salazarev.roadsaround.presentation.main.MainFragment.Companion.EVENT_NAME_KEY
 import ru.salazarev.roadsaround.presentation.main.eventlist.ClickItemCallback
+import ru.salazarev.roadsaround.toast
 import javax.inject.Inject
 
 class RoutesFragment : Fragment() {
@@ -120,13 +121,21 @@ class RoutesFragment : Fragment() {
 
     private fun setObserver() {
         viewModel.eventsLiveData.observe(viewLifecycleOwner, { listData ->
-            if (listData == null) {
-                binding.viewInformationNotLoad.viewInformationNotLoad.visibility = View.VISIBLE
-                binding.rvEvent.visibility = View.INVISIBLE
-            } else {
-                adapter.setItems(listData)
-                binding.viewInformationNotLoad.viewInformationNotLoad.visibility = View.INVISIBLE
-                binding.rvEvent.visibility = View.VISIBLE
+            when {
+                listData == null -> {
+                    binding.viewInformationNotLoad.viewInformationNotLoad.visibility = View.VISIBLE
+                    binding.rvEvent.visibility = View.INVISIBLE
+                }
+                listData.isEmpty() -> {
+                    requireActivity().toast(getString(R.string.no_events))
+                    binding.rvEvent.visibility = View.INVISIBLE
+                }
+                else -> {
+                    adapter.setItems(listData)
+                    binding.viewInformationNotLoad.viewInformationNotLoad.visibility =
+                        View.INVISIBLE
+                    binding.rvEvent.visibility = View.VISIBLE
+                }
             }
         })
 

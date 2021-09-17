@@ -77,6 +77,7 @@
     <string name="add_user_photo">Добавить фото пользователя</string>
     <string name="type_particpate">Тип участия</string>
     <string name="member">Участник</string>
+    <string name="no_events">Нет событий</string>
 
     <string-array name="motionType">
         <item>@string/foot</item>
