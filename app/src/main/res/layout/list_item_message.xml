@@ -40,7 +40,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/name"
-                android:textColor="@color/design_default_color_primary"/>
+                android:textColor="@color/colorPrimaryDark"/>
 
             <TextView
                 android:id="@+id/tv_text"

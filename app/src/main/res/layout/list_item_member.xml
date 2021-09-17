@@ -27,7 +27,7 @@
         android:layout_height="wrap_content"
         android:text="@string/name"
         android:gravity="center"
-        android:textColor="@color/design_default_color_primary"
+        android:textColor="@color/colorPrimaryDark"
         app:layout_constraintStart_toEndOf="@id/iv_user_photo"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
