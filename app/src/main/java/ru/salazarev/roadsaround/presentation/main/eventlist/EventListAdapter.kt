@@ -38,8 +38,8 @@ class EventListAdapter(
 
         val backgroundColor = when (item.typeWorkWithEvent){
             EventInteractor.Companion.TypeWorkWithEvent.GUEST ->  ContextCompat.getColor(holder.itemView.context,R.color.colorAccent)
-            EventInteractor.Companion.TypeWorkWithEvent.AUTHOR -> ContextCompat.getColor(holder.itemView.context,R.color.design_default_color_primary_dark)
-            EventInteractor.Companion.TypeWorkWithEvent.MEMBER -> ContextCompat.getColor(holder.itemView.context,R.color.design_default_color_primary)
+            EventInteractor.Companion.TypeWorkWithEvent.AUTHOR -> ContextCompat.getColor(holder.itemView.context,R.color.colorPrimaryDark)
+            EventInteractor.Companion.TypeWorkWithEvent.MEMBER -> ContextCompat.getColor(holder.itemView.context,R.color.colorPrimary)
         }
 
         holder.set(item,typeWork,backgroundColor)

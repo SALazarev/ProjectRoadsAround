@@ -50,6 +50,7 @@ class SearchEventFragment : Fragment() {
     ): View {
         _binding = FragmentSearchEventBinding.inflate(inflater, container, false)
         binding.rvEvent.visibility = View.INVISIBLE
+        viewModel.loadEventList()
         return binding.root
     }
 
@@ -60,7 +61,6 @@ class SearchEventFragment : Fragment() {
         setObserver()
         binding.viewInformationNotLoad.btnTryAgain.setOnClickListener {
             binding.viewInformationNotLoad.viewInformationNotLoad.visibility = View.INVISIBLE
-            binding.rvEvent.visibility = View.VISIBLE
             viewModel.loadEventList()
         }
     }

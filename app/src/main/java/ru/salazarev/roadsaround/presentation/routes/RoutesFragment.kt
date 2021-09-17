@@ -49,6 +49,7 @@ class RoutesFragment : Fragment() {
     ): View {
         _binding = FragmentRoutesBinding.inflate(inflater, container, false)
         binding.rvEvent.visibility = View.INVISIBLE
+        viewModel.loadQuotationList()
         return binding.root
     }
 
@@ -59,7 +60,6 @@ class RoutesFragment : Fragment() {
         setObserver()
         binding.viewInformationNotLoad.btnTryAgain.setOnClickListener {
             binding.viewInformationNotLoad.viewInformationNotLoad.visibility = View.INVISIBLE
-            binding.rvEvent.visibility = View.VISIBLE
             viewModel.loadQuotationList()
         }
     }

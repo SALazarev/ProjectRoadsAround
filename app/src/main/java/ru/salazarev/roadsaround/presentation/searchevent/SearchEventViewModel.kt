@@ -17,10 +17,6 @@ class SearchEventViewModel @Inject constructor(
 
     val progress = MutableLiveData<Boolean>()
 
-    init {
-        loadEventList()
-    }
-
     fun loadEventList() {
         interactor.getUsersEventsPreview().subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())

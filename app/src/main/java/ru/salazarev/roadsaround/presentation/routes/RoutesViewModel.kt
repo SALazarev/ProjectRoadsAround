@@ -17,10 +17,6 @@ class RoutesViewModel @Inject constructor(
 
     val progress = MutableLiveData<Boolean>()
 
-    init {
-        loadQuotationList()
-    }
-
     fun loadQuotationList() {
         interactor.getUserEventsPreview().subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
