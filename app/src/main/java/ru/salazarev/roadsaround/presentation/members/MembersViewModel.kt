@@ -7,20 +7,30 @@ import ru.salazarev.roadsaround.domain.event.EventInteractor
 import ru.salazarev.roadsaround.models.domain.User
 import ru.salazarev.roadsaround.models.presentation.UserPresentation
 import ru.salazarev.roadsaround.presentation.BaseViewModel
+import ru.salazarev.roadsaround.presentation.eventinformation.EventInformationFragment
 import ru.salazarev.roadsaround.util.ImageConverter
 import ru.salazarev.roadsaround.util.addTo
 import javax.inject.Inject
 
+
+/** ViewModel для фрагмента [EventInformationFragment].
+ * @param interactor - объект управления информацией о событиях.
+ * @param imageConverter - конвертер изображений.
+ */
 class MembersViewModel @Inject constructor(
     private val interactor: EventInteractor,
     private val imageConverter: ImageConverter
 ) : BaseViewModel() {
 
+    /** Прослушивание статуса загрузки участников события. */
     val members = MutableLiveData<List<UserPresentation>>()
 
+    /** Прослушивание статуса загрузки. */
     val progress = MutableLiveData<Boolean>()
 
-
+    /** Предоставляет информацию об участниках в событии.
+     * @param eventId - идентификатор события.
+     */
     fun getMembers(eventId: String) {
         interactor.getMembersEvent(eventId)
             .subscribeOn(Schedulers.io())

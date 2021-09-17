@@ -27,14 +27,16 @@ import javax.inject.Inject
 class EditRoadFragment : Fragment(), OnMapReadyCallback {
 
     companion object {
-        const val EDIT_ROAD_TYPE_WORK = "EDIT_ROAD_TYPE_WORK"
+        /** Ключ типов работы с экраном карты. */
+        const val EDIT_ROAD_TYPE_WORK_KEY = "EDIT_ROAD_TYPE_WORK"
 
+        /** Класс типов работы с экраном карты. */
         enum class EditRoadTypeWork {
-            EDIT,
             VIEW
         }
     }
 
+    /** Фабрика для ViewModel текущего фрагмента */
     @Inject
     lateinit var editRoadViewModelFactory: EditRoadViewModelFactory
 
@@ -94,7 +96,7 @@ class EditRoadFragment : Fragment(), OnMapReadyCallback {
     private fun configureToolbar() {
         binding.includeToolbar.includeToolbar.apply {
             inflateMenu(R.menu.toolbar_edit_road_menu)
-            title = if (arguments?.getString(EDIT_ROAD_TYPE_WORK) == EditRoadTypeWork.VIEW.name)
+            title = if (arguments?.getString(EDIT_ROAD_TYPE_WORK_KEY) == EditRoadTypeWork.VIEW.name)
                 resources.getString(R.string.route) else context.getString(R.string.settings_route)
             navigationContentDescription = context.getString(R.string.back)
             navigationIcon =
@@ -117,7 +119,7 @@ class EditRoadFragment : Fragment(), OnMapReadyCallback {
 
     override fun onMapReady(googleMap: GoogleMap) {
         var typeWork = ru.salazarev.roadsaround.network.map.GoogleMap.Companion.TypeWork.EDIT
-        arguments?.getString(EDIT_ROAD_TYPE_WORK)?.let {
+        arguments?.getString(EDIT_ROAD_TYPE_WORK_KEY)?.let {
             if (it == EditRoadTypeWork.VIEW.name) {
                 typeWork =
                     ru.salazarev.roadsaround.network.map.GoogleMap.Companion.TypeWork.VIEW
@@ -126,7 +128,7 @@ class EditRoadFragment : Fragment(), OnMapReadyCallback {
                 binding.includeToolbar.includeToolbar.title = "Маршрут"
             }
         }
-        viewModel.setMap(googleMap, getString(R.string.google_maps_key), typeWork)
+        viewModel.configureMap(googleMap, getString(R.string.google_maps_key), typeWork)
         configureMap()
     }
 

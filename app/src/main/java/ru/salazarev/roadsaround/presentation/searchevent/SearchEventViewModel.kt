@@ -9,15 +9,21 @@ import ru.salazarev.roadsaround.presentation.BaseViewModel
 import ru.salazarev.roadsaround.util.addTo
 import javax.inject.Inject
 
+/** Фабрика ViewModel для фрагмента [SearchEventViewModel].
+ * @param interactor - объект управления информацией о событиях.
+ */
 class SearchEventViewModel @Inject constructor(
     private val interactor: EventInteractor
 ) : BaseViewModel() {
 
+    /** Прослушивание статуса загрузки данных. */
     val eventsLiveData = MutableLiveData<List<EventPreview>>()
 
+    /** Прослушивание статуса загрузки. */
     val progress = MutableLiveData<Boolean>()
 
-    fun loadEventList() {
+    /** Загрузка событий других пользователей. */
+    fun loadUsersEventsList() {
         interactor.getUsersEventsPreview().subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .doFinally { progress.value = false }

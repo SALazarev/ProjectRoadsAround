@@ -10,6 +10,10 @@ import ru.salazarev.roadsaround.domain.event.EventInteractor
 import ru.salazarev.roadsaround.models.presentation.EventPreview
 import ru.salazarev.roadsaround.presentation.chat.messagelist.EventDiffUtilCallback
 
+/** Адаптер для списка событий.
+ * @param data - список событий.
+ * @param callback - слушатель нажатия на представление события.
+ */
 class EventListAdapter(
     private val callback: ClickItemCallback,
     var data: List<EventPreview> = mutableListOf()
@@ -48,6 +52,9 @@ class EventListAdapter(
 
     override fun getItemCount(): Int = data.size
 
+    /** Установка списка событий для адаптера.
+     * @param items - список сообщений.
+     */
     fun setItems(items: List<EventPreview>) {
         val diffResult = DiffUtil.calculateDiff(
             EventDiffUtilCallback(

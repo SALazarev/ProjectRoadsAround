@@ -6,6 +6,9 @@ import androidx.recyclerview.widget.RecyclerView
 import ru.salazarev.roadsaround.R
 import ru.salazarev.roadsaround.models.presentation.UserPresentation
 
+/** Адаптер для списка участников в событии.
+ * @param data - список участников в событии.
+ */
 class MembersListAdapter(
     var data: List<UserPresentation> = mutableListOf()
 ) : RecyclerView.Adapter<MemberViewHolder>() {
@@ -26,6 +29,9 @@ class MembersListAdapter(
 
     override fun getItemCount(): Int = data.size
 
+    /** Установка списка участников в событии для адаптера.
+     * @param items - список сообщений.
+     */
     fun setItems(items: List<UserPresentation>) {
         data = items
         notifyDataSetChanged()

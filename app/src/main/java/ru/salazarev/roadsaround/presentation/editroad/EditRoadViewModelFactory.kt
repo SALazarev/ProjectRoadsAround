@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import javax.inject.Inject
 
+/** Фабрика ViewModel для фрагмента [EditRoadViewModel]. */
 class EditRoadViewModelFactory @Inject constructor(
 ) : ViewModelProvider.Factory {
 

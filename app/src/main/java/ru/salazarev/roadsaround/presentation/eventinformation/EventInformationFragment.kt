@@ -14,7 +14,7 @@ import ru.salazarev.roadsaround.domain.event.EventInteractor
 import ru.salazarev.roadsaround.presentation.MainActivity
 import ru.salazarev.roadsaround.presentation.editevent.EditEventFragment.Companion.ROUTE_KEY
 import ru.salazarev.roadsaround.presentation.editroad.EditRoadFragment
-import ru.salazarev.roadsaround.presentation.editroad.EditRoadFragment.Companion.EDIT_ROAD_TYPE_WORK
+import ru.salazarev.roadsaround.presentation.editroad.EditRoadFragment.Companion.EDIT_ROAD_TYPE_WORK_KEY
 import ru.salazarev.roadsaround.presentation.main.MainFragment.Companion.EVENT_ID_KEY
 import ru.salazarev.roadsaround.presentation.main.MainFragment.Companion.EVENT_NAME_KEY
 import ru.salazarev.roadsaround.presentation.main.MainFragment.Companion.EVENT_TYPE_WORK_KEY
@@ -23,11 +23,12 @@ import javax.inject.Inject
 
 class EventInformationFragment : Fragment() {
 
-    private var _binding: FragmentEventInformationBinding? = null
-    private val binding get() = _binding!!
-
+    /** Фабрика для ViewModel текущего фрагмента */
     @Inject
     lateinit var eventInformationViewModelFactory: EventInformationViewModelFactory
+
+    private var _binding: FragmentEventInformationBinding? = null
+    private val binding get() = _binding!!
 
     private lateinit var viewModel: EventInformationViewModel
 
@@ -75,7 +76,7 @@ class EventInformationFragment : Fragment() {
             val bundle = Bundle()
             viewModel.data.value?.let { bundle.putString(ROUTE_KEY, it.route) }
             bundle.putString(
-                EDIT_ROAD_TYPE_WORK,
+                EDIT_ROAD_TYPE_WORK_KEY,
                 EditRoadFragment.Companion.EditRoadTypeWork.VIEW.name
             )
             (activity as MainActivity).navController.navigate(

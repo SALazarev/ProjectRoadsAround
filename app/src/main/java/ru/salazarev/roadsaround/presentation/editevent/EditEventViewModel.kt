@@ -29,7 +29,6 @@ class EditEventViewModel(
     }
 
     private val _result = MutableLiveData<Boolean>()
-
     /** Прослушивание результата работы. */
     val result: LiveData<Boolean> = _result
 
@@ -75,15 +74,39 @@ class EditEventViewModel(
     }
 
     /** Предоставление участников события из [SavedStateHandle].
-     * @param members - участники события.
+     * @return - участники события.
      */
     fun getMembers(): List<String> = savedStateHandle.get(MEMBERS_KEY) ?: listOf()
 
-
+    /** Предоставление идентификатора события из [SavedStateHandle].
+     * @return - идентификатор события.
+     */
     fun getIdEvent(): String = savedStateHandle.get(ID_EVENT_KEY) ?: ""
+
+    /** Предоставление времени события из [SavedStateHandle].
+     * @return - время события.
+     */
     fun getTime(): Long? = savedStateHandle.get(TIME_KEY)
+
+    /** Предоставление маршрута из [SavedStateHandle].
+     * @return - маршрут.
+     */
     fun getRoute(): String? = savedStateHandle.get(ROUTE_KEY)
+
+    /** Предоставление статуса загрузки данных из [SavedStateHandle].
+     * @return - статус загрузки данных.
+     */
     fun getLoadStatus(): Boolean = savedStateHandle.get(LOAD_STATUS_KEY) ?: false
+
+
+    /**
+     * Создание события.
+     * @param name - название события.
+     * @param note - описание события.
+     * @param motionType - способ перемещения по маршруту.
+     * @param time - назначенное время события.
+     * @param route - маршрут.
+     */
     fun createEvent(name: String, note: String, motionType: String, time: Long, route: String) {
         interactor.createEvent(getIdEvent(), name, note, motionType, time, route, getMembers())
             .subscribeOn(Schedulers.io())
@@ -95,6 +118,10 @@ class EditEventViewModel(
             .addTo(compositeDisposable)
     }
 
+    /**
+     * Получить информацию о событии
+     * @param eventId - идентификатор события.
+     */
     fun getEventData(eventId: String) {
         interactor.getEvent(eventId)
             .subscribeOn(Schedulers.io())

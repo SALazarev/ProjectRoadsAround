@@ -18,13 +18,15 @@ import ru.salazarev.roadsaround.presentation.main.MainFragment
 import javax.inject.Inject
 
 class MembersFragment : Fragment() {
+
+    /** Фабрика для ViewModel текущего фрагмента */
+    @Inject
+    lateinit var membersViewModelFactory: MembersViewModelFactory
+
     private var _binding: FragmentMembersBinding? = null
     private val binding get() = _binding!!
 
     private lateinit var adapter: MembersListAdapter
-
-    @Inject
-    lateinit var membersViewModelFactory: MembersViewModelFactory
 
     private lateinit var viewModel: MembersViewModel
 

@@ -16,11 +16,17 @@ import javax.inject.Named
 class MainFragment : Fragment() {
 
     companion object {
+        /** Ключ идентификатора события. */
         const val EVENT_ID_KEY = "EVENT_KEY"
+
+        /** Ключ названия события. */
         const val EVENT_NAME_KEY = "EVENT_NAME_KEY"
+
+        /** Ключ типа работы с событием. */
         const val EVENT_TYPE_WORK_KEY = "EVENT_TYPE_WORK_KEY"
     }
 
+    /** Второстепенный контроллер фрагментов. */
     @Inject
     @Named("secondNavController")
     lateinit var navSecondController: NavController

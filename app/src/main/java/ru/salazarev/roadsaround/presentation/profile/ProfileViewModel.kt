@@ -7,23 +7,27 @@ import io.reactivex.rxjava3.schedulers.Schedulers
 import ru.salazarev.roadsaround.domain.user.UserInteractor
 import ru.salazarev.roadsaround.models.domain.User
 import ru.salazarev.roadsaround.models.presentation.UserPresentation
+import ru.salazarev.roadsaround.presentation.members.MembersViewModel
 import ru.salazarev.roadsaround.util.ImageConverter
 import javax.inject.Inject
 
+/** ViewModel для фрагмента [MembersViewModel].
+ * @param interactor - объект управления информацией о пользователях.
+ * @param imageConverter - конвертер изображений.
+ */
 class ProfileViewModel @Inject constructor(
     private val interactor: UserInteractor,
     private val imageConverter: ImageConverter
 ) : ViewModel() {
 
+    /** Прослушивание статуса загрузки информации о пользователе. */
     val user = MutableLiveData<UserPresentation?>()
 
+    /** Прослушивание статуса загрузки. */
     val progress = MutableLiveData<Boolean>()
 
-    init {
-        loadQuotationList()
-    }
-
-    fun loadQuotationList() {
+    /** Предоставление инфомрации о пользователе.*/
+    fun loadUserData() {
         interactor.getUserData()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())

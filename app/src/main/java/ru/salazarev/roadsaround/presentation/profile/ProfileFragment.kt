@@ -18,14 +18,14 @@ import javax.inject.Inject
 
 class ProfileFragment : Fragment() {
 
+    /** Фабрика для ViewModel текущего фрагмента */
+    @Inject
+    lateinit var profileViewModelFactory: ProfileViewModelFactory
 
     private val alertDialog: AlertDialog by lazy { createAlertDialog() }
 
     private var _binding: FragmentProfileBinding? = null
     private val binding get() = _binding!!
-
-    @Inject
-    lateinit var profileViewModelFactory: ProfileViewModelFactory
 
     private lateinit var viewModel: ProfileViewModel
 
@@ -44,6 +44,7 @@ class ProfileFragment : Fragment() {
     ): View {
         _binding = FragmentProfileBinding.inflate(inflater, container, false)
         binding.mainLayout.visibility = View.VISIBLE
+        viewModel.loadUserData()
         return binding.root
     }
 
@@ -54,7 +55,7 @@ class ProfileFragment : Fragment() {
         binding.viewInformationNotLoad.btnTryAgain.setOnClickListener {
             binding.viewInformationNotLoad.viewInformationNotLoad.visibility = View.INVISIBLE
             binding.mainLayout.visibility = View.VISIBLE
-            viewModel.loadQuotationList()
+            viewModel.loadUserData()
         }
     }
 

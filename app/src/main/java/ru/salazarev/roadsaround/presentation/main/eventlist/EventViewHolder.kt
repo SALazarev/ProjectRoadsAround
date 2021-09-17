@@ -6,9 +6,17 @@ import ru.salazarev.roadsaround.R
 import ru.salazarev.roadsaround.databinding.ListItemEventBinding
 import ru.salazarev.roadsaround.models.presentation.EventPreview
 
+/** Класс сопоставления отображения событий в списке с их данными
+ * @param item - отображение события.
+ */
 class EventViewHolder(item: View) : RecyclerView.ViewHolder(item) {
     private val binding: ListItemEventBinding = ListItemEventBinding.bind(item)
 
+    /** Установка данных для отображения события.
+     * @param data - информация о событии.
+     * @param typeWork - тип участия пользователя в событии.
+     * @param backgroundColor - цвет фона отображения события.
+     */
     fun set(data: EventPreview, typeWork: String,backgroundColor: Int) {
         binding.apply {
             tvAuthor.text = data.authorName
@@ -20,6 +28,7 @@ class EventViewHolder(item: View) : RecyclerView.ViewHolder(item) {
         }
     }
 
+    /** Установка слушателя нажатие на представление события.*/
     fun setOnClick(clickListener: View.OnClickListener) {
         binding.rvItem.setOnClickListener(clickListener)
     }

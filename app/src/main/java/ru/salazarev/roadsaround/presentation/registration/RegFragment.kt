@@ -20,21 +20,21 @@ import ru.salazarev.roadsaround.presentation.MainActivity
 import ru.salazarev.roadsaround.toast
 import javax.inject.Inject
 
-
 class RegFragment : Fragment() {
 
     companion object {
-        const val REQUEST_IMAGE_CAPTURE = 1
-        const val IMAGE_KEY = "data"
+        private const val REQUEST_IMAGE_CAPTURE = 1
+        private const val IMAGE_KEY = "IMAGE_KEY"
     }
+
+    /** Фабрика для ViewModel текущего фрагмента */
+    @Inject
+    lateinit var regViewModelFactory: RegViewModelFactory
 
     private var _binding: FragmentRegBinding? = null
     private val binding get() = _binding!!
 
     private lateinit var viewModel: RegViewModel
-
-    @Inject
-    lateinit var regViewModelFactory: RegViewModelFactory
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

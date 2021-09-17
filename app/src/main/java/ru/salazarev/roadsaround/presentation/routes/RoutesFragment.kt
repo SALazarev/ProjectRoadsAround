@@ -25,11 +25,12 @@ import javax.inject.Inject
 
 class RoutesFragment : Fragment() {
 
-    private var _binding: FragmentRoutesBinding? = null
-    private val binding get() = _binding!!
-
+    /** Фабрика для ViewModel текущего фрагмента */
     @Inject
     lateinit var routesViewModelFactory: RoutesViewModelFactory
+
+    private var _binding: FragmentRoutesBinding? = null
+    private val binding get() = _binding!!
 
     private lateinit var viewModel: RoutesViewModel
 
@@ -50,7 +51,7 @@ class RoutesFragment : Fragment() {
     ): View {
         _binding = FragmentRoutesBinding.inflate(inflater, container, false)
         binding.rvEvent.visibility = View.INVISIBLE
-        viewModel.loadQuotationList()
+        viewModel.loadUserEvents()
         return binding.root
     }
 
@@ -61,7 +62,7 @@ class RoutesFragment : Fragment() {
         setObserver()
         binding.viewInformationNotLoad.btnTryAgain.setOnClickListener {
             binding.viewInformationNotLoad.viewInformationNotLoad.visibility = View.INVISIBLE
-            viewModel.loadQuotationList()
+            viewModel.loadUserEvents()
         }
     }
 

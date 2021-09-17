@@ -8,23 +8,38 @@ import ru.salazarev.roadsaround.models.domain.Event
 import ru.salazarev.roadsaround.models.presentation.EventPresentation
 import ru.salazarev.roadsaround.models.presentation.UserPresentation
 import ru.salazarev.roadsaround.presentation.BaseViewModel
+import ru.salazarev.roadsaround.presentation.editevent.EditEventFragment
 import ru.salazarev.roadsaround.util.ImageConverter
 import ru.salazarev.roadsaround.util.addTo
 import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject
 
+
+/** ViewModel для фрагмента [EventInformationFragment].
+ * @param interactor - объект управления информацией о событиях.
+ * @param imageConverter - конвертер изображений.
+ */
 class EventInformationViewModel @Inject constructor(
     private val interactor: EventInteractor,
     private val imageConverter: ImageConverter
 ) : BaseViewModel() {
 
+    /** Прослушивание статуса загрузки событий. */
     val data = MutableLiveData<EventPresentation?>()
+
+    /** Прослушивание статуса участия в событии. */
     val resultParticipate = MutableLiveData<Boolean>()
+    /** Прослушивание статуса выхода из события. */
     val resultLeave = MutableLiveData<Boolean>()
+    /** Прослушивание статуса загрузки. */
     val progress = MutableLiveData<Boolean>()
 
 
+    /**
+     * Предоставляет информацию о событии.
+     * @param eventId - идентификатор события.
+     */
     fun getEventData(eventId: String) {
         interactor.getEvent(eventId)
             .subscribeOn(Schedulers.io())
@@ -66,6 +81,10 @@ class EventInformationViewModel @Inject constructor(
         )
     }
 
+    /**
+     * Устанавливает пользователя как участника события.
+     * @param eventId - идентификатор события.
+     */
     fun participateFromEvent(eventId: String) {
         interactor.addUserInEvent(eventId).subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
@@ -76,6 +95,10 @@ class EventInformationViewModel @Inject constructor(
             .addTo(compositeDisposable)
     }
 
+    /**
+     * Освобождает пользователя от участия в событии.
+     * @param eventId - идентификатор события.
+     */
     fun leaveFromEvent(eventId: String) {
         interactor.leaveUserFromEvent(eventId).subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())

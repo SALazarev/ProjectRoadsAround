@@ -3,6 +3,7 @@ package ru.salazarev.roadsaround.presentation.chat.messagelist
 import androidx.recyclerview.widget.DiffUtil
 import ru.salazarev.roadsaround.models.presentation.EventPreview
 
+/** Класс сравнения элементов списка событий. */
 class EventDiffUtilCallback(
     private val oldList: List<EventPreview>,
     private val newList: List<EventPreview>

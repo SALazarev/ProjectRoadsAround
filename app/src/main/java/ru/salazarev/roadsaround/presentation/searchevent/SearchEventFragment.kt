@@ -25,13 +25,14 @@ import javax.inject.Inject
 
 class SearchEventFragment : Fragment() {
 
+    /** Фабрика для ViewModel текущего фрагмента */
+    @Inject
+    lateinit var searchEventViewModelFactory: SearchEventViewModelFactory
+
     private var _binding: FragmentSearchEventBinding? = null
     private val binding get() = _binding!!
 
     private lateinit var adapter: EventListAdapter
-
-    @Inject
-    lateinit var searchEventViewModelFactory: SearchEventViewModelFactory
 
     private lateinit var viewModel: SearchEventViewModel
 
@@ -51,7 +52,7 @@ class SearchEventFragment : Fragment() {
     ): View {
         _binding = FragmentSearchEventBinding.inflate(inflater, container, false)
         binding.rvEvent.visibility = View.INVISIBLE
-        viewModel.loadEventList()
+        viewModel.loadUsersEventsList()
         return binding.root
     }
 
@@ -62,7 +63,7 @@ class SearchEventFragment : Fragment() {
         setObserver()
         binding.viewInformationNotLoad.btnTryAgain.setOnClickListener {
             binding.viewInformationNotLoad.viewInformationNotLoad.visibility = View.INVISIBLE
-            viewModel.loadEventList()
+            viewModel.loadUsersEventsList()
         }
     }
 
