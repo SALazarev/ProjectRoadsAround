@@ -7,6 +7,9 @@ import androidx.recyclerview.widget.RecyclerView
 import ru.salazarev.roadsaround.R
 import ru.salazarev.roadsaround.models.presentation.MessageChat
 
+/** Адаптер для списка сообщений.
+ * @param data - список сообщений.
+ */
 class ChatAdapter(var data: List<MessageChat> = mutableListOf()) :
     RecyclerView.Adapter<MessageViewHolder>() {
 
@@ -25,6 +28,9 @@ class ChatAdapter(var data: List<MessageChat> = mutableListOf()) :
 
     override fun getItemCount(): Int = data.size
 
+    /** Установка списка сообщений для адаптера.
+     * @param items - список сообщений.
+     */
     fun setItems(items: List<MessageChat>) {
         val diffResult = DiffUtil.calculateDiff(
             MessageDiffUtilCallback(

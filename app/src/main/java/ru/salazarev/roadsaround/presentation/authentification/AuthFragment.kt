@@ -15,13 +15,14 @@ import javax.inject.Inject
 
 class AuthFragment : Fragment() {
 
+    /** Фабрика для ViewModel текущего фрагмента */
+    @Inject
+    lateinit var authViewModelFactory: AuthViewModelFactory
+
     private var _binding: FragmentAuthBinding? = null
     private val binding get() = _binding!!
 
     private lateinit var viewModel: AuthViewModel
-
-    @Inject
-    lateinit var authViewModelFactory: AuthViewModelFactory
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

@@ -3,6 +3,7 @@ package ru.salazarev.roadsaround.presentation.chat.messagelist
 import androidx.recyclerview.widget.DiffUtil
 import ru.salazarev.roadsaround.models.presentation.MessageChat
 
+/** Класс сравнения элементов списка сообщений. */
 class MessageDiffUtilCallback(
     private val oldList: List<MessageChat>,
     private val newList: List<MessageChat>

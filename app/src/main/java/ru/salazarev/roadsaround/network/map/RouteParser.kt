@@ -5,8 +5,15 @@ import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
 
-
-class DataParser {
+/**
+ * Класс работы с json-объектом маршрутов, предоставляемым GoogleMapApi.
+ */
+class RouteParser {
+    /**
+     * Преобразование json-объекта маршрутов в список маршрутов, состоящих из точек на карте.
+     * @param jObject - json-объект маршрутов.
+     * @return список маршрутов, состоящих из точек на карте.
+     */
     fun parse(jObject: JSONObject): List<List<HashMap<String, String>>> {
         val routes: MutableList<List<HashMap<String, String>>> = ArrayList()
         val jRoutes: JSONArray

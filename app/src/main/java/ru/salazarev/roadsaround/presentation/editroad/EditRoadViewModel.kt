@@ -15,7 +15,7 @@ class EditRoadViewModel : ViewModel() {
         key: String,
         typeWork: GoogleMap.Companion.TypeWork
     ) {
-        map = GoogleMap(googleMap, key, typeWork, object : GoogleMap.FailCallback {
+        map = GoogleMap(googleMap, key, typeWork, object : GoogleMap.CompleteCallback {
             override fun onComplete(status: Boolean) {
                 resultCreateRoute.value = status
             }

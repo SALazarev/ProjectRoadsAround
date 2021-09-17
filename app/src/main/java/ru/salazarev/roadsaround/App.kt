@@ -9,16 +9,18 @@ import com.google.firebase.ktx.Firebase
 import ru.salazarev.roadsaround.di.app.AppComponent
 import ru.salazarev.roadsaround.di.app.DaggerAppComponent
 
+/** Основной класс приложения. */
 class App : Application() {
 
-    companion object{
+    companion object {
+        /** Объект основного компонента предоставления зависимостей.  */
         lateinit var appComponent: AppComponent
             private set
     }
 
     override fun onCreate() {
         super.onCreate()
-        appComponent =  DaggerAppComponent.builder().app(this).build()
+        appComponent = DaggerAppComponent.builder().app(this).build()
         setFireStore()
     }
 
@@ -30,5 +32,8 @@ class App : Application() {
     }
 }
 
+/** Вывод текста на экран посредством [Toast].
+ * @param message - текст выводимого сообзения.
+ */
 fun Context.toast(message: CharSequence) =
     Toast.makeText(this, message, Toast.LENGTH_SHORT).show()

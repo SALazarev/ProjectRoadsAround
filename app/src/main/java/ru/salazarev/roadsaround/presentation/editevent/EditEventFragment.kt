@@ -25,19 +25,22 @@ import javax.inject.Inject
 
 class EditEventFragment : Fragment() {
 
+    /** Фабрика для ViewModel текущего фрагмента */
+    @Inject
+    lateinit var editEventViewModelFactory: EditEventViewModelFactory
+
     companion object {
-        const val PICKERS_TAG = "TAG"
+        /** Ключ маршрута */
         const val ROUTE_KEY = "ROUTE_KEY"
+        /** Код запроса маршрута */
         const val ROUTE_REQUEST = "ROUTE_REQUEST"
+        private const val PICKERS_TAG = "TAG"
     }
 
     private var _binding: FragmentEditEventBinding? = null
     private val binding get() = _binding!!
 
     private lateinit var viewModel: EditEventViewModel
-
-    @Inject
-    lateinit var editEventViewModelFactory: EditEventViewModelFactory
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -69,8 +72,6 @@ class EditEventFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentEditEventBinding.inflate(inflater, container, false)
-
-//        binding.layoutMain.visibility = View.INVISIBLE
 
         binding.viewInformationNotLoad.btnTryAgain.setOnClickListener {
             binding.viewInformationNotLoad.viewInformationNotLoad.visibility = View.INVISIBLE

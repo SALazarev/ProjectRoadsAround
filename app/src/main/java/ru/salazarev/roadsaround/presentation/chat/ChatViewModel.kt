@@ -11,14 +11,25 @@ import ru.salazarev.roadsaround.presentation.BaseViewModel
 import ru.salazarev.roadsaround.util.ImageConverter
 import ru.salazarev.roadsaround.util.addTo
 
+/** ViewModel для фрагмента [ChatFragment].
+ * @param chatInteractor - объект управления информацией о сообщениях.
+ * @param imageConverter - конвертер изображений.
+ */
 class ChatViewModel(
     private val chatInteractor: ChatInteractor,
     private val imageConverter: ImageConverter,
 ) : BaseViewModel() {
+    /** Прослушивание статуса загрузки. */
     val progress = MutableLiveData<Boolean>()
+    /** Прослушивание статуса работы. */
     val result = MutableLiveData<Boolean>()
+    /** Прослушивание статуса загрузки сообщений. */
     val messages = MutableLiveData<List<MessageChat>>()
 
+    /** Отпрака сообщения.
+     * @param eventId - идентификатор события.
+     * @param text - текст сообщения.
+     */
     fun sendMessage(eventId: String, text: String) {
         val completable = Completable.fromCallable {
             return@fromCallable chatInteractor.sendMessage(eventId, text)
@@ -31,6 +42,9 @@ class ChatViewModel(
         completable.subscribe({ result.value = true }) { result.value = false }
     }
 
+    /** Получение списка сообщений.
+     * @param idEvent - идентификатор события.
+     */
     fun getMessages(idEvent: String) {
         progress.value = true
         chatInteractor.getChatMessages(idEvent).subscribe(

@@ -5,6 +5,9 @@ import androidx.lifecycle.ViewModelProvider
 import ru.salazarev.roadsaround.domain.user.UserInteractor
 import javax.inject.Inject
 
+/** Фабрика ViewModel для фрагмента [AuthFragment].
+ * @param interactor - объект управления информацией о пользователях
+ */
 class AuthViewModelFactory @Inject constructor(
     private val interactor: UserInteractor
 ) : ViewModelProvider.Factory {

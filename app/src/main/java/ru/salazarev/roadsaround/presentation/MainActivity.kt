@@ -11,10 +11,14 @@ import ru.salazarev.roadsaround.R
 import javax.inject.Inject
 import javax.inject.Named
 
+/** Главная активити приложения */
 class MainActivity : AppCompatActivity() {
+
+    /** Объект аутентификации в Firebase. */
     @Inject
     lateinit var fireBaseAuth: FirebaseAuth
 
+    /** Основной контроллер управления фрагментами. */
     @Inject
     @Named("mainNavController")
     lateinit var navController: NavController
@@ -27,6 +31,9 @@ class MainActivity : AppCompatActivity() {
             .inject(this)
     }
 
+    /** Проверка наличия разрешения
+     * @param permission - запрашиваемое разрешение.
+     */
     fun hasPermission(permission: String): Boolean =
         ActivityCompat.checkSelfPermission(this, permission) == PackageManager.PERMISSION_GRANTED
 

@@ -10,11 +10,17 @@ import java.io.InputStreamReader
 import java.net.HttpURLConnection
 import java.net.URL
 
-
+/**
+ * Класс преобразования URL-маршрута в объект маршрута GoogleMapApi.
+ */
 class UrlWorker {
 
+    /**
+     * Преобразование URL-маршрута в объект маршрута GoogleMapApi.
+     * @param urlStr - URL-маршрута.
+     * @return объект маршрута GoogleMapApi.
+     */
     fun getRoad(urlStr: String): PolylineOptions = creatorLine(downloadUrl(urlStr))
-
 
     @Throws(IOException::class)
     private fun downloadUrl(strUrl: String): String {
@@ -38,7 +44,7 @@ class UrlWorker {
 
     private fun creatorLine(jsonData: String): PolylineOptions {
         val jObject = JSONObject(jsonData)
-        val parser = DataParser()
+        val parser = RouteParser()
 
         val routes: List<List<HashMap<String, String>>> = parser.parse(jObject)
 

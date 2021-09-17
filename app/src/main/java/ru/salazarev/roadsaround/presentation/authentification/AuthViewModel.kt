@@ -9,20 +9,27 @@ import ru.salazarev.roadsaround.presentation.BaseViewModel
 import ru.salazarev.roadsaround.util.addTo
 import javax.inject.Inject
 
+/** ViewModel для фрагмента [AuthFragment].
+ * @param interactor - объект управления информацией о пользователях
+ */
 class AuthViewModel @Inject constructor(private val interactor: UserInteractor) : BaseViewModel() {
 
     private val _authStatus = MutableLiveData<Boolean>()
+    /** Прослушивание статуса авторизации. */
     val authStatus: LiveData<Boolean> = _authStatus
 
-
     private val _resetPassStatus = MutableLiveData<Boolean>()
+    /** Прослушивание статуса сброса пароля. */
     val resetPassStatus: LiveData<Boolean> = _resetPassStatus
 
-
     private val _progress = MutableLiveData<Boolean>()
+    /** Прослушивание статуса загрузки. */
     val progress: LiveData<Boolean> = _progress
 
-
+    /** Аутентификация пользователя.
+     * @param email - почта пользователя.
+     * @param password - пароль пользователя.
+     */
     fun authenticationUser(email: String, password: String) {
         interactor.userAuthentication(email, password)
             .subscribeOn(Schedulers.io())
@@ -36,13 +43,16 @@ class AuthViewModel @Inject constructor(private val interactor: UserInteractor) 
             .addTo(compositeDisposable)
     }
 
+    /** Сброс пароля.
+     * @param email - почта пользователя.
+     */
     fun resetPassword(email: String) {
         interactor.resetUserPassword(email)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .doFinally { _progress.value = false }
             .doOnSubscribe { _progress.value = true }
-            .subscribe(_resetPassStatus::setValue, {_resetPassStatus.value = false })
+            .subscribe(_resetPassStatus::setValue, { _resetPassStatus.value = false })
             .addTo(compositeDisposable)
     }
 

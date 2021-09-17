@@ -21,14 +21,14 @@ import javax.inject.Inject
 
 class ChatFragment : Fragment() {
 
-    private var _binding: FragmentChatBinding? = null
-    private val binding get() = _binding!!
-
+    /** Фабрика для ViewModel текущего фрагмента */
     @Inject
     lateinit var chatViewModelFactory: ChatViewModelFactory
 
-    private lateinit var viewModel: ChatViewModel
+    private var _binding: FragmentChatBinding? = null
+    private val binding get() = _binding!!
 
+    private lateinit var viewModel: ChatViewModel
 
     private lateinit var adapter: ChatAdapter
 

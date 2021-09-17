@@ -7,25 +7,35 @@ import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Single
 import io.reactivex.rxjava3.schedulers.Schedulers
 
+/**
+ * Класс для работы с GoogleMapApi.
+ * @param map - объект карты GoogleMapApi.
+ * @param key - ключ пользователя GoogleMapApi.
+ * @param typeWork - тип работы с картой.
+ * @param completeCallback - объект для прослушивания ошибок в работе.
+ * @constructor установка слушателей на карту.
+ */
 class GoogleMap(
     val map: GoogleMap,
     private val key: String,
     private val typeWork: TypeWork,
-    private val failCallback: FailCallback
+    private val completeCallback: CompleteCallback,
+    private var currentPolyline: Polyline? = null,
+    private var listMarker: MutableList<Marker> = mutableListOf()
 ) {
 
     companion object {
+        /** Уровень масштаба карты. */
         private const val DEFAULT_ZOOM = 15
 
+        /**  Класс типов работы с картой. */
         enum class TypeWork {
             VIEW,
             EDIT
         }
     }
 
-    private var currentPolyline: Polyline? = null
-    private var listMarker: MutableList<Marker> = mutableListOf()
-
+    /**  Класс типов передвижения по маршруту. */
     enum class DirectionType(val type: String) {
         Walking("walking"),
     }
@@ -61,6 +71,7 @@ class GoogleMap(
         }"
     }
 
+    /** Предоставление ссылки на маршрут*/
     fun getRouteJsonUrl(): String? = if (listMarker.size == 2) getUrl(
         listMarker[0].position,
         listMarker[1].position,
@@ -85,9 +96,9 @@ class GoogleMap(
                 {
                     if (currentPolyline != null) currentPolyline?.remove()
                     currentPolyline = map.addPolyline(it)
-                    failCallback.onComplete(true)
+                    completeCallback.onComplete(true)
                 })
-            { failCallback.onComplete(false) }
+            { completeCallback.onComplete(false) }
 
         }
         if (listMarker.isNotEmpty()) updateTitle()
@@ -107,12 +118,19 @@ class GoogleMap(
         }
     }
 
+    /** Установка текущего положения камеры на карте.
+     * @param latitude - широтаю.
+     * @param longitude - долгота.
+     */
     fun setCurrentLocation(latitude: Double, longitude: Double) {
         map.moveCamera(
             CameraUpdateFactory.newLatLngZoom(LatLng(latitude, longitude), DEFAULT_ZOOM.toFloat())
         )
     }
 
+    /** Установка маршрута из ссылки.
+     * @param url - ссылка на маршрут.
+     */
     fun setRouteByUrl(url: String) {
 
         Single.fromCallable {
@@ -127,9 +145,9 @@ class GoogleMap(
                     setCurrentLocation(it.points[0].latitude, it.points[0].longitude)
                     updateTitle()
                     currentPolyline = map.addPolyline(it)
-                    failCallback.onComplete(true)
+                    completeCallback.onComplete(true)
                 })
-            { failCallback.onComplete(false) }
+            { completeCallback.onComplete(false) }
     }
 
     private fun addMarker(coordinate: LatLng) {
@@ -138,7 +156,9 @@ class GoogleMap(
         listMarker.add(marker)
     }
 
-    interface FailCallback {
+    /** Интерфейс прослушивания статуса работы карты */
+    interface CompleteCallback {
+        /** возврат слушателю статуса работы карты */
         fun onComplete(status: Boolean)
     }
 }

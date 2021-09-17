@@ -6,6 +6,10 @@ import androidx.lifecycle.ViewModelProvider
 import ru.salazarev.roadsaround.domain.event.EventInteractor
 import javax.inject.Inject
 
+/** Фабрика ViewModel для фрагмента [EditEventFragment].
+ * @param interactor - объект управления информацией о событиях.
+ * @param savedStateHandle - объект хранения информации в текущей ViewModel.
+ */
 class EditEventViewModelFactory @Inject constructor(
     private val interactor: EventInteractor, private val savedStateHandle: SavedStateHandle
 ) : ViewModelProvider.Factory {

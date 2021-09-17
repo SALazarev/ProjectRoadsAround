@@ -4,6 +4,9 @@ import com.google.android.gms.tasks.Tasks
 import com.google.firebase.auth.FirebaseAuth
 import javax.inject.Inject
 
+/** Класс, реализующей аутентификацию посредством FirebaseApi.
+ * @param fireBaseAuth - объект аутентификацаии через FirebaseApi
+ */
 class AuthenticationImpl @Inject constructor(
     private val fireBaseAuth: FirebaseAuth
 ) : Authentication {
