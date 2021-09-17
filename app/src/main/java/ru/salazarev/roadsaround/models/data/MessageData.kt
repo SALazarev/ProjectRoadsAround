@@ -4,6 +4,13 @@ import com.google.firebase.Timestamp
 import com.google.firebase.firestore.PropertyName
 import ru.salazarev.roadsaround.data.chat.MessagesCollectionModel
 
+/**
+ * Модель сообщения уровня хранения данных.
+ * @param id - идентификатор сообщения.
+ * @param authorId - идентификатор автора сообщения.
+ * @param time - время отправки сообщения.
+ * @param text - текст сообщения.
+ */
 class MessageData(
     @get:PropertyName(MessagesCollectionModel.getMessage().getColumns().id)
     @set:PropertyName(MessagesCollectionModel.getMessage().getColumns().id)

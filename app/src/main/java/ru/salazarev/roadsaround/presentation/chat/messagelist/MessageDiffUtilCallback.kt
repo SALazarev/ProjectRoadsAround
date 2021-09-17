@@ -24,7 +24,7 @@ class MessageDiffUtilCallback(
         val oldItem = oldList[oldItemPosition]
         val newItem = newList[newItemPosition]
         return oldItem.name == newItem.name
-                && oldItem.message == newItem.message
+                && oldItem.text == newItem.text
                 && oldItem.time == newItem.time
     }
 }

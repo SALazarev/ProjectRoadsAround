@@ -3,6 +3,17 @@ package ru.salazarev.roadsaround.models.data
 import com.google.firebase.firestore.PropertyName
 import ru.salazarev.roadsaround.data.event.EventsCollectionModel
 
+/**
+ * Модель события уровня хранения данных.
+ * @property id - идентификатор события.
+ * @property authorId - идентификатор пользователя.
+ * @property name - название события.
+ * @property note - описание события.
+ * @property motionType - тип перемещения по маршруту.
+ * @property time - назначенное время события.
+ * @property route - маршрут.
+ * @property members - участники события.
+ */
 class EventData(
     @get:PropertyName(EventsCollectionModel.getEvent().getColumns().id)
     @set:PropertyName(EventsCollectionModel.getEvent().getColumns().id)

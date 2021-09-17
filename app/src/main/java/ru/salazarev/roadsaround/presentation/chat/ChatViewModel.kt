@@ -50,8 +50,8 @@ class ChatViewModel(
             MessageChat(
                 it.id,
                 it.idAuthor,
-                it.name,
-                it.message,
+                it.nameAuthor,
+                it.text,
                 it.time,
                 image
             )

@@ -11,6 +11,15 @@ import ru.salazarev.roadsaround.models.domain.User
 import java.util.concurrent.ExecutionException
 import javax.inject.Inject
 
+/**
+ * Класс репозитория, реализующий интерфейс бизнес-логики и позволяющий обращаться к информации
+ * о пользователях.
+ *
+ * @property database Модель общения с базой данных Firebase Cloud Store.
+ * @property storage Модель общения с хранилищем файлов Firebase Storage.
+ * @property imageHelper Предоставляет информацию о конфигурации хранилища изображений.
+ * @property databaseModel Модель преобразования данных уровня хранения в формат базы данных.
+ */
 class UserRepositoryImpl @Inject constructor(
     private val database: FirebaseFirestore,
     private val storage: StorageReference,

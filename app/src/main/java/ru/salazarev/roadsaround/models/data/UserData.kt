@@ -3,6 +3,13 @@ package ru.salazarev.roadsaround.models.data
 import com.google.firebase.firestore.PropertyName
 import ru.salazarev.roadsaround.data.user.UsersCollectionModel
 
+/**
+ * Модель пользователя уровня хранения данных.
+ * @param id - идентификатор пользователя.
+ * @param firstName - имя пользователя.
+ * @param lastName - фамилия пользователя.
+ * @param image - изображение пользователя.
+ */
 class UserData(
     @get:PropertyName(UsersCollectionModel.getUser().getColumns().id)
     @set:PropertyName(UsersCollectionModel.getUser().getColumns().id)

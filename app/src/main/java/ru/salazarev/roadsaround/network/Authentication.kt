@@ -1,4 +1,4 @@
-package ru.salazarev.roadsaround.domain.user
+package ru.salazarev.roadsaround.network
 
 interface Authentication {
     fun registration(email: String, password: String): String

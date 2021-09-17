@@ -4,8 +4,9 @@ import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.*
 import io.reactivex.rxjava3.schedulers.Schedulers
 import io.reactivex.rxjava3.subjects.PublishSubject
-import ru.salazarev.roadsaround.domain.user.Authentication
+import ru.salazarev.roadsaround.network.Authentication
 import ru.salazarev.roadsaround.domain.user.UserInteractor
+import ru.salazarev.roadsaround.domain.user.UserRepository
 import ru.salazarev.roadsaround.models.data.MessageData
 import ru.salazarev.roadsaround.models.domain.Message
 import ru.salazarev.roadsaround.models.domain.User
@@ -13,15 +14,34 @@ import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject
 
+/**
+ * Класс, устанавливающий взаимодействие между уровнями хранения данных и представления.
+ *  Предназначен для работы с чатами пользователей в событии.
+ *
+ *  @property chatRepository - репозиторий сообщений.
+ *  @property userInteractor - интерактор работы с информацией о пользователях.
+ *  @property authentication - предоставляет информацию о статусе авторизации и об авторизованном пользователе.
+ */
 class ChatInteractor @Inject constructor(
     private val chatRepository: ChatRepository,
-    private val userInteractor: UserInteractor,
-    private val auth: Authentication
+    private val userRepository: UserRepository,
+    private val authentication: Authentication
 ) {
+
+    /**
+     * Формирует пользовательское сообщение и отправляет в хранилище.
+     * @param id - идентификатор сообщения.
+     * @param textMessage - текст сообщения.
+     */
     fun sendMessage(idEvent: String, textMessage: String) {
-        chatRepository.sendMessage(idEvent, auth.getUserId(), textMessage)
+        chatRepository.sendMessage(idEvent, authentication.getUserId(), textMessage)
     }
 
+    /**
+     * Предоставляет все сообщения в чате события.
+     * @param idEvent - идентификатор события.
+     * @return объект для прослушивания получения информации о сообщениях.
+     */
     fun getChatMessages(idEvent: String): PublishSubject<List<Message>> {
         val localCallback = PublishSubject.create<List<MessageData>>()
         chatRepository.subscribeOnChatMessages(idEvent, localCallback)
@@ -31,7 +51,7 @@ class ChatInteractor @Inject constructor(
         localCallback.subscribe({ list ->
             val idList = list.map { it.authorId }.distinct()
             val single: Single<List<User>> = Single.fromCallable {
-                return@fromCallable userInteractor.getUsersData(idList)
+                return@fromCallable userRepository.getUsersData(idList)
             }
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -43,9 +63,7 @@ class ChatInteractor @Inject constructor(
                             users.map { it.id to it }.toMap()
                         )
                     )
-                },
-                {
-                })
+                }, {})
 
         }) {}
         return callback

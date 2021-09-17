@@ -2,7 +2,6 @@ package ru.salazarev.roadsaround.network
 
 import com.google.android.gms.tasks.Tasks
 import com.google.firebase.auth.FirebaseAuth
-import ru.salazarev.roadsaround.domain.user.Authentication
 import javax.inject.Inject
 
 class AuthenticationImpl @Inject constructor(

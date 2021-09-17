@@ -2,7 +2,7 @@ package ru.salazarev.roadsaround.domain.event
 
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Single
-import ru.salazarev.roadsaround.domain.user.Authentication
+import ru.salazarev.roadsaround.network.Authentication
 import ru.salazarev.roadsaround.domain.user.UserRepository
 import ru.salazarev.roadsaround.models.data.EventData
 import ru.salazarev.roadsaround.models.domain.Event
@@ -12,6 +12,15 @@ import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject
 
+/**
+ * Класс, устанавливающий взаимодействие между уровнями хранения данных и представления.
+ *  Предназначен для работы с событиями.
+ *
+ *  @property eventRepository - источник данных событий.
+ *  @property userRepository - интерактор работы с информацией о пользователях.
+ *  @property authentication - предоставляет информацию о статусе авторизации
+ *  и об авторизованном пользователе.
+ */
 class EventInteractor @Inject constructor(
     private val eventRepository: EventRepository,
     private val userRepository: UserRepository,
@@ -19,13 +28,27 @@ class EventInteractor @Inject constructor(
 ) {
 
     companion object {
+        /** Класс с типами участия пользователя в событии */
         enum class TypeWorkWithEvent {
             GUEST,
             AUTHOR,
             MEMBER
         }
+
+        private const val FORMAT_DATE = "HH:mm dd/MM/yyyy"
     }
 
+    /**
+     * Создание события и сохранение его в хранилище.
+     * @param id - идентификатор события.
+     * @param name - название события.
+     * @param note - описание события.
+     * @param motionType - средство движения по маршруту.
+     * @param time - назначенное время события.
+     * @param route - маршрут.
+     * @param _members - список участников.
+     * @return объект прослушивания состояния создания события
+     */
     fun createEvent(
         id: String,
         name: String,
@@ -53,11 +76,15 @@ class EventInteractor @Inject constructor(
         }
     }
 
+    /**
+     * Получение списка событий пользователя в скоращённом информационном формате.
+     * @return объект прослушивания состояния получения списка превью-событий.
+     */
     fun getUserEventsPreview(): Single<List<EventPreview>> {
         return Single.fromCallable {
             val userId = authentication.getUserId()
             val calendar = Calendar.getInstance()
-            val dateFormat = SimpleDateFormat("HH:mm dd/MM/yyyy", Locale.ROOT)
+            val dateFormat = SimpleDateFormat(FORMAT_DATE, Locale.ROOT)
             val listEventData = eventRepository.getUserEvents(userId)
 
             listEventData.map { event ->
@@ -88,6 +115,11 @@ class EventInteractor @Inject constructor(
         }
     }
 
+    /**
+     * Получение списка событий, в которых не участвует пользователь,
+     * в скоращённом информационном формате.
+     * @return объект прослушивания состояния получения списка превью-событий.
+     */
     fun getUsersEventsPreview(): Single<List<EventPreview>> {
         return Single.fromCallable {
             val listEventData = eventRepository.getAllEvents()
@@ -105,7 +137,7 @@ class EventInteractor @Inject constructor(
 
     private fun getEvents(data: List<EventData>, users: Map<String, User>): List<EventPreview> {
         val calendar = Calendar.getInstance()
-        val dateFormat = SimpleDateFormat("HH:mm dd/MM/yyyy", Locale.ROOT)
+        val dateFormat = SimpleDateFormat(FORMAT_DATE, Locale.ROOT)
 
         val userId = authentication.getUserId()
 
@@ -126,6 +158,10 @@ class EventInteractor @Inject constructor(
         }
     }
 
+    /**
+     * Получение информации о событии.
+     * @return объект прослушивания состояния получения события.
+     */
     fun getEvent(eventId: String): Single<Event> {
         return Single.fromCallable {
             val eventData = eventRepository.getEvent(eventId)
@@ -144,6 +180,10 @@ class EventInteractor @Inject constructor(
         }
     }
 
+    /**
+     * Добавление пользователя в событие.
+     * @return объект прослушивания состояния добавления пользователя в событие.
+     */
     fun addUserInEvent(eventId: String): Completable {
         return Completable.fromCallable {
             val userId = authentication.getUserId()
@@ -151,6 +191,10 @@ class EventInteractor @Inject constructor(
         }
     }
 
+    /**
+     * Выход пользователя из события.
+     * @return объект прослушивания состояния выхода пользователя из события.
+     */
     fun leaveUserFromEvent(eventId: String): Completable {
         return Completable.fromCallable {
             val userId = authentication.getUserId()
@@ -158,6 +202,11 @@ class EventInteractor @Inject constructor(
         }
     }
 
+    /**
+     * Получение списка пользователей, участвующих в событии.
+     * @param eventId - идентификатор события.
+     * @return объект прослушивания статуса получения списка пользователей.
+     */
     fun getMembersEvent(eventId: String): Single<List<User>> {
         return Single.fromCallable {
             val eventData = eventRepository.getEvent(eventId)

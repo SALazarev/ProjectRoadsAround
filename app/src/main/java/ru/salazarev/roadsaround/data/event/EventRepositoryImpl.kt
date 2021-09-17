@@ -9,10 +9,19 @@ import ru.salazarev.roadsaround.domain.event.EventRepository
 import ru.salazarev.roadsaround.models.data.EventData
 import javax.inject.Inject
 
+
+/**
+ * Класс репозитория, реализующий интерфейс бизнес-логики и позволяющий обращаться к информации
+ * о событиях.
+ *
+ * @property database - модель общения с базой данных Firebase Cloud Store.
+ * @property databaseModel - модель преобразования данных уровня хранения в формат базы данных.
+ */
 class EventRepositoryImpl @Inject constructor(
     private val database: FirebaseFirestore,
     private val databaseModel: EventsCollectionModel
 ) : EventRepository {
+
     override fun sendEvent(event: EventData) {
         if (event.id.isEmpty()) createEvent(event)
         else updateEvent(event)

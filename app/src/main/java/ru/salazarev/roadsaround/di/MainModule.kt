@@ -1,7 +1,6 @@
 package ru.salazarev.roadsaround.di
 
 import androidx.fragment.app.FragmentManager
-import androidx.lifecycle.SavedStateHandle
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import com.google.firebase.auth.FirebaseAuth
@@ -11,13 +10,17 @@ import ru.salazarev.roadsaround.R
 import javax.inject.Named
 import javax.inject.Singleton
 
+/** Модуль Dagger 2, предоставляющий зависимости управления фрагментами. */
 @Module
 interface MainModule {
     companion object {
-        @Provides
-        @Singleton
-        fun provideFirebaseAuth(): FirebaseAuth = FirebaseAuth.getInstance()
 
+        /**
+         * Предоставляет [NavController], сконфигурированный для запуска приложения с различными
+         * стартовыми экранами.
+         * @param fm - основной менеджер фрагментов.
+         * @param auth - объект авторизации в системе Firebase.
+         */
         @Provides
         @Singleton
         @Named("mainNavController")
@@ -36,6 +39,11 @@ interface MainModule {
             return navController
         }
 
+        /**
+         * Предоставляет вложенный [NavController], предназначенный для управления основными
+         * экранами приложения.
+         * @param fm - второстепенный менеджер фрагментов.
+         */
         @Provides
         @Singleton
         @Named("secondNavController")
@@ -45,7 +53,5 @@ interface MainModule {
             return navHostFragment.navController
         }
 
-        @Provides
-        fun provideSavedStateHandle(): SavedStateHandle = SavedStateHandle()
     }
 }

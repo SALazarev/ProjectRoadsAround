@@ -12,7 +12,7 @@ class MessageViewHolder(item: View) : RecyclerView.ViewHolder(item) {
         binding.apply {
             data.photo?.let { ivUserPhoto.setImageDrawable(it) }
             tvName.text = data.name
-            tvText.text = data.message
+            tvText.text = data.text
             tvTime.text = data.time
         }
     }
