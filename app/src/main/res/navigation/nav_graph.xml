@@ -116,13 +116,19 @@
             app:destination="@id/editEventFragment" />
         <action
             android:id="@+id/action_eventInformationFragment_to_chatFragment"
-            app:destination="@id/chatFragment" />
+            app:destination="@id/chatFragment"
+            app:enterAnim="@anim/slide_up"
+            app:exitAnim="@anim/await_slide"
+            app:popExitAnim="@anim/slide_down" />
         <action
             android:id="@+id/action_eventInformationFragment_to_membersFragment"
             app:destination="@id/membersFragment" />
         <action
             android:id="@+id/action_eventInformationFragment_to_editRoadFragment"
-            app:destination="@id/editRoadFragment" />
+            app:destination="@id/editRoadFragment"
+            app:enterAnim="@anim/slide_up"
+            app:exitAnim="@anim/await_slide"
+            app:popExitAnim="@anim/slide_down" />
     </fragment>
     <fragment
         android:id="@+id/membersFragment"
