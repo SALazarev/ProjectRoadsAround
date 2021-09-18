@@ -5,7 +5,6 @@ import io.reactivex.rxjava3.core.*
 import io.reactivex.rxjava3.schedulers.Schedulers
 import io.reactivex.rxjava3.subjects.PublishSubject
 import ru.salazarev.roadsaround.network.Authentication
-import ru.salazarev.roadsaround.domain.user.UserInteractor
 import ru.salazarev.roadsaround.domain.user.UserRepository
 import ru.salazarev.roadsaround.models.data.MessageData
 import ru.salazarev.roadsaround.models.domain.Message
@@ -19,7 +18,7 @@ import javax.inject.Inject
  *  Предназначен для работы с чатами пользователей в событии.
  *
  *  @property chatRepository - репозиторий сообщений.
- *  @property userInteractor - интерактор работы с информацией о пользователях.
+ *  @property userRepository - интерактор работы с информацией о пользователях.
  *  @property authentication - предоставляет информацию о статусе авторизации и об авторизованном пользователе.
  */
 class ChatInteractor @Inject constructor(
@@ -30,12 +29,12 @@ class ChatInteractor @Inject constructor(
 
     /**
      * Формирует пользовательское сообщение и отправляет в хранилище.
-     * @param id - идентификатор сообщения.
+     * @param idEvent - идентификатор сообщения.
      * @param textMessage - текст сообщения.
      * @return объект для прослушивания получения информации о сообщении.
      */
-    fun sendMessage(idEvent: String, textMessage: String) = Completable.fromCallable {
-        return@fromCallable chatRepository.sendMessage(
+    fun sendMessage(idEvent: String, textMessage: String): Completable = Completable.fromCallable {
+        chatRepository.sendMessage(
             idEvent,
             authentication.getUserId(),
             textMessage
