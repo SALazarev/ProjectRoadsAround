@@ -15,14 +15,17 @@ import javax.inject.Inject
 class AuthViewModel @Inject constructor(private val interactor: UserInteractor) : BaseViewModel() {
 
     private val _authStatus = MutableLiveData<Boolean>()
+
     /** Прослушивание статуса авторизации. */
     val authStatus: LiveData<Boolean> = _authStatus
 
     private val _resetPassStatus = MutableLiveData<Boolean>()
+
     /** Прослушивание статуса сброса пароля. */
     val resetPassStatus: LiveData<Boolean> = _resetPassStatus
 
     private val _progress = MutableLiveData<Boolean>()
+
     /** Прослушивание статуса загрузки. */
     val progress: LiveData<Boolean> = _progress
 
@@ -52,7 +55,9 @@ class AuthViewModel @Inject constructor(private val interactor: UserInteractor) 
             .observeOn(AndroidSchedulers.mainThread())
             .doFinally { _progress.value = false }
             .doOnSubscribe { _progress.value = true }
-            .subscribe(_resetPassStatus::setValue, { _resetPassStatus.value = false })
+            .subscribe(
+                { _resetPassStatus.value = true },
+                { _resetPassStatus.value = false })
             .addTo(compositeDisposable)
     }
 

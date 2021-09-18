@@ -18,7 +18,7 @@ interface Authentication {
     /** Сброс пароля.
      * @param email - почта пользователя.
      */
-    fun resetPassword(email: String): Boolean
+    fun resetPassword(email: String)
 
     /** Возвращает идентификатор пользователя.
      * @return идентификатор пользователя.

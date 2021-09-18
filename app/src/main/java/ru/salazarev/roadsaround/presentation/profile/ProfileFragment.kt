@@ -43,7 +43,7 @@ class ProfileFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentProfileBinding.inflate(inflater, container, false)
-        binding.mainLayout.visibility = View.VISIBLE
+        binding.mainLayout.visibility = View.INVISIBLE
         viewModel.loadUserData()
         return binding.root
     }
@@ -79,8 +79,7 @@ class ProfileFragment : Fragment() {
     }
 
     private fun setViewData(user: UserPresentation) {
-        val userName = "${resources.getString(R.string.name)}: ${user.name}"
-        binding.etName.text = userName
+        binding.etName.text = user.name
         if (user.image == null) binding.ivUserPhoto.visibility = View.GONE else
             binding.ivUserPhoto.setImageDrawable(user.image)
     }

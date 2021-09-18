@@ -24,7 +24,7 @@ class RegFragment : Fragment() {
 
     companion object {
         private const val REQUEST_IMAGE_CAPTURE = 1
-        private const val IMAGE_KEY = "IMAGE_KEY"
+        private const val IMAGE_KEY = "data"
     }
 
     /** Фабрика для ViewModel текущего фрагмента */
@@ -76,11 +76,7 @@ class RegFragment : Fragment() {
             title = context.getString(R.string.registration)
             navigationContentDescription = context.getString(R.string.back)
             navigationIcon = ContextCompat.getDrawable(context, R.drawable.outline_arrow_back_24)
-            setNavigationOnClickListener {
-                (activity as MainActivity)
-                    .navController
-                    .navigate(R.id.action_regFragment_to_authFragment)
-            }
+            setNavigationOnClickListener {requireActivity().onBackPressed()}
             setOnMenuItemClickListener {
                 when (it.itemId) {
                     R.id.btn_login -> {

@@ -65,7 +65,7 @@ class UserInteractor @Inject constructor(
      * @param email - почта пользователя.
      * @return объект прослушивания состояния авторизации пользователя.
      */
-    fun resetUserPassword(email: String): Single<Boolean> {
-        return Single.fromCallable { authentication.resetPassword(email) }
+    fun resetUserPassword(email: String): Completable {
+        return Completable.fromCallable { authentication.resetPassword(email) }
     }
 }

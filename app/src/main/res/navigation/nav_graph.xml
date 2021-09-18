@@ -3,31 +3,43 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    tools:ignore="InvalidNavigation,UnusedNavigation"
-    app:startDestination="@id/chatFragment">
+    app:startDestination="@id/chatFragment"
+    tools:ignore="InvalidNavigation,UnusedNavigation">
 
     <fragment
         android:id="@+id/authFragment"
         android:name="ru.salazarev.roadsaround.presentation.authentification.AuthFragment"
         android:label="fragment_auth"
-        tools:layout="@layout/fragment_auth" >
+        tools:layout="@layout/fragment_auth">
         <action
             android:id="@+id/action_authFragment_to_regFragment"
             app:destination="@id/regFragment"
-            app:launchSingleTop="false" />
+            app:enterAnim="@anim/slide_from_right"
+            app:exitAnim="@anim/slide_to_left"
+            app:launchSingleTop="false"
+            app:popEnterAnim="@anim/slide_from_left"
+            app:popExitAnim="@anim/slide_to_right" />
         <action
             android:id="@+id/action_authFragment_to_mainFragment"
             app:destination="@id/mainFragment"
+            app:enterAnim="@anim/slide_from_right"
+            app:exitAnim="@anim/slide_to_left"
+            app:popEnterAnim="@anim/slide_from_left"
+            app:popExitAnim="@anim/slide_to_right"
             app:popUpTo="@id/nav_graph" />
     </fragment>
     <fragment
         android:id="@+id/regFragment"
         android:name="ru.salazarev.roadsaround.presentation.registration.RegFragment"
         android:label="fragment_reg"
-        tools:layout="@layout/fragment_reg" >
+        tools:layout="@layout/fragment_reg">
         <action
             android:id="@+id/action_regFragment_to_mainFragment"
             app:destination="@id/mainFragment"
+            app:enterAnim="@anim/slide_from_right"
+            app:exitAnim="@anim/slide_to_left"
+            app:popEnterAnim="@anim/slide_from_left"
+            app:popExitAnim="@anim/slide_to_right"
             app:popUpTo="@id/nav_graph"
             app:popUpToInclusive="true" />
         <action
@@ -39,20 +51,27 @@
         android:id="@+id/mainFragment"
         android:name="ru.salazarev.roadsaround.presentation.main.MainFragment"
         android:label="fragment_main"
-        tools:layout="@layout/fragment_main" >
+        tools:layout="@layout/fragment_main">
         <action
             android:id="@+id/action_mainFragment_to_authFragment"
             app:destination="@id/authFragment"
+            app:enterAnim="@anim/slide_from_left"
+            app:exitAnim="@anim/slide_to_right"
+            app:popEnterAnim="@anim/slide_from_right"
+            app:popExitAnim="@anim/slide_to_left"
             app:popUpTo="@id/nav_graph" />
         <action
             android:id="@+id/action_mainFragment_to_chatFragment"
             app:destination="@id/chatFragment"
             app:enterAnim="@anim/slide_up"
             app:exitAnim="@anim/await_slide"
-            app:popExitAnim="@anim/slide_down"/>
+            app:popExitAnim="@anim/slide_down" />
         <action
             android:id="@+id/action_mainFragment_to_editEventFragment"
-            app:destination="@id/editEventFragment" />
+            app:destination="@id/editEventFragment"
+            app:enterAnim="@anim/slide_up"
+            app:exitAnim="@anim/await_slide"
+            app:popExitAnim="@anim/slide_down" />
         <action
             android:id="@+id/action_mainFragment_to_eventInformationFragment"
             app:destination="@id/eventInformationFragment" />
@@ -61,7 +80,7 @@
         android:id="@+id/chatFragment"
         android:name="ru.salazarev.roadsaround.presentation.chat.ChatFragment"
         android:label="fragment_chat"
-        tools:layout="@layout/fragment_chat" >
+        tools:layout="@layout/fragment_chat">
         <action
             android:id="@+id/action_chatFragment_to_mainFragment"
             app:destination="@id/mainFragment"
@@ -77,7 +96,7 @@
         android:id="@+id/editEventFragment"
         android:name="ru.salazarev.roadsaround.presentation.editevent.EditEventFragment"
         android:label="fragment_edit_event"
-        tools:layout="@layout/fragment_edit_event" >
+        tools:layout="@layout/fragment_edit_event">
         <action
             android:id="@+id/action_editEventFragment_to_mainFragment"
             app:destination="@id/mainFragment"
@@ -86,9 +105,10 @@
         <action
             android:id="@+id/action_editEventFragment_to_editRoadFragment"
             app:destination="@id/editRoadFragment"
-            app:enterAnim="@anim/slide_up"
-            app:exitAnim="@anim/await_slide"
-            app:popExitAnim="@anim/slide_down" />
+            app:enterAnim="@anim/slide_from_right"
+            app:exitAnim="@anim/slide_to_left"
+            app:popEnterAnim="@anim/slide_from_left"
+            app:popExitAnim="@anim/slide_to_right" />
         <action
             android:id="@+id/action_editEventFragment_to_eventInformationFragment"
             app:destination="@id/eventInformationFragment"
@@ -99,7 +119,7 @@
         android:id="@+id/editRoadFragment"
         android:name="ru.salazarev.roadsaround.presentation.editroad.EditRoadFragment"
         android:label="fragment_edit_road"
-        tools:layout="@layout/fragment_edit_road" >
+        tools:layout="@layout/fragment_edit_road">
         <action
             android:id="@+id/action_editRoadFragment_to_editEventFragment"
             app:destination="@id/editEventFragment"
@@ -110,10 +130,14 @@
         android:id="@+id/eventInformationFragment"
         android:name="ru.salazarev.roadsaround.presentation.eventinformation.EventInformationFragment"
         android:label="fragment_event_information"
-        tools:layout="@layout/fragment_event_information" >
+        tools:layout="@layout/fragment_event_information">
         <action
             android:id="@+id/action_eventInformationFragment_to_editEventFragment"
-            app:destination="@id/editEventFragment" />
+            app:destination="@id/editEventFragment"
+            app:enterAnim="@anim/slide_from_right"
+            app:exitAnim="@anim/slide_to_left"
+            app:popEnterAnim="@anim/slide_from_left"
+            app:popExitAnim="@anim/slide_to_right" />
         <action
             android:id="@+id/action_eventInformationFragment_to_chatFragment"
             app:destination="@id/chatFragment"
@@ -122,13 +146,18 @@
             app:popExitAnim="@anim/slide_down" />
         <action
             android:id="@+id/action_eventInformationFragment_to_membersFragment"
-            app:destination="@id/membersFragment" />
+            app:destination="@id/membersFragment"
+            app:enterAnim="@anim/slide_from_right"
+            app:exitAnim="@anim/slide_to_left"
+            app:popEnterAnim="@anim/slide_from_left"
+            app:popExitAnim="@anim/slide_to_right" />
         <action
             android:id="@+id/action_eventInformationFragment_to_editRoadFragment"
             app:destination="@id/editRoadFragment"
-            app:enterAnim="@anim/slide_up"
-            app:exitAnim="@anim/await_slide"
-            app:popExitAnim="@anim/slide_down" />
+            app:enterAnim="@anim/slide_from_right"
+            app:exitAnim="@anim/slide_to_left"
+            app:popEnterAnim="@anim/slide_from_left"
+            app:popExitAnim="@anim/slide_to_right" />
     </fragment>
     <fragment
         android:id="@+id/membersFragment"
