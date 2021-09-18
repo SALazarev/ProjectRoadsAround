@@ -21,8 +21,10 @@ class ChatViewModel(
 ) : BaseViewModel() {
     /** Прослушивание статуса загрузки. */
     val progress = MutableLiveData<Boolean>()
+
     /** Прослушивание статуса работы. */
     val result = MutableLiveData<Boolean>()
+
     /** Прослушивание статуса загрузки сообщений. */
     val messages = MutableLiveData<List<MessageChat>>()
 
@@ -31,15 +33,16 @@ class ChatViewModel(
      * @param text - текст сообщения.
      */
     fun sendMessage(eventId: String, text: String) {
-        val completable = Completable.fromCallable {
-            return@fromCallable chatInteractor.sendMessage(eventId, text)
-        }
+        chatInteractor.sendMessage(eventId, text)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .doFinally { progress.value = false }
             .doOnSubscribe { progress.value = true }
-
-        completable.subscribe({ result.value = true }) { result.value = false }
+            .subscribe(
+                { result.value = true },
+                { result.value = false }
+            )
+            .addTo(compositeDisposable)
     }
 
     /** Получение списка сообщений.

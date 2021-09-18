@@ -7,7 +7,9 @@ import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.schedulers.Schedulers
 import ru.salazarev.roadsaround.domain.user.UserInteractor
+import ru.salazarev.roadsaround.presentation.BaseViewModel
 import ru.salazarev.roadsaround.util.ImageConverter
+import ru.salazarev.roadsaround.util.addTo
 import javax.inject.Inject
 
 
@@ -18,13 +20,14 @@ import javax.inject.Inject
 class RegViewModel @Inject constructor(
     private val interactor: UserInteractor,
     private val imageConverter: ImageConverter
-) : ViewModel() {
+) : BaseViewModel() {
 
     /** прихранитель изображения пользователя */
     var buffImage: Bitmap? = null
 
     /** Прослушивание статуса загрузки. */
     val progress = MutableLiveData<Boolean>()
+
     /** Прослушивание статуса выполнения. */
     val result = MutableLiveData<Boolean>()
 
@@ -42,18 +45,15 @@ class RegViewModel @Inject constructor(
         val byteArray =
             if (image != null) imageConverter.convert(image.copy(image.config, true)) else null
 
-        val user = Completable.fromCallable {
-            return@fromCallable interactor.registrationUser(
-                email, password, firstName, lastName, byteArray
-            )
-        }
+        interactor.registrationUser(email, password, firstName, lastName, byteArray)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .doFinally { progress.value = false }
             .doOnSubscribe { progress.value = true }
-
-        user.subscribe(
-            { result.value = true })
-        { result.value = false }
+            .subscribe(
+                { result.value = true },
+                { result.value = false }
+            )
+            .addTo(compositeDisposable)
     }
 }

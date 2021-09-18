@@ -7,8 +7,10 @@ import io.reactivex.rxjava3.schedulers.Schedulers
 import ru.salazarev.roadsaround.domain.user.UserInteractor
 import ru.salazarev.roadsaround.models.domain.User
 import ru.salazarev.roadsaround.models.presentation.UserPresentation
+import ru.salazarev.roadsaround.presentation.BaseViewModel
 import ru.salazarev.roadsaround.presentation.members.MembersViewModel
 import ru.salazarev.roadsaround.util.ImageConverter
+import ru.salazarev.roadsaround.util.addTo
 import javax.inject.Inject
 
 /** ViewModel для фрагмента [MembersViewModel].
@@ -18,7 +20,7 @@ import javax.inject.Inject
 class ProfileViewModel @Inject constructor(
     private val interactor: UserInteractor,
     private val imageConverter: ImageConverter
-) : ViewModel() {
+) : BaseViewModel() {
 
     /** Прослушивание статуса загрузки информации о пользователе. */
     val user = MutableLiveData<UserPresentation?>()
@@ -36,6 +38,7 @@ class ProfileViewModel @Inject constructor(
             .subscribe(
                 { user.value = getMembersInfo(it) },
                 { user.value = null })
+            .addTo(compositeDisposable)
     }
 
     private fun getMembersInfo(user: User): UserPresentation {

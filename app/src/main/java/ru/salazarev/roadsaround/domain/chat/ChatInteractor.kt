@@ -32,9 +32,14 @@ class ChatInteractor @Inject constructor(
      * Формирует пользовательское сообщение и отправляет в хранилище.
      * @param id - идентификатор сообщения.
      * @param textMessage - текст сообщения.
+     * @return объект для прослушивания получения информации о сообщении.
      */
-    fun sendMessage(idEvent: String, textMessage: String) {
-        chatRepository.sendMessage(idEvent, authentication.getUserId(), textMessage)
+    fun sendMessage(idEvent: String, textMessage: String) = Completable.fromCallable {
+        return@fromCallable chatRepository.sendMessage(
+            idEvent,
+            authentication.getUserId(),
+            textMessage
+        )
     }
 
     /**

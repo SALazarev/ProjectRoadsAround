@@ -26,6 +26,7 @@ class UserInteractor @Inject constructor(
      * @param firstName - имя пользователя.
      * @param lastName - фамилия пользователя.
      * @param image - изображение пользователя.
+     * @return объект прослушивания состояния регистрации пользователя.
      */
     fun registrationUser(
         email: String,
@@ -33,11 +34,12 @@ class UserInteractor @Inject constructor(
         firstName: String,
         lastName: String,
         image: ByteArray?
-    ) {
+    ): Completable = Completable.fromCallable {
         val id = authentication.registration(email, password)
         val user = User(id, firstName, lastName, image)
         userRepository.setUserData(user)
     }
+
 
     /**
      * Получение информации о пользователе.
