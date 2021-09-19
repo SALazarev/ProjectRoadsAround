@@ -33,13 +33,11 @@ class ChatInteractor @Inject constructor(
      * @param textMessage - текст сообщения.
      * @return объект для прослушивания получения информации о сообщении.
      */
-    fun sendMessage(idEvent: String, textMessage: String): Completable = Completable.fromCallable {
-        chatRepository.sendMessage(
+    fun sendMessage(idEvent: String, textMessage: String): Completable = chatRepository.sendMessage(
             idEvent,
             authentication.getUserId(),
             textMessage
         )
-    }
 
     /**
      * Предоставляет все сообщения в чате события.
@@ -47,12 +45,9 @@ class ChatInteractor @Inject constructor(
      * @return объект для прослушивания получения информации о сообщениях.
      */
     fun getChatMessages(idEvent: String): PublishSubject<List<Message>> {
-        val localCallback = PublishSubject.create<List<MessageData>>()
-        chatRepository.subscribeOnChatMessages(idEvent, localCallback)
-
         val callback = PublishSubject.create<List<Message>>()
 
-        localCallback.subscribe({ list ->
+        chatRepository.subscribeOnChatMessages(idEvent).subscribe({ list ->
             val idList = list.map { it.authorId }.distinct()
             val single: Single<List<User>> = Single.fromCallable {
                 return@fromCallable userRepository.getUsersData(idList)

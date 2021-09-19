@@ -1,5 +1,6 @@
 package ru.salazarev.roadsaround.domain.chat
 
+import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.subjects.PublishSubject
 import ru.salazarev.roadsaround.models.data.MessageData
 
@@ -11,13 +12,14 @@ interface ChatRepository {
      * @param eventId - идентификатор события.
      * @param authorId - идентификатор автора сообщения.
      * @param textMessage - текст сообщения.
+     * @return объект для прослушивания получения информации о сообщении.
      */
-    fun sendMessage(eventId: String, authorId: String, textMessage: String)
+    fun sendMessage(eventId: String, authorId: String, textMessage: String): Completable
 
     /**
      * Подписка на прослушивание чата события.
      * @param eventId - идентификатор события.
-     * @param - прослушиватель изменения информации о сообщениях в чате.
+     * @return - прослушиватель изменения информации о сообщениях в чате.
      */
-    fun subscribeOnChatMessages(eventId: String, callback: PublishSubject<List<MessageData>>)
+    fun subscribeOnChatMessages(eventId: String): PublishSubject<List<MessageData>>
 }

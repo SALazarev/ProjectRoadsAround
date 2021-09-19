@@ -2,6 +2,7 @@ package ru.salazarev.roadsaround.data.chat
 
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
+import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.subjects.PublishSubject
 import ru.salazarev.roadsaround.domain.chat.ChatRepository
 import ru.salazarev.roadsaround.models.data.MessageData
@@ -19,7 +20,7 @@ class ChatRepositoryImpl @Inject constructor(
     private val databaseModel: MessagesCollectionModel
 ) : ChatRepository {
 
-    override fun sendMessage(eventId: String, authorId: String, textMessage: String) {
+    override fun sendMessage(eventId: String, authorId: String, textMessage: String): Completable = Completable.fromCallable {
         val ref =
             database.collection("chats").document("chat_$eventId")
                 .collection("messages").document()
@@ -33,9 +34,9 @@ class ChatRepositoryImpl @Inject constructor(
     }
 
     override fun subscribeOnChatMessages(
-        eventId: String,
-        callback: PublishSubject<List<MessageData>>
-    ) {
+        eventId: String
+    ): PublishSubject<List<MessageData>> {
+        val callback = PublishSubject.create<List<MessageData>>()
         val ref = database.collection("chats").document("chat_$eventId")
             .collection("messages")
         ref.addSnapshotListener { snapshot, _ ->
@@ -44,5 +45,6 @@ class ChatRepositoryImpl @Inject constructor(
                 callback.onNext(data)
             }
         }
+        return callback
     }
 }
