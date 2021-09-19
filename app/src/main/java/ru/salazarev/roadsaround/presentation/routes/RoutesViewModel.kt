@@ -24,7 +24,7 @@ class RoutesViewModel @Inject constructor(
 
     /** Загрузка событий, в который участвует пользователь */
     fun loadUserEvents() {
-        interactor.getUserEventsPreview().subscribeOn(Schedulers.io())
+        interactor.getUserEventPreviews().subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .doFinally { progress.value = false }
             .doOnSubscribe { progress.value = true }

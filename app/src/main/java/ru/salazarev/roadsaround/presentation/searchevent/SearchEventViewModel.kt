@@ -24,7 +24,7 @@ class SearchEventViewModel @Inject constructor(
 
     /** Загрузка событий других пользователей. */
     fun loadUsersEventsList() {
-        interactor.getUsersEventsPreview().subscribeOn(Schedulers.io())
+        interactor.getUsersEventPreviews().subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .doFinally { progress.value = false }
             .doOnSubscribe { progress.value = true }

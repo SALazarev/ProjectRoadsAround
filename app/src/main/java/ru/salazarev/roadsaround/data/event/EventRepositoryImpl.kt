@@ -22,40 +22,49 @@ class EventRepositoryImpl @Inject constructor(
     private val databaseModel: EventsCollectionModel
 ) : EventRepository {
 
-    override fun sendEvent(event: EventData) {
-        if (event.id.isEmpty()) createEvent(event)
-        else updateEvent(event)
-    }
-
-    private fun createEvent(eventData: EventData) {
+    private fun createEvent(
+        authorId: String, name: String, note: String, motionType: String,
+        time: Long, route: String, members: List<String>
+    ) {
         val ref = database.collection(databaseModel.getEvent().collectionName).document()
         val event = hashMapOf(
             databaseModel.getEvent().getColumns().id to ref.id,
-            databaseModel.getEvent().getColumns().authorId to eventData.authorId,
-            databaseModel.getEvent().getColumns().name to eventData.name,
-            databaseModel.getEvent().getColumns().note to eventData.note,
-            databaseModel.getEvent().getColumns().time to eventData.time,
-            databaseModel.getEvent().getColumns().route to eventData.route,
-            databaseModel.getEvent().getColumns().motionType to eventData.motionType,
-            databaseModel.getEvent().getColumns().members to eventData.members
+            databaseModel.getEvent().getColumns().authorId to authorId,
+            databaseModel.getEvent().getColumns().name to name,
+            databaseModel.getEvent().getColumns().note to note,
+            databaseModel.getEvent().getColumns().time to time,
+            databaseModel.getEvent().getColumns().route to route,
+            databaseModel.getEvent().getColumns().motionType to motionType,
+            databaseModel.getEvent().getColumns().members to members
         )
         ref.set(event)
     }
 
-    private fun updateEvent(eventData: EventData) {
+    private fun updateEvent(
+        id: String, authorId: String, name: String, note: String, motionType: String,
+        time: Long, route: String, members: List<String>
+    ) {
         val ref =
-            database.collection(databaseModel.getEvent().collectionName).document(eventData.id)
+            database.collection(databaseModel.getEvent().collectionName).document(id)
         val event = hashMapOf(
-            databaseModel.getEvent().getColumns().id to eventData.id,
-            databaseModel.getEvent().getColumns().authorId to eventData.authorId,
-            databaseModel.getEvent().getColumns().name to eventData.name,
-            databaseModel.getEvent().getColumns().note to eventData.note,
-            databaseModel.getEvent().getColumns().time to eventData.time,
-            databaseModel.getEvent().getColumns().route to eventData.route,
-            databaseModel.getEvent().getColumns().motionType to eventData.motionType,
-            databaseModel.getEvent().getColumns().members to eventData.members
+            databaseModel.getEvent().getColumns().id to id,
+            databaseModel.getEvent().getColumns().authorId to authorId,
+            databaseModel.getEvent().getColumns().name to name,
+            databaseModel.getEvent().getColumns().note to note,
+            databaseModel.getEvent().getColumns().time to time,
+            databaseModel.getEvent().getColumns().route to route,
+            databaseModel.getEvent().getColumns().motionType to motionType,
+            databaseModel.getEvent().getColumns().members to members
         )
         ref.update(event)
+    }
+
+    override fun sendEvent(
+        id: String, authorId: String, name: String, note: String, motionType: String,
+        time: Long, route: String, members: List<String>
+    ) {
+        if (id.isEmpty()) createEvent(authorId, name, note, motionType, time, route, members)
+        else updateEvent(id, authorId, name, note, motionType, time, route, members)
     }
 
     override fun getUserEvents(id: String): List<EventData> {

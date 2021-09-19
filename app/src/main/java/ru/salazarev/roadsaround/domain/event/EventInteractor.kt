@@ -61,18 +61,7 @@ class EventInteractor @Inject constructor(
         return Completable.fromCallable {
             val authorId = authentication.getUserId()
             val members = if (_members.isNullOrEmpty()) listOf(authorId) else _members
-            eventRepository.sendEvent(
-                EventData(
-                    id,
-                    authorId,
-                    name,
-                    note,
-                    motionType,
-                    time,
-                    route,
-                    members
-                )
-            )
+            eventRepository.sendEvent(id, authorId, name, note, motionType, time, route, members)
         }
     }
 
@@ -80,7 +69,7 @@ class EventInteractor @Inject constructor(
      * Получение списка событий пользователя в скоращённом информационном формате.
      * @return объект прослушивания состояния получения списка превью-событий.
      */
-    fun getUserEventsPreview(): Single<List<EventPreview>> {
+    fun getUserEventPreviews(): Single<List<EventPreview>> {
         return Single.fromCallable {
             val userId = authentication.getUserId()
             val calendar = Calendar.getInstance()
@@ -120,7 +109,7 @@ class EventInteractor @Inject constructor(
      * в скоращённом информационном формате.
      * @return объект прослушивания состояния получения списка превью-событий.
      */
-    fun getUsersEventsPreview(): Single<List<EventPreview>> {
+    fun getUsersEventPreviews(): Single<List<EventPreview>> {
         return Single.fromCallable {
             val listEventData = eventRepository.getAllEvents()
             val usersId = listEventData.map { it.authorId }.distinct()

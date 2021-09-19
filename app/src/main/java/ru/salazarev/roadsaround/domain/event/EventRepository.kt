@@ -6,9 +6,23 @@ import ru.salazarev.roadsaround.models.data.EventData
 interface EventRepository {
     /**
      * Отправка информации о событии в хранилище.
-     * @param event - объект информации о событии.
+     * @param id - идентификатор события.
+     * @param id - идентификатор организатора события.
+     * @param name - название события.
+     * @param note - описание события.
+     * @param motionType - средство движения по маршруту.
+     * @param time - назначенное время события.
+     * @param route - маршрут.
+     * @param members - список участников.
      */
-    fun sendEvent(event: EventData)
+    fun sendEvent( id: String,
+                   authorId: String,
+                   name: String,
+                   note: String,
+                   motionType: String,
+                   time: Long,
+                   route: String,
+                   members: List<String>)
 
     /**
      * Получение списка событий, в которых участвует пользователь.

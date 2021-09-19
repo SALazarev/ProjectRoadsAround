@@ -6,12 +6,14 @@ interface Authentication {
     /** Регистрация пользователя.
      * @param email - почта пользователя.
      * @param password - пароль пользователя.
+     * @return идентификатор пользователя.
      */
     fun registration(email: String, password: String): String
 
     /** Авторизация пользователя.
      * @param email - почта пользователя.
      * @param password - пароль пользователя.
+     * @return идентификатор пользователя.
      */
     fun authentication(email: String, password: String): String
 

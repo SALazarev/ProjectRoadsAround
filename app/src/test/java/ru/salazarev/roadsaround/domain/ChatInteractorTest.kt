@@ -4,7 +4,6 @@ import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verifySequence
 import io.reactivex.rxjava3.core.Completable
-import io.reactivex.rxjava3.subjects.PublishSubject
 import org.junit.Rule
 import org.junit.Test
 import ru.salazarev.roadsaround.RxSchedulerRule
@@ -12,7 +11,6 @@ import ru.salazarev.roadsaround.domain.chat.ChatInteractor
 import ru.salazarev.roadsaround.domain.chat.ChatRepository
 import ru.salazarev.roadsaround.domain.user.UserRepository
 import ru.salazarev.roadsaround.models.data.MessageData
-import javax.security.auth.Subject
 
 class ChatInteractorTest {
 
@@ -27,8 +25,8 @@ class ChatInteractorTest {
     val rxSchedulerRule = RxSchedulerRule()
 
     private val chatRepository: ChatRepository = mockk(relaxed = true)
-    private val userRepository: UserRepository = mockk()
-    private val authentication: ru.salazarev.roadsaround.network.Authentication = mockk {}
+    private val userRepository: UserRepository = mockk(relaxed = true)
+    private val authentication: ru.salazarev.roadsaround.network.Authentication = mockk(relaxed = true)
     private val interactor = ChatInteractor(chatRepository, userRepository, authentication)
 
     @Test
@@ -66,7 +64,7 @@ class ChatInteractorTest {
     }
 
     @Test
-    fun `get messages complete`() {
+    fun `get messages onNext`() {
         //Arrange
         val listOfMessage = listOf(MessageData())
 
