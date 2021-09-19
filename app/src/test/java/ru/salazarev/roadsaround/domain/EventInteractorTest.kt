@@ -84,20 +84,6 @@ class EventInteractorTest {
         }
     }
 
-    //    @Test
-//    fun `get user event preview onNext`() {
-//        //Arrange
-//        every { authentication.getUserId() } returns ID_USER
-//        val listEventData = listOf<EventData>()
-//        every { eventRepository.getUserEvents(ID_USER) } returns listEventData
-//        val image = ByteArray(0)
-//        val user = User(ID_USER, FIRST_NAME, LAST_NAME, image)
-//        every { userRepository.getUserData(ID_USER) } returns user
-//        //Act
-//        val single = interactor.getUserEventPreviews()
-//        //Assert
-//        single.test().assertValue(listOf())
-//    }
 
     @Test
     fun `get user event previews onNext`() {
