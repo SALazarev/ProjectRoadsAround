@@ -42,7 +42,11 @@ class GoogleMap(
 
     init {
         map.setOnMarkerClickListener { marker ->
-            moveMarker(marker)
+            when (typeWork) {
+                TypeWork.EDIT -> moveMarker(marker)
+                TypeWork.VIEW -> updateTitle()
+            }
+
             true
         }
         map.setOnMapClickListener {
