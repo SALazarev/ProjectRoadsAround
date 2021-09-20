@@ -11,7 +11,7 @@ import ru.salazarev.roadsaround.domain.event.EventInteractor
  * @property time - назначенное время события.
  * @property typeWorkWithEvent - статус пользователя в событии.
  */
-class EventPreview(
+data class EventPreview(
     val id: String,
     val authorName: String,
     val motionType: String,

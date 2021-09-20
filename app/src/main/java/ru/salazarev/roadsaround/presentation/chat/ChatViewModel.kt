@@ -2,7 +2,6 @@ package ru.salazarev.roadsaround.presentation.chat
 
 import androidx.lifecycle.MutableLiveData
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
-import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.schedulers.Schedulers
 import ru.salazarev.roadsaround.domain.chat.ChatInteractor
 import ru.salazarev.roadsaround.models.domain.Message

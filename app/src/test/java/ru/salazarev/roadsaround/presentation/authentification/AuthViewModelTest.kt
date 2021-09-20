@@ -31,6 +31,8 @@ class AuthViewModelTest {
 
     private val viewModel: AuthViewModel = AuthViewModel(interactor)
 
+    private val exception = Exception()
+
     @Test
     fun `authenticationUser progress`() {
         //Arrange
@@ -72,7 +74,7 @@ class AuthViewModelTest {
                 EMAIL,
                 PASSWORD
             )
-        } returns Completable.error(Exception())
+        } returns Completable.error(exception)
         val authStatusObserver: Observer<Boolean?> = mockk(relaxed = true)
         viewModel.authStatus.observeForever(authStatusObserver)
 
@@ -84,4 +86,50 @@ class AuthViewModelTest {
             authStatusObserver.onChanged(false)
         }
     }
+
+    @Test
+    fun `reset password onComplete`() {
+        //Arrange
+        every { interactor.resetUserPassword(EMAIL) } returns Completable.complete()
+        val resetPasswordObserver: Observer<Boolean> = mockk(relaxed = true)
+        viewModel.resetPassStatus.observeForever(resetPasswordObserver)
+
+        //Act
+        viewModel.resetPassword(EMAIL)
+
+        //Assert
+        verifyAll { resetPasswordObserver.onChanged(true) }
+    }
+
+    @Test
+    fun `reset password Progress`() {
+        //Arrange
+        every { interactor.resetUserPassword(EMAIL) } returns Completable.complete()
+        val progressObserver: Observer<Boolean?> = mockk(relaxed = true)
+        viewModel.progress.observeForever(progressObserver)
+
+        //Act
+        viewModel.resetPassword(EMAIL)
+
+        //Assert
+        verifyAll {
+            progressObserver.onChanged(true)
+            progressObserver.onChanged(false)
+        }
+    }
+
+    @Test
+    fun `reset password onError`() {
+        //Arrange
+        every { interactor.resetUserPassword(EMAIL) } returns Completable.error(exception)
+        val resetPasswordObserver: Observer<Boolean> = mockk(relaxed = true)
+        viewModel.resetPassStatus.observeForever(resetPasswordObserver)
+
+        //Act
+        viewModel.resetPassword(EMAIL)
+
+        //Assert
+        verifyAll { resetPasswordObserver.onChanged(false) }
+    }
+
 }

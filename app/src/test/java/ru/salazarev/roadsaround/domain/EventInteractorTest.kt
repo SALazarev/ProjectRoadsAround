@@ -46,6 +46,7 @@ class EventInteractorTest {
     fun `create event complete`() {
         //Arrange
         every { authentication.getUserId() } returns ID_USER
+
         //Act
         val completable = interactor.createEvent(
             ID_EVENT, NAME_EVENT, NOTE_EVENT, MOTION_TYPE, TIME,
@@ -72,11 +73,13 @@ class EventInteractorTest {
                 TIME, ROUTE, MEMBERS
             )
         } throws exception
+
         //Act
         val completable = interactor.createEvent(
             ID_EVENT, NAME_EVENT, NOTE_EVENT, MOTION_TYPE, TIME,
             ROUTE, MEMBERS
         )
+
         //Assert
         completable.test().assertError(exception)
         verifySequence {
@@ -84,60 +87,128 @@ class EventInteractorTest {
         }
     }
 
-//
-//    @Test
-//    fun `get user event previews onNext`() {
-//        //Arrange
-//        every { authentication.getUserId() } returns ID_USER
-//
-//        val listEventData = listOf(EventData(ID_EVENT, ID_USER, NAME_EVENT, NOTE_EVENT,
-//            MOTION_TYPE, TIME, ROUTE, MEMBERS))
-//        every {eventRepository.getUserEvents(ID_USER)} returns listEventData
-//
-//        val user = User(ID_USER, FIRST_NAME, LAST_NAME,null)
-//        every {userRepository.getUserData(ID_USER)} returns user
-//
-//
-//        val compareList =
-//            listOf(EventPreview(
-//                ID_EVENT,
-//                "$FIRST_NAME $LAST_NAME",
-//                MOTION_TYPE,
-//                NAME_EVENT,
-//                "03:00 01/01/1970",
-//                EventInteractor.Companion.TypeWorkWithEvent.AUTHOR))
-//
-//        //Act
-//        val single = interactor.getUserEventPreviews()
-//
-//        //Assert
-//        single.test().assertResult(compareList)
-//    }
-//
-//    @Test
-//    fun `get users event previews onNext`() {
-//        //Arrange
-//        every { authentication.getUserId() } returns ID_USER
-//
-//        val listEventData = listOf(EventData(ID_EVENT, ID_OTHER_USER, NAME_EVENT, NOTE_EVENT,
-//            MOTION_TYPE, TIME, ROUTE, MEMBERS))
-//        every { eventRepository.getAllEvents() } returns listEventData
-//
-//        val listUsers = listOf(User(ID_OTHER_USER, FIRST_NAME, LAST_NAME, null))
-//        every { userRepository.getUsersData(listEventData.map { it.authorId }) } returns listUsers
-//
-//        val compareList = listOf(
-//            EventPreview(
-//                ID_EVENT, "$FIRST_NAME $LAST_NAME", MOTION_TYPE, NAME_EVENT,
-//                "03:00 01/01/1970", EventInteractor.Companion.TypeWorkWithEvent.AUTHOR
-//            )
-//        )
-//
-//        //Act
-//        val single = interactor.getUsersEventPreviews()
-//        //Assert
-//        single.test().assertValueAt(0,compareList)
-//    }
+
+    @Test
+    fun `get user-author event previews onNext`() {
+        //Arrange
+        every { authentication.getUserId() } returns ID_USER
+
+        val listEventData = listOf(EventData(ID_EVENT, ID_USER, NAME_EVENT, NOTE_EVENT,
+            MOTION_TYPE, TIME, ROUTE, MEMBERS))
+        every {eventRepository.getUserEvents(ID_USER)} returns listEventData
+
+        val user = User(ID_USER, FIRST_NAME, LAST_NAME,null)
+        every {userRepository.getUserData(ID_USER)} returns user
+
+
+        val compareList =
+            listOf(EventPreview(
+                ID_EVENT,
+                "$FIRST_NAME $LAST_NAME",
+                MOTION_TYPE,
+                NAME_EVENT,
+                TIME,
+                EventInteractor.Companion.TypeWorkWithEvent.AUTHOR))
+
+        //Act
+        val single = interactor.getUserEventPreviews()
+
+        //Assert
+        single.test().assertResult(compareList)
+    }
+
+
+
+    @Test
+    fun `get user-member event previews onNext`() {
+        //Arrange
+        every { authentication.getUserId() } returns ID_USER
+
+        val listEventData = listOf(EventData(ID_EVENT, ID_OTHER_USER, NAME_EVENT, NOTE_EVENT,
+            MOTION_TYPE, TIME, ROUTE, MEMBER_ONLY_USER))
+        every {eventRepository.getUserEvents(ID_USER)} returns listEventData
+
+        val user = User(ID_OTHER_USER, FIRST_NAME, LAST_NAME,null)
+        every {userRepository.getUserData(ID_OTHER_USER)} returns user
+
+
+        val compareList =
+            listOf(EventPreview(
+                ID_EVENT,
+                "$FIRST_NAME $LAST_NAME",
+                MOTION_TYPE,
+                NAME_EVENT,
+                TIME,
+                EventInteractor.Companion.TypeWorkWithEvent.MEMBER))
+
+        //Act
+        val single = interactor.getUserEventPreviews()
+
+        //Assert
+        single.test().assertResult(compareList)
+    }
+
+    @Test
+    fun `get event sort by time`(){
+        //Arrange
+        every { authentication.getUserId() } returns ID_USER
+
+        val listEventData = listOf(EventData(ID_EVENT, ID_OTHER_USER, NAME_EVENT, NOTE_EVENT,
+            MOTION_TYPE, TIME, ROUTE, MEMBER_ONLY_USER), EventData(ID_EVENT, ID_OTHER_USER, NAME_EVENT, NOTE_EVENT,
+            MOTION_TYPE, 1, ROUTE, MEMBER_ONLY_USER))
+        every {eventRepository.getUserEvents(ID_USER)} returns listEventData
+
+        val user = User(ID_OTHER_USER, FIRST_NAME, LAST_NAME,null)
+        every {userRepository.getUserData(ID_OTHER_USER)} returns user
+
+
+        val compareList =
+            listOf(EventPreview(
+                ID_EVENT,
+                "$FIRST_NAME $LAST_NAME",
+                MOTION_TYPE,
+                NAME_EVENT,
+                TIME,
+                EventInteractor.Companion.TypeWorkWithEvent.MEMBER), EventPreview(
+                ID_EVENT,
+                "$FIRST_NAME $LAST_NAME",
+                MOTION_TYPE,
+                NAME_EVENT,
+                1,
+                EventInteractor.Companion.TypeWorkWithEvent.MEMBER))
+
+        //Act
+        val single = interactor.getUserEventPreviews()
+
+        //Assert
+        single.test().assertResult(compareList)
+    }
+
+    @Test
+    fun `get users guest status event previews onNext`() {
+        //Arrange
+        every { authentication.getUserId() } returns ID_USER
+
+        val listEventData = listOf(EventData(ID_EVENT, ID_OTHER_USER, NAME_EVENT, NOTE_EVENT,
+            MOTION_TYPE, TIME, ROUTE, MEMBERS))
+        every { eventRepository.getAllEvents() } returns listEventData
+
+        val listUsers = listOf(User(ID_OTHER_USER, FIRST_NAME, LAST_NAME, null))
+        every { userRepository.getUsersData(listEventData.map { it.authorId }) } returns listUsers
+
+        val compareList = listOf(
+            EventPreview(
+                ID_EVENT, "$FIRST_NAME $LAST_NAME", MOTION_TYPE, NAME_EVENT,
+                0, EventInteractor.Companion.TypeWorkWithEvent.GUEST
+            )
+        )
+
+        //Act
+        val single = interactor.getUsersEventPreviews()
+        //Assert
+        single.test().assertValueAt(0,compareList)
+    }
+
 
     @Test
     fun `get members event onNext`() {
