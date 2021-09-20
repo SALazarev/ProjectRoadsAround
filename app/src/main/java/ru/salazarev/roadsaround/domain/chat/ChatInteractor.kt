@@ -1,9 +1,8 @@
 package ru.salazarev.roadsaround.domain.chat
 
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.*
+import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.schedulers.Schedulers
-import io.reactivex.rxjava3.subjects.PublishSubject
 import ru.salazarev.roadsaround.network.Authentication
 import ru.salazarev.roadsaround.domain.user.UserRepository
 import ru.salazarev.roadsaround.models.data.MessageData
@@ -34,38 +33,26 @@ class ChatInteractor @Inject constructor(
      * @return объект для прослушивания получения информации о сообщении.
      */
     fun sendMessage(idEvent: String, textMessage: String): Completable = chatRepository.sendMessage(
-            idEvent,
-            authentication.getUserId(),
-            textMessage
-        )
+        idEvent,
+        authentication.getUserId(),
+        textMessage
+    )
 
     /**
      * Предоставляет все сообщения в чате события.
      * @param idEvent - идентификатор события.
      * @return объект для прослушивания получения информации о сообщениях.
      */
-    fun getChatMessages(idEvent: String): PublishSubject<List<Message>> {
-        val callback = PublishSubject.create<List<Message>>()
-
-        chatRepository.subscribeOnChatMessages(idEvent).subscribe({ list ->
-            val idList = list.map { it.authorId }.distinct()
-            val single: Single<List<User>> = Single.fromCallable {
-                return@fromCallable userRepository.getUsersData(idList)
+    fun getChatMessages(idEvent: String): Observable<List<Message>> {
+        return chatRepository.subscribeOnChatMessages(idEvent)
+            .observeOn(Schedulers.io())
+            .map { list ->
+                val idList = list.map { it.authorId }.distinct()
+                val users = userRepository.getUsersData(idList)
+                val usersMap =  users.map { it.id to it }.toMap()
+                val messagesData =  list.sortedBy { it.time!!.toDate().time }
+                getMessages(messagesData,usersMap)
             }
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-            single.subscribe(
-                { users ->
-                    callback.onNext(
-                        getMessages(
-                            list.sortedBy { it.time!!.toDate().time },
-                            users.map { it.id to it }.toMap()
-                        )
-                    )
-                }, {})
-
-        }) {}
-        return callback
     }
 
     private fun getMessages(data: List<MessageData>, users: Map<String, User>): List<Message> {

@@ -49,19 +49,20 @@ class ChatViewModel(
      */
     fun getMessages(idEvent: String) {
         progress.value = true
-        chatInteractor.getChatMessages(idEvent).subscribe(
+        chatInteractor.getChatMessages(idEvent)
+            .subscribe(
             {
-                progress.value = false
+                progress.postValue(false)
                 getMessagesInLiveData(it)
             },
             {
-                progress.value = false
+                progress.postValue(false)
             }
         ).addTo(compositeDisposable)
     }
 
     private fun getMessagesInLiveData(data: List<Message>) {
-        messages.value = data.map {
+        val result = data.map {
             val image = if (it.image != null) imageConverter.convert(it.image) else null
             MessageChat(
                 it.id,
@@ -72,5 +73,6 @@ class ChatViewModel(
                 image
             )
         }
+        messages.postValue(result)
     }
 }
