@@ -51,9 +51,20 @@ class SearchEventFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         _binding = FragmentSearchEventBinding.inflate(inflater, container, false)
+        setProgressColor()
+        startLoadEvents()
+        return binding.root
+    }
+
+    private fun setProgressColor() {
+        val progressColor = ContextCompat.getColor(requireContext(), R.color.colorPrimary)
+        binding.layoutSwipeRefresh.setColorSchemeColors(progressColor)
+    }
+
+    private fun startLoadEvents() {
         binding.rvEvent.visibility = View.INVISIBLE
         viewModel.loadUsersEventsList()
-        return binding.root
+        binding.layoutSwipeRefresh.isRefreshing = true
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -63,6 +74,9 @@ class SearchEventFragment : Fragment() {
         setObserver()
         binding.viewInformationNotLoad.btnTryAgain.setOnClickListener {
             binding.viewInformationNotLoad.viewInformationNotLoad.visibility = View.INVISIBLE
+            viewModel.loadUsersEventsList()
+        }
+        binding.layoutSwipeRefresh.setOnRefreshListener {
             viewModel.loadUsersEventsList()
         }
     }
@@ -114,6 +128,7 @@ class SearchEventFragment : Fragment() {
     private fun setObserver() {
 
         viewModel.eventsLiveData.observe(viewLifecycleOwner, { listData ->
+            binding.layoutSwipeRefresh.isRefreshing = false
             when {
                 listData == null -> {
                     binding.viewInformationNotLoad.viewInformationNotLoad.visibility = View.VISIBLE
@@ -129,11 +144,6 @@ class SearchEventFragment : Fragment() {
                     binding.rvEvent.visibility = View.VISIBLE
                 }
             }
-        })
-
-        viewModel.progress.observe(viewLifecycleOwner, { loadStatus ->
-            if (loadStatus) binding.progressBar.visibility = View.VISIBLE
-            else binding.progressBar.visibility = View.INVISIBLE
         })
     }
 

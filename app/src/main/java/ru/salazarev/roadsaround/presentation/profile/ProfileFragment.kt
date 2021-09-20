@@ -43,9 +43,23 @@ class ProfileFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentProfileBinding.inflate(inflater, container, false)
+        setProgressColor()
+        startLoadEvents()
+        binding.layoutSwipeRefresh.setOnRefreshListener {
+            viewModel.loadUserData()
+        }
+        return binding.root
+    }
+
+    private fun setProgressColor() {
+        val progressColor = ContextCompat.getColor(requireContext(), R.color.colorPrimary)
+        binding.layoutSwipeRefresh.setColorSchemeColors(progressColor)
+    }
+
+    private fun startLoadEvents() {
         binding.mainLayout.visibility = View.INVISIBLE
         viewModel.loadUserData()
-        return binding.root
+        binding.layoutSwipeRefresh.isRefreshing = true
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -60,8 +74,8 @@ class ProfileFragment : Fragment() {
     }
 
     private fun setObserver() {
-
         viewModel.user.observe(viewLifecycleOwner, { user ->
+            binding.layoutSwipeRefresh.isRefreshing = false
             if (user == null) {
                 binding.viewInformationNotLoad.viewInformationNotLoad.visibility = View.VISIBLE
                 binding.mainLayout.visibility = View.INVISIBLE
@@ -70,11 +84,6 @@ class ProfileFragment : Fragment() {
                 binding.viewInformationNotLoad.viewInformationNotLoad.visibility = View.INVISIBLE
                 binding.mainLayout.visibility = View.VISIBLE
             }
-        })
-
-        viewModel.progress.observe(viewLifecycleOwner, { loadStatus ->
-            if (loadStatus) binding.progressBar.visibility = View.VISIBLE
-            else binding.progressBar.visibility = View.INVISIBLE
         })
     }
 

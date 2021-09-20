@@ -28,5 +28,6 @@ class EventDiffUtilCallback(
                 && oldItem.authorName == newItem.authorName
                 && oldItem.time == newItem.time
                 && oldItem.motionType == newItem.motionType
+                && oldItem.typeWorkWithEvent.name == newItem.typeWorkWithEvent.name
     }
 }

@@ -25,16 +25,11 @@ class ProfileViewModel @Inject constructor(
     /** Прослушивание статуса загрузки информации о пользователе. */
     val user = MutableLiveData<UserPresentation?>()
 
-    /** Прослушивание статуса загрузки. */
-    val progress = MutableLiveData<Boolean>()
-
     /** Предоставление инфомрации о пользователе.*/
     fun loadUserData() {
         interactor.getUserData()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .doFinally { progress.value = false }
-            .doOnSubscribe { progress.value = true }
             .subscribe(
                 { user.value = getMembersInfo(it) },
                 { user.value = null })

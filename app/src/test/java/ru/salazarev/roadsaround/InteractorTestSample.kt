@@ -1,11 +1,10 @@
-package ru.salazarev.roadsaround.domain
+package ru.salazarev.roadsaround
 
 import io.mockk.every
 import io.mockk.mockk
 import io.reactivex.rxjava3.core.Single
 import org.junit.Rule
 import org.junit.Test
-import ru.salazarev.roadsaround.RxSchedulerRule
 
 class InteractorTestSample {
 

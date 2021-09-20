@@ -1,11 +1,11 @@
 package ru.salazarev.roadsaround.presentation.routes
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -15,13 +15,14 @@ import ru.salazarev.roadsaround.R
 import ru.salazarev.roadsaround.databinding.FragmentRoutesBinding
 import ru.salazarev.roadsaround.domain.event.EventInteractor
 import ru.salazarev.roadsaround.presentation.MainActivity
-import ru.salazarev.roadsaround.presentation.main.eventlist.EventListAdapter
 import ru.salazarev.roadsaround.presentation.main.MainFragment
 import ru.salazarev.roadsaround.presentation.main.MainFragment.Companion.EVENT_ID_KEY
 import ru.salazarev.roadsaround.presentation.main.MainFragment.Companion.EVENT_NAME_KEY
 import ru.salazarev.roadsaround.presentation.main.eventlist.ClickItemCallback
+import ru.salazarev.roadsaround.presentation.main.eventlist.EventListAdapter
 import ru.salazarev.roadsaround.toast
 import javax.inject.Inject
+
 
 class RoutesFragment : Fragment() {
 
@@ -50,9 +51,20 @@ class RoutesFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentRoutesBinding.inflate(inflater, container, false)
+        setProgressColor()
+        startLoadEvents()
+        return binding.root
+    }
+
+    private fun setProgressColor() {
+        val progressColor = ContextCompat.getColor(requireContext(), R.color.colorPrimary)
+        binding.layoutSwipeRefresh.setColorSchemeColors(progressColor)
+    }
+
+    private fun startLoadEvents() {
         binding.rvEvent.visibility = View.INVISIBLE
         viewModel.loadUserEvents()
-        return binding.root
+        binding.layoutSwipeRefresh.isRefreshing = true
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -62,6 +74,9 @@ class RoutesFragment : Fragment() {
         setObserver()
         binding.viewInformationNotLoad.btnTryAgain.setOnClickListener {
             binding.viewInformationNotLoad.viewInformationNotLoad.visibility = View.INVISIBLE
+            viewModel.loadUserEvents()
+        }
+        binding.layoutSwipeRefresh.setOnRefreshListener {
             viewModel.loadUserEvents()
         }
     }
@@ -122,6 +137,7 @@ class RoutesFragment : Fragment() {
 
     private fun setObserver() {
         viewModel.eventsLiveData.observe(viewLifecycleOwner, { listData ->
+            binding.layoutSwipeRefresh.isRefreshing = false
             when {
                 listData == null -> {
                     binding.viewInformationNotLoad.viewInformationNotLoad.visibility = View.VISIBLE
@@ -138,11 +154,6 @@ class RoutesFragment : Fragment() {
                     binding.rvEvent.visibility = View.VISIBLE
                 }
             }
-        })
-
-        viewModel.progress.observe(viewLifecycleOwner, { loadStatus ->
-            if (loadStatus) binding.progressBar.visibility = View.VISIBLE
-            else binding.progressBar.visibility = View.INVISIBLE
         })
     }
 

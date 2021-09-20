@@ -19,15 +19,10 @@ class SearchEventViewModel @Inject constructor(
     /** Прослушивание статуса загрузки данных. */
     val eventsLiveData = MutableLiveData<List<EventPreview>>()
 
-    /** Прослушивание статуса загрузки. */
-    val progress = MutableLiveData<Boolean>()
-
     /** Загрузка событий других пользователей. */
     fun loadUsersEventsList() {
         interactor.getUsersEventPreviews().subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .doFinally { progress.value = false }
-            .doOnSubscribe { progress.value = true }
             .subscribe(eventsLiveData::setValue) { eventsLiveData.value = null }
             .addTo(compositeDisposable)
     }
