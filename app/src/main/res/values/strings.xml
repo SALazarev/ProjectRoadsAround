@@ -78,6 +78,7 @@
     <string name="type_particpate">Тип участия</string>
     <string name="member">Участник</string>
     <string name="no_events">Нет событий</string>
+    <string name="participate_status">Статус участия</string>
 
     <string-array name="motionType">
         <item>@string/foot</item>

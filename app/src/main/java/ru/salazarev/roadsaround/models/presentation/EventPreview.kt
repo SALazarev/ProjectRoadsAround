@@ -16,6 +16,6 @@ class EventPreview(
     val authorName: String,
     val motionType: String,
     val nameEvent: String,
-    val time: String,
+    val time: Long,
     val typeWorkWithEvent: EventInteractor.Companion.TypeWorkWithEvent
 )

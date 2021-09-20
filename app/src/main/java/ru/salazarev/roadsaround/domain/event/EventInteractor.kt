@@ -8,8 +8,6 @@ import ru.salazarev.roadsaround.models.data.EventData
 import ru.salazarev.roadsaround.models.domain.Event
 import ru.salazarev.roadsaround.models.domain.User
 import ru.salazarev.roadsaround.models.presentation.EventPreview
-import java.text.SimpleDateFormat
-import java.util.*
 import javax.inject.Inject
 
 /**
@@ -34,8 +32,6 @@ class EventInteractor @Inject constructor(
             AUTHOR,
             MEMBER
         }
-
-        private const val FORMAT_DATE = "HH:mm dd/MM/yyyy"
     }
 
     /**
@@ -72,24 +68,22 @@ class EventInteractor @Inject constructor(
     fun getUserEventPreviews(): Single<List<EventPreview>> {
         return Single.fromCallable {
             val userId = authentication.getUserId()
-            val calendar = Calendar.getInstance()
-            val dateFormat = SimpleDateFormat(FORMAT_DATE, Locale.ROOT)
+
             val listEventData = eventRepository.getUserEvents(userId)
 
             listEventData.map { event ->
                 val author = userRepository.getUserData(event.authorId)
                 val authorName =
                     if (author.lastName.isEmpty()) author.firstName else "${author.firstName} ${author.lastName}"
-                calendar.time = Date(event.time)
                 EventPreview(
                     event.id,
                     authorName,
                     event.motionType,
                     event.name,
-                    dateFormat.format(calendar.time),
+                    event.time,
                     checkEventStatus(userId, event)
                 )
-            }
+            }.sortedBy { it.time }
         }
     }
 
@@ -116,23 +110,17 @@ class EventInteractor @Inject constructor(
             val usersData = userRepository.getUsersData(usersId)
 
             val userId = authentication.getUserId()
-            getEvents(listEventData.sortedBy {
-                it.time
-            }.filter { it.authorId != userId && !it.members.contains(userId) },
+            getEvents(
+                listEventData.filter { it.authorId != userId && !it.members.contains(userId) },
                 usersData.map { it.id to it }.toMap()
             )
         }
     }
 
     private fun getEvents(data: List<EventData>, users: Map<String, User>): List<EventPreview> {
-        val calendar = Calendar.getInstance()
-        val dateFormat = SimpleDateFormat(FORMAT_DATE, Locale.ROOT)
-
         val userId = authentication.getUserId()
-
         return data.map { event ->
             val user: User = users.getValue(event.authorId)
-            calendar.time = Date(event.time)
             val authorName =
                 if (user.lastName.isEmpty()) user.firstName else "${user.firstName} ${user.lastName}"
 
@@ -141,9 +129,11 @@ class EventInteractor @Inject constructor(
                 authorName,
                 event.motionType,
                 event.name,
-                dateFormat.format(calendar.time),
+                event.time,
                 checkEventStatus(userId, event)
             )
+        }.sortedBy {
+            it.time
         }
     }
 
