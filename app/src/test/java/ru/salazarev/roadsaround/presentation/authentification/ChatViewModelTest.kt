@@ -20,12 +20,9 @@ import ru.salazarev.roadsaround.util.ImageConverter
 class ChatViewModelTest {
 
     private companion object {
-        private const val EMAIL = "email"
-        private const val PASSWORD = "password"
         private const val ID_EVENT = "ID_EVENT"
         private const val TEXT = "TEXT"
         const val ID_AUTHOR = "idAuthor"
-        const val TEXT_MESSAGE = "text"
         const val FIRST_NAME = "FIRST_NAME"
         const val LAST_NAME = "LAST_NAME"
         const val ID_MESSAGE = "ID_MESSAGE"
@@ -81,7 +78,7 @@ class ChatViewModelTest {
         //Arrange
         val resultObserver: Observer<List<MessageChat>> = mockk(relaxed = true)
         viewModel.messages.observeForever(resultObserver)
-        val name = "${FIRST_NAME} ${LAST_NAME}"
+        val name = "$FIRST_NAME $LAST_NAME"
         val listMessage = listOf(
             Message(
                 ID_MESSAGE, ID_AUTHOR, name,

@@ -8,4 +8,4 @@ import android.graphics.drawable.Drawable
  * @param name - имя и фамилия пользователя.
  * @param image - изображение пользователя.
  */
-class UserPresentation(val id: String, val name: String, val image: Drawable?)
+data class UserPresentation(val id: String, val name: String, val image: Drawable?)

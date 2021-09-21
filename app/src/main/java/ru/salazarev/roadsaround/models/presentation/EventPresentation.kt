@@ -11,7 +11,7 @@ package ru.salazarev.roadsaround.models.presentation
  * @property route - маршрут.
  * @property members - участники события.
  */
-class EventPresentation(
+data class EventPresentation(
     var id: String,
     var authorId: String,
     var name: String,

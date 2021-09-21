@@ -37,16 +37,16 @@ class AuthViewModelTest {
     fun `authenticationUser progress`() {
         //Arrange
         every { interactor.userAuthentication(EMAIL, PASSWORD) } returns Completable.complete()
-        val progressObserver: Observer<Boolean?> = mockk(relaxed = true)
-        viewModel.progress.observeForever(progressObserver)
+        val observer: Observer<Boolean?> = mockk(relaxed = true)
+        viewModel.progress.observeForever(observer)
 
         //Act
         viewModel.authenticationUser(EMAIL, PASSWORD)
 
         //Assert
         verifyAll {
-            progressObserver.onChanged(true)
-            progressObserver.onChanged(false)
+            observer.onChanged(true)
+            observer.onChanged(false)
         }
     }
 
