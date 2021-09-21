@@ -16,6 +16,7 @@ import com.google.android.material.timepicker.TimeFormat
 import ru.salazarev.roadsaround.App
 import ru.salazarev.roadsaround.R
 import ru.salazarev.roadsaround.databinding.FragmentEditEventBinding
+import ru.salazarev.roadsaround.network.map.GoogleMap
 import ru.salazarev.roadsaround.presentation.MainActivity
 import ru.salazarev.roadsaround.presentation.main.MainFragment
 import ru.salazarev.roadsaround.toast
@@ -32,6 +33,8 @@ class EditEventFragment : Fragment() {
     companion object {
         /** Ключ маршрута */
         const val ROUTE_KEY = "ROUTE_KEY"
+        /** Ключ типа построения маршрута */
+        const val DIRECTION_TYPE_KEY = "DIRECTION_TYPE_KEY"
         /** Код запроса маршрута */
         const val ROUTE_REQUEST = "ROUTE_REQUEST"
         private const val PICKERS_TAG = "TAG"
@@ -91,6 +94,13 @@ class EditEventFragment : Fragment() {
         binding.btnRoad.setOnClickListener {
             val bundle = Bundle()
             val route = viewModel.getRoute()
+            val directionType = when(binding.actvMotionType.text.toString()){
+                getString(R.string.foot) -> GoogleMap.DirectionType.Walking.type
+                getString(R.string.car) -> GoogleMap.DirectionType.Driving.type
+                getString(R.string.bicycle) -> GoogleMap.DirectionType.Cycling.type
+                else -> GoogleMap.DirectionType.Walking.type
+            }
+            bundle.putString(DIRECTION_TYPE_KEY,directionType)
             if (route != null) bundle.putString(ROUTE_KEY, route)
             (activity as MainActivity).navController
                 .navigate(R.id.action_editEventFragment_to_editRoadFragment, bundle)

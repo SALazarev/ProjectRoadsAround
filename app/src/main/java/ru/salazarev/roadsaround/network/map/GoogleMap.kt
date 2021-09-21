@@ -19,9 +19,10 @@ class GoogleMap(
     val map: GoogleMap,
     private val key: String,
     private val typeWork: TypeWork,
+    private val directionType: String,
     private val completeCallback: CompleteCallback,
     private var currentPolyline: Polyline? = null,
-    private var listMarker: MutableList<Marker> = mutableListOf()
+    private var listMarker: MutableList<Marker> = mutableListOf(),
 ) {
 
     companion object {
@@ -38,6 +39,9 @@ class GoogleMap(
     /**  Класс типов передвижения по маршруту. */
     enum class DirectionType(val type: String) {
         Walking("walking"),
+        Driving("driving"),
+        Cycling("cycling")
+
     }
 
     init {
@@ -64,7 +68,7 @@ class GoogleMap(
         // Destination of route
         val strDest = "destination=${dest.latitude},${dest.longitude}"
         // Mode
-        val mode = "mode=${DirectionType.Walking.type}"
+        val mode = "mode=${directionType}"
         // Building the parameters to the web service
         val parameters = "$strOrigin&$strDest&$mode"
         // Output format

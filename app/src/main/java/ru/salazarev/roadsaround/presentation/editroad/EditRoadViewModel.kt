@@ -22,13 +22,15 @@ class EditRoadViewModel : ViewModel() {
     fun configureMap(
         googleMap: com.google.android.gms.maps.GoogleMap,
         key: String,
-        typeWork: GoogleMap.Companion.TypeWork
+        typeWork: GoogleMap.Companion.TypeWork,
+        typeDirection: String
     ) {
-        map = GoogleMap(googleMap, key, typeWork, object : GoogleMap.CompleteCallback {
-            override fun onComplete(status: Boolean) {
-                resultCreateRoute.value = status
-            }
-        })
+        map =
+            GoogleMap(googleMap, key, typeWork, typeDirection, object : GoogleMap.CompleteCallback {
+                override fun onComplete(status: Boolean) {
+                    resultCreateRoute.value = status
+                }
+            })
     }
 
     /**

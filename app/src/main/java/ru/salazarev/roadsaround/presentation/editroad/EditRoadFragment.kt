@@ -19,6 +19,7 @@ import ru.salazarev.roadsaround.App
 import ru.salazarev.roadsaround.R
 import ru.salazarev.roadsaround.databinding.FragmentEditRoadBinding
 import ru.salazarev.roadsaround.presentation.MainActivity
+import ru.salazarev.roadsaround.presentation.editevent.EditEventFragment.Companion.DIRECTION_TYPE_KEY
 import ru.salazarev.roadsaround.presentation.editevent.EditEventFragment.Companion.ROUTE_KEY
 import ru.salazarev.roadsaround.presentation.editevent.EditEventFragment.Companion.ROUTE_REQUEST
 import ru.salazarev.roadsaround.toast
@@ -128,7 +129,8 @@ class EditRoadFragment : Fragment(), OnMapReadyCallback {
                 binding.includeToolbar.includeToolbar.title = "Маршрут"
             }
         }
-        viewModel.configureMap(googleMap, getString(R.string.google_maps_key), typeWork)
+        val typeDirection: String = arguments?.getString(DIRECTION_TYPE_KEY) ?: ru.salazarev.roadsaround.network.map.GoogleMap.DirectionType.Walking.type
+        viewModel.configureMap(googleMap, getString(R.string.google_maps_key), typeWork,typeDirection)
         configureMap()
     }
 
@@ -136,6 +138,7 @@ class EditRoadFragment : Fragment(), OnMapReadyCallback {
         val bundle = arguments
         if (bundle != null) {
             val route = bundle.getString(ROUTE_KEY)
+
             if (route != null) viewModel.setRoute(route)
             else checkLocatePermission()
         }

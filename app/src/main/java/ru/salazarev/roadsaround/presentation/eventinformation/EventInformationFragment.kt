@@ -11,7 +11,9 @@ import ru.salazarev.roadsaround.App
 import ru.salazarev.roadsaround.R
 import ru.salazarev.roadsaround.databinding.FragmentEventInformationBinding
 import ru.salazarev.roadsaround.domain.event.EventInteractor
+import ru.salazarev.roadsaround.network.map.GoogleMap
 import ru.salazarev.roadsaround.presentation.MainActivity
+import ru.salazarev.roadsaround.presentation.editevent.EditEventFragment
 import ru.salazarev.roadsaround.presentation.editevent.EditEventFragment.Companion.ROUTE_KEY
 import ru.salazarev.roadsaround.presentation.editroad.EditRoadFragment
 import ru.salazarev.roadsaround.presentation.editroad.EditRoadFragment.Companion.EDIT_ROAD_TYPE_WORK_KEY
@@ -75,6 +77,13 @@ class EventInformationFragment : Fragment() {
         binding.btnRoad.setOnClickListener {
             val bundle = Bundle()
             viewModel.data.value?.let { bundle.putString(ROUTE_KEY, it.route) }
+            val directionType = when(binding.etMotionType.text.toString()){
+                getString(R.string.foot) -> GoogleMap.DirectionType.Walking.type
+                getString(R.string.car) -> GoogleMap.DirectionType.Driving.type
+                getString(R.string.bicycle) -> GoogleMap.DirectionType.Driving.type
+                else -> GoogleMap.DirectionType.Walking.type
+            }
+            bundle.putString(EditEventFragment.DIRECTION_TYPE_KEY,directionType)
             bundle.putString(
                 EDIT_ROAD_TYPE_WORK_KEY,
                 EditRoadFragment.Companion.EditRoadTypeWork.VIEW.name
