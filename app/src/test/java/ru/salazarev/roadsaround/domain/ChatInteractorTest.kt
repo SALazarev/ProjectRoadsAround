@@ -12,6 +12,7 @@ import ru.salazarev.roadsaround.domain.chat.ChatInteractor
 import ru.salazarev.roadsaround.domain.chat.ChatRepository
 import ru.salazarev.roadsaround.domain.user.UserRepository
 import ru.salazarev.roadsaround.models.data.MessageData
+import ru.salazarev.roadsaround.models.domain.Message
 import ru.salazarev.roadsaround.models.domain.User
 
 class ChatInteractorTest {
@@ -22,6 +23,7 @@ class ChatInteractorTest {
         const val TEXT_MESSAGE = "text"
         const val FIRST_NAME = "FIRST_NAME"
         const val LAST_NAME = "LAST_NAME"
+        const val ID_MESSAGE = "ID_MESSAGE"
     }
 
     @Rule
@@ -87,21 +89,17 @@ class ChatInteractorTest {
     fun `get messages onNext 2`() {
         //Arrange
         val listOfMessageData = listOf(MessageData(authorId = ID_AUTHOR))
+        val listMessage = listOf(Message(ID_MESSAGE, ID_AUTHOR,"$FIRST_NAME $LAST_NAME","","",null))
         val listId = listOf(ID_AUTHOR)
         val listUser = listOf(User(ID_AUTHOR, FIRST_NAME, LAST_NAME, null))
         every {userRepository.getUsersData(listId)} returns listUser
-       // every{chatRepository.subscribeOnChatMessages(ID_EVENT)} returns PublishSubject.create()
+       // every { chatRepository.subscribeOnChatMessages(ID_EVENT) } returns PublishSubject.
 
         //Act
-        val testPS =  chatRepository.subscribeOnChatMessages(ID_EVENT).blockingFirst()
-
         val publicSubject =   interactor.getChatMessages(ID_EVENT)
-        publicSubject.test().assertResult()
-
-
 
         //Assert
-        publicSubject.test().assertComplete()
+        publicSubject.test().assertResult(listMessage)
         verifySequence {
             chatRepository.subscribeOnChatMessages(ID_EVENT)
         }
